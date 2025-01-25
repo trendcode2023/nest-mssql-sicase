@@ -1,11 +1,11 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-//import { v4 as uuid } from 'uuid';
-import crypto from 'crypto';
+import { v4 as uuid } from 'uuid';
+
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
-  // id: string = uuid();
-  id: string = crypto.randomUUID();
+  id: string = uuid();
+  //id: string = crypto.randomUUID();
   @Column({ type: 'varchar', length: 2, nullable: false })
   documentType: string;
   @Column({ type: 'varchar', length: 15, unique: true, nullable: false })
