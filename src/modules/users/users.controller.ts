@@ -8,6 +8,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
+import { CreateUserDto } from './dtos/createUser.dto';
 
 //import { UsersService } from './users.service';
 
@@ -17,7 +18,10 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(DateAdderInterceptor)
-  createUser(@Body() user: any, @Req() request: Request & { now: string }) {
+  createUser(
+    @Body() user: CreateUserDto,
+    @Req() request: Request & { now: string },
+  ) {
     console.log('entro');
     console.log(request.now);
     return this.usersService.createUser(user, request.now);
