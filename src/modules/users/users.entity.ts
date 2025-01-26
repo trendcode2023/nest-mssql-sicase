@@ -6,6 +6,8 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
   //id: string = crypto.randomUUID();
+  // pendiente agregar nombre de usuario
+
   @Column({ type: 'varchar', length: 2, nullable: false })
   documentType: string;
   @Column({ type: 'varchar', length: 15, unique: true, nullable: false })
@@ -44,11 +46,11 @@ export class User {
   loginNumberUsed: number;
 
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'date', nullable: false })
   createAt: string;
   @Column({ type: 'varchar', nullable: false })
-  createdBy: string;
-  @Column({ type: 'varchar', nullable: false })
+  createdBy: string; // aca se va guardar el nombre del usuario
+  @Column({ type: 'date', nullable: false })
   updateAt: string;
   @Column({ type: 'varchar', nullable: false })
   updatedBy: string;

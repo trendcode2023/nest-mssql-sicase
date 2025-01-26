@@ -63,8 +63,7 @@ export class AuthService {
       token,
     };
   }
-
-  //    if (!user) return 'Invalid Credentials';
-  //    if (user.password === password) return 'Logged In';
-  //    return 'Invalid Credentials';
 }
+//    if (!user) return 'Invalid Credentials';
+//    if (user.password === password) return 'Logged In';
+//    return 'Invalid Credentials';
