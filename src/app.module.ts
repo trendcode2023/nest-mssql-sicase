@@ -5,10 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
+import { SeederModule } from './modules/seeder/seeder.module';
+
 //import { AuthModule } from './modules/auth/auth.module';
 //import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
+    SeederModule,
     AuthModule,
     UsersModule,
     ConfigModule.forRoot({

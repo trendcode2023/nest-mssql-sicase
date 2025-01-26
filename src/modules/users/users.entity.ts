@@ -7,7 +7,6 @@ export class User {
   id: string = uuid();
   //id: string = crypto.randomUUID();
   // pendiente agregar nombre de usuario
-
   @Column({ type: 'varchar', length: 2, nullable: false })
   documentType: string;
   @Column({ type: 'varchar', length: 15, unique: true, nullable: false })
@@ -44,14 +43,13 @@ export class User {
   availableLoginNumber: number;
   @Column({ type: 'int', default: 0, nullable: false })
   loginNumberUsed: number;
-
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'string', nullable: false })
-  createAt: string;
-  @Column({ type: 'string', nullable: false })
+  @Column({ type: 'date', nullable: false })
+  createAt: Date;
+  @Column({ type: 'varchar', nullable: false })
   createdBy: string; // aca se va guardar el nombre del usuario
   @Column({ type: 'date', nullable: false })
-  updateAt: string;
+  updateAt: Date;
   @Column({ type: 'varchar', nullable: false })
   updatedBy: string;
   // fechas de expiration de usuario y password

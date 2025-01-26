@@ -3,10 +3,11 @@ import { AppModule } from './app.module';
 import { LoggerGlobal } from './middlewares/middleware.logger';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
+import { SeederService } from './modules/seeder/seeder.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
+  const seeder = app.get(SeederService);
   app.use(LoggerGlobal);
   app.useGlobalPipes(
     new ValidationPipe({
@@ -25,13 +26,17 @@ async function bootstrap() {
   ); // se declara para que funcione los dtos
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')
-    .setDescription('APIS DEL SISTEMA DE CUESTIONARIOS DE ASEGURABILIDAD')
+    .setDescription('BACKEND - SISTEMA DE CUESTIONARIOS DE ASEGURABILIDAD')
     .setVersion('1.0')
     //.addTag('users') // agregar tag a la documentacion
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
+
+  await seeder.seed();
+
+  console.log('Los catalogos fueron registrados correctamente');
 
   const port = process.env.PORT || 3000;
 
