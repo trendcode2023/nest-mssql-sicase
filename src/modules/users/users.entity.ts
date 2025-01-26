@@ -10,6 +10,9 @@ export class User {
   documentType: string;
   @Column({ type: 'varchar', length: 15, unique: true, nullable: false })
   documentNum: string;
+  /**
+   * debe ser unico
+   */
   @Column({ type: 'varchar', length: 10, unique: true, nullable: true }) // nullable true: porque el usuario puede que no sea medico
   cmp: string;
   @Column({ type: 'varchar', length: 100, nullable: false })
@@ -18,6 +21,9 @@ export class User {
   patSurname: string;
   @Column({ type: 'varchar', length: 45, nullable: false })
   matSurname: string;
+  /**
+   * debe ser unico
+   */
   @Column({ type: 'varchar', length: 100, unique: true, nullable: false })
   email: string;
   @Column({ type: 'varchar', length: 100, nullable: false })
@@ -49,10 +55,16 @@ export class User {
   // fechas de expiration de usuario y password
   @Column({ type: 'varchar', nullable: false })
   userExpirationDate: string;
+  /**
+   * por defecto 1
+   */
   @Column({ type: 'int', default: 1, nullable: false }) // consultar que tipo de dato sera
   userExpirationFlag: number;
   @Column({ type: 'varchar', nullable: false })
   passwordExpirationDate: string;
   @Column({ type: 'int', default: 1, nullable: false })
   passwordExpirationFlag: number;
+
+  @Column({ type: 'bit', default: false })
+  isAdmin: boolean;
 }

@@ -24,10 +24,8 @@ async function bootstrap() {
     }),
   ); // se declara para que funcione los dtos
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('DemoNest')
-    .setDescription(
-      'esta es una api construida para ser empleada en el modulo 4',
-    )
+    .setTitle('SICASE')
+    .setDescription('APIS DEL SISTEMA DE CUESTIONARIOS DE ASEGURABILIDAD')
     .setVersion('1.0')
     //.addTag('users') // agregar tag a la documentacion
     .addBearerAuth()

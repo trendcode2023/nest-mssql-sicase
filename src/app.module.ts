@@ -1,12 +1,15 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import typeOrmConfig from './config/config.typeorm';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthModule } from './modules/Auth/auth.module';
+//import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
+    AuthModule,
     UsersModule,
     ConfigModule.forRoot({
       // configura el módulo de configuración globalmente.
@@ -20,8 +23,14 @@ import { UsersModule } from './modules/users/users.module';
       useFactory: (configService: ConfigService) =>
         configService.get('typeorm'), //La función useFactory es una función de fábrica que obtiene la configuración de TypeORM desde el ConfigService. En este caso, se obtiene la configuración específica bajo la clave 'typeorm' (usualmente configurada en un archivo de configuración o variables de entorno).
     }),
+    JwtModule.register({
+      // registra el jwt
+      global: true,
+      signOptions: { expiresIn: '1h' },
+      secret: process.env.JWT_SECRET,
+    }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
