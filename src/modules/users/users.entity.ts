@@ -46,9 +46,9 @@ export class User {
   loginNumberUsed: number;
 
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'date', nullable: false })
+  @Column({ type: 'string', nullable: false })
   createAt: string;
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'string', nullable: false })
   createdBy: string; // aca se va guardar el nombre del usuario
   @Column({ type: 'date', nullable: false })
   updateAt: string;
