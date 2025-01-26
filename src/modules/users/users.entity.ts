@@ -1,5 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
+import { Catalog } from '../catalog/catalog.entity';
+import { Profile } from '../profile/profile.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -44,12 +46,12 @@ export class User {
   @Column({ type: 'int', default: 0, nullable: false })
   loginNumberUsed: number;
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'date', nullable: false })
-  createAt: Date;
+  @Column({ type: 'varchar', nullable: false })
+  createAt: string;
   @Column({ type: 'varchar', nullable: false })
   createdBy: string; // aca se va guardar el nombre del usuario
-  @Column({ type: 'date', nullable: false })
-  updateAt: Date;
+  @Column({ type: 'varchar', nullable: false })
+  updateAt: string;
   @Column({ type: 'varchar', nullable: false })
   updatedBy: string;
   // fechas de expiration de usuario y password
@@ -67,4 +69,10 @@ export class User {
 
   @Column({ type: 'bit', default: false })
   isAdmin: boolean;
+
+  @ManyToOne(() => Catalog, (catalog) => catalog.users)
+  catalog: Catalog;
+
+  @ManyToOne(() => Profile, (profile) => profile.users)
+  profile: Profile;
 }

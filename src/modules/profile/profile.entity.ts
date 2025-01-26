@@ -1,4 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  Index,
+} from 'typeorm';
+import { User } from '../users/users.entity';
 
 @Entity('profiles')
 export class Profile {
@@ -6,6 +13,7 @@ export class Profile {
   id: string;
 
   @Column({ type: 'varchar', length: 3, nullable: false })
+  @Index({ unique: true })
   codeName: string;
 
   @Column({ type: 'varchar', length: 15, nullable: false })
@@ -13,4 +21,7 @@ export class Profile {
 
   @Column({ type: 'int', default: 1 })
   status: number;
+
+  @OneToMany(() => User, (user) => user.profile)
+  users: User[];
 }

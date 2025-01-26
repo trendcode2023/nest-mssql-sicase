@@ -44,8 +44,12 @@ export class AuthService {
     console.log('signing in');
     if (!email || !password) return 'Data is required';
 
-    const user = await this.usersRepository.findOneBy({ email });
-
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      relations: ['profile'],
+    });
+    console.log(user);
+    console.log(user.profile.name);
     if (!user) throw new BadRequestException('Invalid Credentials');
     // compracion de contrase;as
     const isMatch = await bcrypt.compare(password, user.password);
@@ -53,7 +57,13 @@ export class AuthService {
     if (!isMatch) throw new BadRequestException('Invalid Credentials');
 
     // fira del token
-    const payload = { id: user.id, email: user.email, isAdmin: user.isAdmin };
+    //const payload = { id: user.id, email: user.email, isAdmin: user.isAdmin };
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      profile: user.profile.name,
+    };
 
     // generamos el token
     const token = this.jwtService.sign(payload);

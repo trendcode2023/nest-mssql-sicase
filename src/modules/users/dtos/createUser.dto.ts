@@ -116,4 +116,7 @@ export class CreateUserDto {
    */
   @IsString()
   updatedBy: string;
+
+  @IsString()
+  profile: string;
 }

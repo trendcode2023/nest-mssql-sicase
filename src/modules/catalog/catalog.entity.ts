@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { User } from '../users/users.entity';
 
 @Entity('catalogs')
 export class Catalog {
@@ -13,4 +14,7 @@ export class Catalog {
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   detail: string;
+
+  @OneToMany(() => User, (user) => user.catalog)
+  users: User[];
 }

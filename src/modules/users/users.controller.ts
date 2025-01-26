@@ -12,7 +12,7 @@ import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from 'src/utils/roles.enum';
+//import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 //import { Roles } from 'src/decorators/roles.decorator';
@@ -37,7 +37,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
-  @Roles(Role.Admin)
+  @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
   getAllUsers() {

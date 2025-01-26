@@ -5,37 +5,73 @@ import {
   ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { Observable } from 'rxjs';
-import { Role } from 'src/utils/roles.enum';
+//import { Observable } from 'rxjs';
+import { ProfileService } from 'src/modules/profile/profile.service';
+//import { Role } from 'src/utils/roles.enum';
 //import { Role } from 'src/utils/roles.enum';
 //import { Role } from 'src/emuns/roles.enum';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  constructor(private readonly reflector: Reflector) {}
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
+  constructor(
+    private readonly reflector: Reflector,
+    private readonly profileService: ProfileService,
+  ) {}
+  async canActivate(context: ExecutionContext): Promise<boolean> {
+    /*const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
       context.getHandler(),
       context.getClass(),
-    ]);
-    console.log('paso getHandler and getClass');
+    ]);*/
+    const requiredRoles = this.reflector.get<string[]>(
+      'roles',
+      context.getHandler(),
+    );
+
+    if (!requiredRoles) {
+      return true; // No se requieren roles, acceso permitido.
+    }
+
     const request = context.switchToHttp().getRequest();
     const user = request.user;
+    console.log('user');
     console.log(user);
 
-    const hasRole = () =>
-      requiredRoles.some((role) => user?.roles?.includes(role));
+    if (!user || !user.profile) {
+      throw new ForbiddenException('No profile associated with this user');
+    }
 
+    console.log('user.profile.name');
+    console.log(user.profile.name);
+
+    const userProfile = await this.profileService.getProfileByName(
+      user.profile,
+    );
+    if (!userProfile) {
+      throw new ForbiddenException('User profile not found');
+    }
+
+    console.log('userprofile:');
+    console.log(userProfile);
+    // const hasRole = () => requiredRoles.some((role) => user?.roles?.includes(role));
+
+    const hasRole = requiredRoles.includes(userProfile.name);
+    console.log('hasRole:');
+    console.log(hasRole);
     console.log(user.roles);
+    if (!hasRole) {
+      throw new ForbiddenException(
+        'You do not have permission to access this route',
+      );
+    }
 
-    const valid = user && user.roles && hasRole();
+    return true;
+    /*
+    const valid = user && user.roles && hasRole;
     if (!valid) {
       throw new ForbiddenException(
         'You dont have permission and nor allowed to access this route',
       );
     }
-    return valid;
+    return valid;*/
   }
 }
