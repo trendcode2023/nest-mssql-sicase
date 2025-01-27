@@ -30,10 +30,12 @@ export class UsersController {
   createUser(
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: string },
+    // @Req() req: any,
   ) {
-    console.log('entro');
-    console.log(request.now);
-    return this.usersService.createUser(user, request.now);
+    // const loggedInUserDni = String(req.user?.dni);
+
+    const loggedInUserDni = 'hola';
+    return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
   @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens

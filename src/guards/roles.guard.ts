@@ -65,7 +65,10 @@ export class RolesGuard implements CanActivate {
     }
 
     return true;
-    /*
+  }
+}
+
+/*
     const valid = user && user.roles && hasRole;
     if (!valid) {
       throw new ForbiddenException(
@@ -73,5 +76,3 @@ export class RolesGuard implements CanActivate {
       );
     }
     return valid;*/
-  }
-}

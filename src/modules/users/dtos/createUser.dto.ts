@@ -7,10 +7,14 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
+  @IsString()
+  codprofile?: string;
+
   /**
    * debe ser un string de 2 caracteres
    * @example '01'
    */
+
   @IsNotEmpty()
   @IsString()
   @Length(2, 2, { message: 'document type must have 3 characters' })
@@ -104,19 +108,11 @@ export class CreateUserDto {
     message: 'Route Stamp must be up to 250 characters',
   })
   RouteStamp: string;
-  /**
-   * Debe contener hasta 9 caracteres
-   * @example '44180518'
-   */
+}
+
+/*
   @IsString()
   createdBy: string;
-  /**
-   * Debe contener hasta 9 caracteres
-   * @example '44180518'
-   */
-  @IsString()
-  updatedBy: string;
 
   @IsString()
-  profile: string;
-}
+  updatedBy: string;*/

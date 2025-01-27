@@ -14,7 +14,7 @@ export class Catalog {
 
   @Column({ type: 'varchar', length: 50, nullable: false })
   detail: string;
-
+  /*
   @OneToMany(() => User, (user) => user.catalog)
-  users: User[];
+  users: User[];*/
 }

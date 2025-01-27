@@ -19,8 +19,35 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  getAuth() {
-    return 'auth list';
+  async signIn(email: string, password: string) {
+    // 1. valida si existe email y password no son vacios
+    if (!email || !password) return 'email y password es requerido!!';
+    // 2. consulta usuario por email
+    const user = await this.usersRepository.findOne({
+      where: { email },
+      relations: ['profile'],
+    });
+    // 3. valida si usuario existe
+    if (!user) throw new BadRequestException('Su credencial en invalida!!');
+    // 4. compara la contrasenia
+    const isMatch = await bcrypt.compare(password, user.password);
+    // 5. validad si la comparacion fue exitosa
+    if (!isMatch) throw new BadRequestException('Su credencial en invalida!!');
+
+    // 6. crea el payload
+    const payload = {
+      id: user.id,
+      email: user.email,
+      roles: user.profile.name,
+    };
+
+    // 7. generamos el token
+    const token = this.jwtService.sign(payload);
+    // 8. retornamos el token
+    return {
+      message: 'Logged-in User',
+      token,
+    };
   }
   // registro del usuario
   async signup(user: Partial<User>) {
@@ -40,38 +67,8 @@ export class AuthService {
     });
   }
 
-  async signIn(email: string, password: string) {
-    console.log('signing in');
-    if (!email || !password) return 'Data is required';
-
-    const user = await this.usersRepository.findOne({
-      where: { email },
-      relations: ['profile'],
-    });
-    console.log(user);
-    console.log(user.profile.name);
-    if (!user) throw new BadRequestException('Invalid Credentials');
-    // compracion de contrase;as
-    const isMatch = await bcrypt.compare(password, user.password);
-
-    if (!isMatch) throw new BadRequestException('Invalid Credentials');
-
-    // fira del token
-    //const payload = { id: user.id, email: user.email, isAdmin: user.isAdmin };
-
-    const payload = {
-      id: user.id,
-      email: user.email,
-      profile: user.profile.name,
-    };
-
-    // generamos el token
-    const token = this.jwtService.sign(payload);
-    // entregamos la respuesta
-    return {
-      message: 'Logged-in User',
-      token,
-    };
+  getAuth() {
+    return 'auth list';
   }
 }
 //    if (!user) return 'Invalid Credentials';

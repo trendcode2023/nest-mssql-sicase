@@ -3,9 +3,11 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Catalog } from '../catalog/catalog.entity';
 import { Repository } from 'typeorm';
-import { catalogsData, profilesData } from './seeder.data';
+import { catalogsData, profilesData, usersData } from './seeder.data';
 import { Profile } from '../profile/profile.entity';
-
+import { UsersService } from '../users/users.service';
+import { User } from '../users/users.entity';
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class SeederService {
   private readonly logger = new Logger(SeederService.name);
@@ -13,11 +15,51 @@ export class SeederService {
   constructor(
     @InjectRepository(Catalog) private catalogsRepository: Repository<Catalog>,
     @InjectRepository(Profile) private profilesRepository: Repository<Profile>,
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private readonly usersService: UsersService,
   ) {}
 
   async seed() {
     await this.seedCatalogs();
     await this.seedProfiles();
+    await this.seedUsers();
+  }
+
+  private async seedUsers() {
+    for (const user of usersData) {
+      const exists = await this.usersRepository.findOne({
+        where: { documentNum: user.documentNum },
+      });
+
+      if (!exists) {
+        // 3. consulta el perfil por id
+        const profile = await this.profilesRepository.findOne({
+          where: { id: user.codprofile },
+        });
+
+        const hashedPassword = await bcrypt.hash(user.password, 10);
+
+        const newUser = this.usersRepository.create({
+          ...user,
+          password: hashedPassword,
+          lastLogin: '2025-12-31',
+          createAt: '2025-12-31',
+          createdBy: '2025-12-31',
+          updateAt: '2025-12-31',
+          updatedBy: '2025-12-31',
+          userExpirationDate: '2025-12-31',
+          //userExpirationFlag: 1,
+          passwordExpirationDate: '2025-12-31',
+          //  passwordExpirationFlag: 1,
+          profile: profile,
+        });
+
+        await this.usersRepository.save(newUser);
+        this.logger.log(
+          `Usuario '${newUser.patSurname} / ${newUser.matSurname}' added.`,
+        );
+      }
+    }
   }
 
   private async seedProfiles() {

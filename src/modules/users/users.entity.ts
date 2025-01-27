@@ -1,13 +1,12 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { v4 as uuid } from 'uuid';
-import { Catalog } from '../catalog/catalog.entity';
+
 import { Profile } from '../profile/profile.entity';
 
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
-  //id: string = crypto.randomUUID();
   // pendiente agregar nombre de usuario
   @Column({ type: 'varchar', length: 2, nullable: false })
   documentType: string;
@@ -33,46 +32,40 @@ export class User {
   password: string;
   @Column({ type: 'varchar', length: 15, nullable: true })
   cellphone: string;
-  @Column({ type: 'varchar', length: 250, nullable: true }) // it is true becuase initialy dont have a stamp
-  RouteStamp: string;
+  @Column({ type: 'varchar', length: 250, nullable: true })
+  RouteStamp: string; // it is true becuase initialy dont have a stamp
   // staus del logueo
-  @Column({ type: 'int', default: 1, nullable: false })
+  @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   status: number;
   // datos de logueo
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por defecto
   lastLogin: string;
-  @Column({ type: 'int', default: 5, nullable: false }) // indicador de cantidad de veces para loguearte // es necesario colocar este parametro??
-  availableLoginNumber: number;
-  @Column({ type: 'int', default: 0, nullable: false })
+  @Column({ type: 'int', default: 5, nullable: false }) // por defecto
+  availableLoginNumber: number; //
+  @Column({ type: 'int', default: 0, nullable: false }) // por defecto
   loginNumberUsed: number;
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por defecto
   createAt: string;
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por payload
   createdBy: string; // aca se va guardar el nombre del usuario
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por defecto
   updateAt: string;
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por payload
   updatedBy: string;
   // fechas de expiration de usuario y password
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) // por defecto
   userExpirationDate: string;
   /**
    * por defecto 1
    */
-  @Column({ type: 'int', default: 1, nullable: false }) // consultar que tipo de dato sera
+  @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   userExpirationFlag: number;
-  @Column({ type: 'varchar', nullable: false })
+  @Column({ type: 'varchar', nullable: false }) //
   passwordExpirationDate: string;
-  @Column({ type: 'int', default: 1, nullable: false })
+  @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   passwordExpirationFlag: number;
 
-  @Column({ type: 'bit', default: false })
-  isAdmin: boolean;
-
-  @ManyToOne(() => Catalog, (catalog) => catalog.users)
-  catalog: Catalog;
-
-  @ManyToOne(() => Profile, (profile) => profile.users)
+  @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
   profile: Profile;
 }
