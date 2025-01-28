@@ -35,29 +35,30 @@ export class RolesGuard implements CanActivate {
     const user = request.user;
     console.log('user');
     console.log(user);
+    console.log('user.roles');
+    console.log(user.roles);
 
-    if (!user || !user.profile) {
+    if (!user || !user.roles) {
       throw new ForbiddenException('No profile associated with this user');
     }
 
-    console.log('user.profile.name');
-    console.log(user.profile.name);
+    //console.log('user.profile.name');
+    //console.log(user.profile.name);
 
-    const userProfile = await this.profileService.getProfileByName(
-      user.profile,
-    );
+    const userProfile = await this.profileService.getProfileByName(user.roles);
+
+    console.log('userprofile:');
+    console.log(userProfile);
     if (!userProfile) {
       throw new ForbiddenException('User profile not found');
     }
 
-    console.log('userprofile:');
-    console.log(userProfile);
     // const hasRole = () => requiredRoles.some((role) => user?.roles?.includes(role));
 
     const hasRole = requiredRoles.includes(userProfile.name);
     console.log('hasRole:');
     console.log(hasRole);
-    console.log(user.roles);
+
     if (!hasRole) {
       throw new ForbiddenException(
         'You do not have permission to access this route',

@@ -21,7 +21,7 @@ export class UsersService {
   async createUser(
     user: CreateUserDto,
     now: string,
-    dni: string,
+    id: string, //
   ): Promise<CreateUserDto> {
     try {
       // 1. consulta el tipo de documento por id
@@ -53,13 +53,13 @@ export class UsersService {
         documentType: String(documentType.id),
         password: hashedPassword,
         //status esta por defecto 1
-        lastLogin: dni,
+        lastLogin: now,
         //availableLoginNumber =1
         // loginNumberUsed = 1
         createAt: now,
-        createdBy: now,
+        createdBy: id,
         updateAt: now,
-        updatedBy: now,
+        updatedBy: id,
         userExpirationDate: now,
         // userExpirationFlag
         passwordExpirationDate: now,
@@ -78,7 +78,7 @@ export class UsersService {
 
   async getAllUsers() {
     return await this.usersRepository.find({
-      relations: ['catalog'],
+      relations: ['profile'],
     });
   }
 }

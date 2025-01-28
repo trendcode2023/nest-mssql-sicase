@@ -27,16 +27,19 @@ export class AuthService {
       where: { email },
       relations: ['profile'],
     });
+
+    console.log(user);
     // 3. valida si usuario existe
-    if (!user) throw new BadRequestException('Su credencial en invalida!!');
+    if (!user) throw new BadRequestException('Su credencial es invalida!!');
     // 4. compara la contrasenia
     const isMatch = await bcrypt.compare(password, user.password);
     // 5. validad si la comparacion fue exitosa
-    if (!isMatch) throw new BadRequestException('Su credencial en invalida!!');
+    if (!isMatch) throw new BadRequestException('Su credencial es invalida!!');
 
     // 6. crea el payload
     const payload = {
       id: user.id,
+      dni: user.documentNum,
       email: user.email,
       roles: user.profile.name,
     };

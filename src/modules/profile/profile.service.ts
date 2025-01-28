@@ -10,7 +10,7 @@ export class ProfileService {
     private readonly profileRepository: Repository<Profile>,
   ) {}
 
-  async getProfileByName(name: string): Promise<Profile | undefined> {
+  async getProfileByName(name: string) {
     return this.profileRepository.findOne({ where: { name } });
   }
 

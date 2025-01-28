@@ -15,6 +15,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { User } from 'src/decorators/user.decorator';
 //import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 //import { ApiBearerAuth } from '@nestjs/swagger';
@@ -25,16 +26,19 @@ import { RolesGuard } from 'src/guards/roles.guard';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Post('create')
+  @Roles('superadmin')
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
+  @Post('create')
   createUser(
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: string },
-    // @Req() req: any,
+    // @Req() payload: any, //
+    @User('dni') loggedInUserDni: string,
   ) {
-    // const loggedInUserDni = String(req.user?.dni);
+    //const loggedInUserDni = String(payload.user?.dni); //
 
-    const loggedInUserDni = 'hola';
+    //const loggedInUserDni = 'hola';
     return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
