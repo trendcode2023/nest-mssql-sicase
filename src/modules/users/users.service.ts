@@ -10,6 +10,7 @@ import * as bcrypt from 'bcrypt';
 import { Catalog } from '../catalog/catalog.entity';
 import { Profile } from '../profile/profile.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
+import { UpdateUserDto } from './dtos/updateUser.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -76,6 +77,26 @@ export class UsersService {
     }
   }
 
+  async updateUser(
+    id: string,
+    updateData: UpdateUserDto,
+    now: Date,
+    username: string,
+  ) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
+    if (!user) throw new BadRequestException('Usuario no existe!!');
+    user.updateAt = now;
+    console.log(user.updateAt);
+    user.updatedBy = username;
+    console.log(user.updatedBy);
+    console.log('user final');
+    console.log(user.updatedBy);
+    Object.assign(user, updateData);
+    return await this.usersRepository.save(user);
+  }
   async getAllUsers() {
     return await this.usersRepository.find({
       relations: ['profile'],

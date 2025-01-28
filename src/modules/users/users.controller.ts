@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  Param,
+  //Param,
   Post,
   Req,
   UseGuards,
@@ -16,6 +18,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { User } from 'src/decorators/user.decorator';
+import { UpdateUserDto } from './dtos/updateUser.dto';
 //import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 //import { ApiBearerAuth } from '@nestjs/swagger';
@@ -33,12 +36,8 @@ export class UsersController {
   createUser(
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
-    // @Req() payload: any, //
     @User('dni') loggedInUserDni: string, // captura los datos del payload
   ) {
-    //const loggedInUserDni = String(payload.user?.dni); //
-
-    //const loggedInUserDni = 'hola';
     return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
@@ -49,4 +48,26 @@ export class UsersController {
   getAllUsers() {
     return this.usersService.getAllUsers();
   }
+
+  @UseGuards(AuthGuard)
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('update/:id')
+  async updateUser(
+    @Param('id') id: string,
+    @Req() request: Request & { now: Date },
+    @User('dni') loggedInUserDni: string,
+    @Body() updateData: UpdateUserDto,
+  ) {
+    return this.usersService.updateUser(
+      id,
+      updateData,
+      request.now,
+      loggedInUserDni,
+    );
+  }
 }
+/*  @Post(':id')
+  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUser(id, updateUserDto);
+  }
+  */
