@@ -20,7 +20,7 @@ export class UsersService {
 
   async createUser(
     user: CreateUserDto,
-    now: string,
+    now: Date,
     id: string, //
   ): Promise<CreateUserDto> {
     try {
@@ -53,7 +53,7 @@ export class UsersService {
         documentType: String(documentType.id),
         password: hashedPassword,
         //status esta por defecto 1
-        lastLogin: now,
+        //lastLogin: now,
         //availableLoginNumber =1
         // loginNumberUsed = 1
         createAt: now,

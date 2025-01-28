@@ -12,15 +12,7 @@ export class DateAdderInterceptor implements NestInterceptor {
     context: ExecutionContext,
     next: CallHandler<any>,
   ): Observable<any> | Promise<Observable<any>> {
-    const request = context.switchToHttp().getRequest();
-    request.now = new Date();
-
-    return next.handle();
-  }
-}
-
-/*
- const now = new Date();
+    const now = new Date();
 
     // Formatear la fecha
     const formattedDate = now.toLocaleDateString('es-AR', {
@@ -42,4 +34,7 @@ export class DateAdderInterceptor implements NestInterceptor {
 
     const request = context.switchToHttp().getRequest();
     request.now = fullDateTime;
-*/
+
+    return next.handle();
+  }
+}

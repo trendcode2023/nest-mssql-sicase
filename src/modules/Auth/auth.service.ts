@@ -46,7 +46,10 @@ export class AuthService {
 
     // 7. generamos el token
     const token = this.jwtService.sign(payload);
-    // 8. retornamos el token
+    // 8. actualizamos el lastlogin
+    user.lastLogin = new Date();
+    await this.usersRepository.save(user);
+    // 9. retornamos el token
     return {
       message: 'Logged-in User',
       token,

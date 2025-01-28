@@ -32,9 +32,9 @@ export class UsersController {
   @Post('create')
   createUser(
     @Body() user: CreateUserDto,
-    @Req() request: Request & { now: string },
+    @Req() request: Request & { now: Date },
     // @Req() payload: any, //
-    @User('dni') loggedInUserDni: string,
+    @User('dni') loggedInUserDni: string, // captura los datos del payload
   ) {
     //const loggedInUserDni = String(payload.user?.dni); //
 

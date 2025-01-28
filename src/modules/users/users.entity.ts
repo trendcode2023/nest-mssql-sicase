@@ -38,31 +38,31 @@ export class User {
   @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   status: number;
   // datos de logueo
-  @Column({ type: 'varchar', nullable: false }) // por defecto
-  lastLogin: string;
+  @Column({ type: 'datetime', nullable: true }) // por defecto
+  lastLogin: Date;
   @Column({ type: 'int', default: 5, nullable: false }) // por defecto
   availableLoginNumber: number; //
   @Column({ type: 'int', default: 0, nullable: false }) // por defecto
   loginNumberUsed: number;
   // usuario y fechas de creacion y modificacion
-  @Column({ type: 'varchar', nullable: false }) // por defecto
-  createAt: string;
+  @Column({ type: 'datetime', nullable: false }) // por defecto
+  createAt: Date;
   @Column({ type: 'varchar', nullable: false }) // por payload
   createdBy: string; // aca se va guardar el nombre del usuario
-  @Column({ type: 'varchar', nullable: false }) // por defecto
-  updateAt: string;
+  @Column({ type: 'datetime', nullable: false }) // por defecto
+  updateAt: Date;
   @Column({ type: 'varchar', nullable: false }) // por payload
   updatedBy: string;
   // fechas de expiration de usuario y password
-  @Column({ type: 'varchar', nullable: false }) // por defecto
-  userExpirationDate: string;
+  @Column({ type: 'datetime', nullable: false }) // por defecto
+  userExpirationDate: Date;
   /**
    * por defecto 1
    */
   @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   userExpirationFlag: number;
-  @Column({ type: 'varchar', nullable: false }) //
-  passwordExpirationDate: string;
+  @Column({ type: 'datetime', nullable: false }) //
+  passwordExpirationDate: Date;
   @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   passwordExpirationFlag: number;
 
