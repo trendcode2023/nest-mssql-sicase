@@ -11,6 +11,7 @@ import { Catalog } from '../catalog/catalog.entity';
 import { Profile } from '../profile/profile.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -89,10 +90,28 @@ export class UsersService {
     });
     if (!user) throw new BadRequestException('Usuario no existe!!');
     user.updateAt = now;
-    console.log(user.updateAt);
+
     user.updatedBy = username;
-    console.log(user.updatedBy);
-    console.log('user final');
+
+    Object.assign(user, updateData);
+    return await this.usersRepository.save(user);
+  }
+
+  async updateUserByDoctor(
+    id: string,
+    updateData: UpdateUserByDoctorDto,
+    now: Date,
+    username: string,
+  ) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
+    if (!user) throw new BadRequestException('Usuario no existe!!');
+
+    // pendiente hashear el password
+    user.updateAt = now;
+    user.updatedBy = username;
     console.log(user.updatedBy);
     Object.assign(user, updateData);
     return await this.usersRepository.save(user);

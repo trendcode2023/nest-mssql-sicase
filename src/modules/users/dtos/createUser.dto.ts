@@ -73,7 +73,7 @@ export class CreateUserDto {
   matSurname: string;
   /**
    * Debe tener un formato valido
-   * @example 'johan.rocha.horna@gmail.com'
+   * @example 'admin@gmail.com'
    */
   @IsNotEmpty()
   @IsString()
@@ -81,7 +81,7 @@ export class CreateUserDto {
   email: string;
   /**
    * Debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*), y debe tener entre 8 y 15 caracteres
-   * @example 'Rocha2025*'
+   * @example 'Qwerty*2025'
    */
   @IsNotEmpty()
   @IsString()
@@ -107,7 +107,7 @@ export class CreateUserDto {
   @Length(2, 45, {
     message: 'Route Stamp must be up to 250 characters',
   })
-  RouteStamp: string;
+  routeStamp: string;
 }
 
 /*

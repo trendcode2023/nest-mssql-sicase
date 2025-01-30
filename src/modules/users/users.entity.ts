@@ -33,17 +33,19 @@ export class User {
   @Column({ type: 'varchar', length: 15, nullable: true })
   cellphone: string;
   @Column({ type: 'varchar', length: 250, nullable: true })
-  RouteStamp: string; // it is true becuase initialy dont have a stamp
+  routeStamp: string; // it is true becuase initialy dont have a stamp
   // staus del logueo
-  @Column({ type: 'int', default: 1, nullable: false }) // por defecto
-  status: number;
+  @Column({ type: 'varchar', default: 'ac', nullable: false }) // por defecto
+  status: string;
   // datos de logueo
   @Column({ type: 'datetime', nullable: true }) // por defecto
   lastLogin: Date;
+  @Column({ type: 'datetime', nullable: true }) // por defecto
+  lastFailedLogin: Date;
   @Column({ type: 'int', default: 5, nullable: false }) // por defecto
   availableLoginNumber: number; //
   @Column({ type: 'int', default: 0, nullable: false }) // por defecto
-  loginNumberUsed: number;
+  failedLoginAttempts: number;
   // usuario y fechas de creacion y modificacion
   @Column({ type: 'datetime', nullable: false }) // por defecto
   createAt: Date;

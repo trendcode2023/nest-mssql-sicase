@@ -19,6 +19,7 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { User } from 'src/decorators/user.decorator';
 import { UpdateUserDto } from './dtos/updateUser.dto';
+import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 //import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 //import { ApiBearerAuth } from '@nestjs/swagger';
@@ -29,7 +30,7 @@ import { UpdateUserDto } from './dtos/updateUser.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
-  @Roles('superadmin')
+  @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
@@ -46,7 +47,30 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
   getAllUsers() {
+    /*
+acac haria la logia
+pregunto a la tabla user profi
+*/
+
     return this.usersService.getAllUsers();
+  }
+
+  @Roles('doctor')
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('update/byDoctor/:id')
+  async updateUserByDoctor(
+    @Param('id') id: string,
+    @Req() request: Request & { now: Date },
+    @User('dni') loggedInUserDni: string,
+    @Body() updateData: UpdateUserByDoctorDto,
+  ) {
+    return this.usersService.updateUserByDoctor(
+      id,
+      updateData,
+      request.now,
+      loggedInUserDni,
+    );
   }
 
   @UseGuards(AuthGuard)
