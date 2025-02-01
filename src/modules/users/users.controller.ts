@@ -29,7 +29,7 @@ import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-
+  @ApiBearerAuth()
   @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
@@ -37,8 +37,9 @@ export class UsersController {
   createUser(
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
-    @User('dni') loggedInUserDni: string, // captura los datos del payload
+    @User('username') loggedInUserDni: string, // captura los datos del payload
   ) {
+    console.log(loggedInUserDni);
     return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
@@ -47,11 +48,6 @@ export class UsersController {
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
   getAllUsers() {
-    /*
-acac haria la logia
-pregunto a la tabla user profi
-*/
-
     return this.usersService.getAllUsers();
   }
 

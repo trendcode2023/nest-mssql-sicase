@@ -22,9 +22,7 @@ export class AuthController {
     @Body() credentials: LoguinUserDto,
     @Req() request: Request & { now: Date },
   ) {
-    console.log('entro sigin');
-    const { email, password } = credentials;
-    return this.authService.signIn(email, password, request.now);
+    return this.authService.signIn(credentials, request.now);
   }
 
   /*

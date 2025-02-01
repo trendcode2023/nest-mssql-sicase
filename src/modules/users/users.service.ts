@@ -26,6 +26,7 @@ export class UsersService {
     id: string, //
   ): Promise<CreateUserDto> {
     try {
+      console.log(id);
       // 1. consulta el tipo de documento por id
       const documentType = await this.catalogsRepository.findOne({
         where: { id: user.documentType },
@@ -45,10 +46,10 @@ export class UsersService {
       // 5. encripta el password
       const hashedPassword = await bcrypt.hash(user.password, 10);
 
-      // 6. excluye la propiedad codprofile y crea el nuevo usuario
-      //  const { codprofile, ...userWithoutCodProfile } = user;
-      //  console.log(codprofile);
-      // 7. crea el nuevo usuario
+      // 6. passwordExpirationDate expirara en 90 dias
+      const passwordExpirationDate = new Date(now);
+      passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
+      // 7. crea la instancia de user
       const newUser = this.usersRepository.create({
         // ...userWithoutCodProfile,
         ...user,
@@ -64,14 +65,13 @@ export class UsersService {
         updatedBy: id,
         userExpirationDate: now,
         // userExpirationFlag
-        passwordExpirationDate: now,
+        passwordExpirationDate,
         //passwordExpirationFlag
 
         profile: profile,
       } as Partial<CreateUserDto>);
 
-      console.log(newUser);
-      // 7. guarda en bd el nuevo usuario y lo retorna
+      // 8. guarda en bd el nuevo usuario y lo retorna
       return await this.usersRepository.save(newUser);
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
@@ -117,8 +117,14 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
   async getAllUsers() {
-    return await this.usersRepository.find({
-      relations: ['profile'],
-    });
+    return await this.usersRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.profile', 'profile')
+      .leftJoinAndSelect('profile.authorizations', 'authorization')
+      .leftJoinAndSelect('authorization.route', 'route')
+      .getMany();
+    //return await this.usersRepository.find({
+    // relations: ['profile.authorizations.route'],
+    // });
   }
 }

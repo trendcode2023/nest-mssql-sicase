@@ -3,11 +3,22 @@ import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Catalog } from '../catalog/catalog.entity';
 import { Repository } from 'typeorm';
-import { catalogsData, profilesData, usersData } from './seeder.data';
+import {
+  authorizationsData,
+  catalogsData,
+  modulosData,
+  profilesData,
+  routesData,
+  usersData,
+} from './seeder.data';
 import { Profile } from '../profile/profile.entity';
 import { UsersService } from '../users/users.service';
 import { User } from '../users/users.entity';
 import * as bcrypt from 'bcrypt';
+
+import { Modulo } from '../modulos/modulos.entity';
+import { Route } from '../routes/routes.entity';
+import { Authorization } from '../authorizations/authorizations.entity';
 @Injectable()
 export class SeederService {
   private readonly logger = new Logger(SeederService.name);
@@ -16,6 +27,10 @@ export class SeederService {
     @InjectRepository(Catalog) private catalogsRepository: Repository<Catalog>,
     @InjectRepository(Profile) private profilesRepository: Repository<Profile>,
     @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(Modulo) private modulosRepository: Repository<Modulo>,
+    @InjectRepository(Route) private routesRepository: Repository<Route>,
+    @InjectRepository(Authorization)
+    private authorizationsRepository: Repository<Authorization>,
     private readonly usersService: UsersService,
   ) {}
 
@@ -23,6 +38,9 @@ export class SeederService {
     await this.seedCatalogs();
     await this.seedProfiles();
     await this.seedUsers();
+    await this.seedModulos();
+    await this.seedRoutes();
+    await this.seedAuthorizations();
   }
 
   private async seedUsers() {
@@ -56,7 +74,7 @@ export class SeederService {
 
         await this.usersRepository.save(newUser);
         this.logger.log(
-          `Usuario '${newUser.patSurname} / ${newUser.matSurname}' added.`,
+          `User: '${newUser.patSurname} / ${newUser.matSurname}' added.`,
         );
       }
     }
@@ -71,7 +89,7 @@ export class SeederService {
       if (!exists) {
         await this.profilesRepository.save(profile);
         this.logger.log(
-          `Profile '${profile.codeName} / ${profile.name}' added.`,
+          `Profile: '${profile.codeName} / ${profile.name}' added.`,
         );
       }
     }
@@ -85,7 +103,80 @@ export class SeederService {
 
       if (!exists) {
         await this.catalogsRepository.save(catalog);
-        this.logger.log(`Catalog '${catalog.name} / ${catalog.detail}' added.`);
+        this.logger.log(
+          `Catalog: '${catalog.name} / ${catalog.detail}' added.`,
+        );
+      }
+    }
+  }
+
+  private async seedModulos() {
+    for (const modulo of modulosData) {
+      const exists = await this.modulosRepository.findOne({
+        where: { code: modulo.code },
+      });
+
+      if (!exists) {
+        await this.modulosRepository.save(modulo);
+        this.logger.log(
+          `Modulo: '${modulo.code} / ${modulo.description}' added.`,
+        );
+      }
+    }
+  }
+
+  private async seedRoutes() {
+    for (const route of routesData) {
+      // Buscar el módulo correspondiente
+      const modulo = await this.modulosRepository.findOne({
+        where: { id: route.modulo },
+      });
+
+      if (!modulo) {
+        this.logger.warn(`Modulo '${route.modulo}' no encontrado. Saltando...`);
+        continue; // Si el módulo no existe, omite la inserción
+      }
+
+      // Verificar si la ruta ya existe en la base de datos
+      const exists = await this.routesRepository.findOne({
+        where: { code: route.code },
+      });
+
+      if (!exists) {
+        await this.routesRepository.save({
+          code: route.code,
+          description: route.description,
+          order: route.order,
+          modulo: modulo, // Asignamos el objeto completo
+        });
+      }
+      this.logger.log(`Ruta '${route.code} / ${route.description}' añadida.`);
+    }
+  }
+
+  private async seedAuthorizations() {
+    for (const authorization of authorizationsData) {
+      const exists = await this.authorizationsRepository.findOne({
+        where: { code: authorization.code },
+      });
+
+      if (!exists) {
+        // 3. consulta el perfil por id
+        const route = await this.routesRepository.findOne({
+          where: { id: authorization.codeRoute },
+        });
+
+        const profile = await this.profilesRepository.findOne({
+          where: { id: authorization.codeProfile },
+        });
+        const newAuthorization = this.authorizationsRepository.create({
+          ...authorization,
+          route: route,
+          profile: profile,
+        });
+
+        await this.authorizationsRepository.save(newAuthorization);
+        this.logger.log(`Authorization: '${newAuthorization.code}' added.`);
       }
     }
   }

@@ -7,6 +7,10 @@ import {
 } from 'class-validator';
 
 export class CreateUserDto {
+  /**
+   * debe ser un string de 2 caracteres (02 admin,03 doctor)
+   * @example '02'
+   */
   @IsString()
   codprofile?: string;
 
@@ -22,7 +26,7 @@ export class CreateUserDto {
 
   /**
    * debe ser un string de 8 a 15 caracteres
-   * @example '44180518'
+   * @example '21457869'
    */
   @IsNotEmpty()
   @IsString()
@@ -33,7 +37,7 @@ export class CreateUserDto {
 
   /**
    * debe ser un string entre 5 y 6 caracteres
-   * @example '98628'
+   * @example '123456'
    */
   @IsString()
   @Length(5, 6, {
@@ -43,7 +47,7 @@ export class CreateUserDto {
 
   /**
    * Debe ser un string entre 3 y 100 caracteres
-   * @example 'Johan Daniel'
+   * @example 'Juan'
    */
   @IsNotEmpty()
   @IsString()
@@ -52,7 +56,7 @@ export class CreateUserDto {
 
   /**
    * Debe ser un string entre 2 y 45 caracteres
-   * @example 'Rocha'
+   * @example 'Perez'
    */
   @IsNotEmpty()
   @IsString()
@@ -63,7 +67,7 @@ export class CreateUserDto {
 
   /**
    * Debe ser un string entre 2 y 45 caracteres
-   * @example 'Horna'
+   * @example 'Diaz'
    */
   @IsNotEmpty()
   @IsString()
@@ -72,8 +76,18 @@ export class CreateUserDto {
   })
   matSurname: string;
   /**
+   * Inicial de primer nombre, primer apellido e inicial de segundo apellido
+   * @example 'jperezd'
+   */
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 20, {
+    message: 'username must be between 4 and 20 characters',
+  })
+  username: string;
+  /**
    * Debe tener un formato valido
-   * @example 'admin@gmail.com'
+   * @example 'jperezd@gmail.com'
    */
   @IsNotEmpty()
   @IsString()

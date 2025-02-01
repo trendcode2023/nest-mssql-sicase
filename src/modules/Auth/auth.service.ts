@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ForbiddenException,
   Injectable,
   //NotFoundException,
 } from '@nestjs/common';
@@ -11,6 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 
 @Injectable()
 export class AuthService {
@@ -19,21 +21,117 @@ export class AuthService {
     private readonly jwtService: JwtService, // declaramosn el jwservice
   ) {}
 
-  async signIn(email: string, password: string, now: Date) {
-    // 1. valida si existe email y password no son vacios
+  async signIn(credentialsData: LoguinUserDto, now: Date) {
+    // 1. Destructuring del objeto y previene error si el objeto es null o undefined
+    const { email, password } = credentialsData || {};
+    // 2. valida si existe email y password no son vacios
     if (!email || !password) return 'email y password es requerido!!';
-    // 2. consulta usuario por email
+    // 3. busca usuario por email y lo asigna a user
     const user = await this.usersRepository.findOne({
       where: { email },
       relations: ['profile'],
     });
+    // 4. valida si user es vacio
+    if (!user) throw new BadRequestException('Credencial nvalida!!');
 
-    // 3. valida si usuario existe
-    if (!user) throw new BadRequestException('Su credencial es invalida!!');
+    // 5. Verifica si la contraseña ha expirado
+    this.validatePasswordExpiration(user, now);
+    /*
+    if (
+      // verifica si existe user.passwordExpirationDate existe y tiene un valor
+      user.passwordExpirationDate &&
+      new Date(user.passwordExpirationDate) < now
+    ) {
+      throw new BadRequestException(
+        'Tu contraseña ha expirado. Debes actualizarla.',
+      );
+    }
+    */
+    // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
+    if (
+      user.failedLoginAttempts >= 3 &&
+      this.isSameDay(user.lastFailedLogin, now)
+    ) {
+      user.status = 'bl';
+      await this.usersRepository.save(user);
+      throw new ForbiddenException('Cuenta bloqueada');
+    }
 
-    // 4. verifica si el usuario tiene 3 intentos fallidos
-    const lastFailedLogin = user.lastFailedLogin
-      ? new Date(user.lastFailedLogin)
+    // 7. compara la contrasenia
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    // 8. validad si la comparacion fue exitosa
+    if (!isMatch) {
+      user.failedLoginAttempts = this.isSameDay(user.lastFailedLogin, now)
+        ? user.failedLoginAttempts + 1
+        : 1;
+      user.lastFailedLogin = now;
+      await this.usersRepository.save(user);
+      throw new BadRequestException('Credencial inválida');
+    }
+
+    // 7. Si el inicio de sesión es exitoso, reiniciamos los intentos fallidos
+    user.failedLoginAttempts = 0;
+    user.lastFailedLogin = null;
+    user.lastLogin = new Date();
+    await this.usersRepository.save(user);
+    // 8. crea el payload
+    const payload = {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      roles: user.profile.name,
+    };
+    // 9. generamos el token
+    return { token: this.jwtService.sign(payload) };
+  }
+  // 🔹 Función para validar la expiración de la contraseña
+  private validatePasswordExpiration(user: any, now: Date) {
+    if (!user.passwordExpirationDate) return;
+
+    const expirationDate = new Date(user.passwordExpirationDate);
+    const daysBeforeExpiration = 7; // avsiso con 7 dias de anticipacion a la fecha de expiracion de la contrasenia
+    const warningDate = new Date(expirationDate);
+    warningDate.setDate(expirationDate.getDate() - daysBeforeExpiration);
+
+    if (expirationDate < now) {
+      throw new ForbiddenException(
+        'Tu contraseña ha expirado. Debes actualizarla.',
+      );
+    } else if (now >= warningDate) {
+      console.warn('⚠️ Tu contraseña expirará pronto. Considera cambiarla.');
+    }
+  }
+
+  // 🔹 Función para verificar si es el mismo día
+  private isSameDay(date1: Date, date2: Date): boolean {
+    return date1?.toDateString() === date2?.toDateString();
+  }
+
+  // registro del usuario
+}
+
+/*
+  if (!isMatch) {
+      if (!this.isSameDay) {
+        // Si el último intento fallido no es en el mismo día, reiniciar el contador
+        user.failedLoginAttempts = 1;
+        user.lastFailedLogin = now;
+        console.log(now);
+      } else {
+        user.failedLoginAttempts++;
+      }
+      const validar = await this.usersRepository.save(user);
+      console.log('guardamos en base de datos');
+      console.log('verificra si cambia lastFailedLogin');
+      console.log(validar.lastFailedLogin + '-' + validar.failedLoginAttempts);
+
+      throw new BadRequestException('Credencial inválida!!');
+    }
+*/
+
+/*
+    const lastFailedLogin = user.lastFailedLogin  ? new Date(user.lastFailedLogin)
       : null; // si user.lastFailedLogin existe lo convertimos a una instancia de Date sino mantine nulo
     console.log(
       'verificamos si lastFailedLogin existe de lo contrario sera nulo',
@@ -51,56 +149,10 @@ export class AuthService {
       // Si el usuario tiene 3 intentos fallidos en el mismo día, bloquear la cuenta
       user.status = 'bl';
       await this.usersRepository.save(user);
-      throw new BadRequestException(
-        'Cuenta bloqueada por múltiples intentos fallidos',
-      );
+      throw new BadRequestException('Cuenta bloqueada');
     }
-    // 5. compara la contrasenia
-    const isMatch = await bcrypt.compare(password, user.password);
-    // 6. validad si la comparacion fue exitosa
-    //if (!isMatch) throw new BadRequestException('Su credencial es invalida!!');
+*/
 
-    if (!isMatch) {
-      if (!isSameDay) {
-        // Si el último intento fallido no es en el mismo día, reiniciar el contador
-        user.failedLoginAttempts = 1;
-        user.lastFailedLogin = now;
-        console.log(now);
-      } else {
-        user.failedLoginAttempts++;
-      }
-      const validar = await this.usersRepository.save(user);
-      console.log('guardamos en base de datos');
-      console.log('verificra si cambia lastFailedLogin');
-      console.log(validar.lastFailedLogin + '-' + validar.failedLoginAttempts);
-
-      throw new BadRequestException('contrasenia inválida!!');
-    }
-    // 7. Si el inicio de sesión es exitoso, reiniciamos los intentos fallidos
-    user.failedLoginAttempts = 0;
-    user.lastFailedLogin = null;
-    await this.usersRepository.save(user);
-    // 8. crea el payload
-    const payload = {
-      id: user.id,
-      dni: user.documentNum,
-      email: user.email,
-      roles: user.profile.name,
-    };
-    // 9. generamos el token
-    const token = this.jwtService.sign(payload);
-    // 10. actualizamos el lastlogin
-    user.lastLogin = new Date();
-    // 11. actualizamos en bd a lastlogin
-    await this.usersRepository.save(user);
-    // 12. retornamos el token
-    return {
-      message: 'Logged-in User',
-      token,
-    };
-  }
-  // registro del usuario
-}
 //    if (!user) return 'Invalid Credentials';
 //    if (user.password === password) return 'Logged In';
 //    return 'Invalid Credentials';

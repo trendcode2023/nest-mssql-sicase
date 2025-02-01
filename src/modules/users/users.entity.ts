@@ -23,6 +23,9 @@ export class User {
   patSurname: string;
   @Column({ type: 'varchar', length: 45, nullable: false })
   matSurname: string;
+  /** debe ser unico */
+  @Column({ type: 'varchar', length: 20, unique: true, nullable: false })
+  username: string;
   /**
    * debe ser unico
    */
