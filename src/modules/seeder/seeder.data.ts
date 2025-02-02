@@ -10,9 +10,8 @@ export const catalogsData = [
 ];
 
 export const profilesData = [
-  { codeName: 'sad', name: 'superadmin' },
   { codeName: 'adm', name: 'admin' },
-  { codeName: 'doc', name: 'doctor' },
+  { codeName: 'doc', name: 'medico' },
 ];
 
 export const usersData = [
@@ -35,18 +34,18 @@ export const usersData = [
 ];
 export const modulosData = [
   {
-    code: 'modadm',
+    code: 'mod-adm',
     description: 'modulo de administrador',
     order: 1,
   },
   {
-    code: 'modmed',
-    description: 'modulo de medico',
+    code: 'mod-cue',
+    description: 'modulo de cuestionarios',
     order: 2,
   },
   {
-    code: 'modcue',
-    description: 'modulo de cuestionarios',
+    code: 'mod-med',
+    description: 'modulo medico',
     order: 3,
   },
 ];
@@ -59,16 +58,29 @@ export const routesData = [
     modulo: '1',
   },
   {
-    code: 'rut-sellos',
-    description: 'administrar sellos',
-    order: 2,
-    modulo: '1',
+    code: 'rut-caseg',
+    description: 'cuestionario de asegurabilidad',
+    order: 1,
+    modulo: '2',
   },
   {
-    code: 'rut-cuest',
-    description: 'administrar cuestionarios',
+    code: 'rut-ccovid',
+    description: 'cuestionario covid',
     order: 2,
-    modulo: '1',
+    modulo: '2',
+  },
+
+  {
+    code: 'rut-historial',
+    description: 'historial',
+    order: 3,
+    modulo: '2',
+  },
+  {
+    code: 'rut-act',
+    description: 'actualizacion de datos (sellos)',
+    order: 1,
+    modulo: '3',
   },
 ];
 
@@ -77,21 +89,48 @@ export const authorizationsData = [
     code: 'aut-adm-users',
     addOptionFlag: 'ac',
     modifyOptionFlag: 'ac',
-    deleteOptionFlag: 'ac',
+    deleteOptionFlag: 'bl',
     codeRoute: '1',
-    codeProfile: '2',
+    codeProfile: '1',
   },
   {
-    code: 'aut-adm-sellos',
+    code: 'aut-adm-aseg',
+    addOptionFlag: 'bl',
+    modifyOptionFlag: 'ac',
+    deleteOptionFlag: 'bl',
+    codeRoute: '2',
+    codeProfile: '1',
+  },
+
+  {
+    code: 'aut-adm-ccovid',
     addOptionFlag: 'ac',
     modifyOptionFlag: 'ac',
     deleteOptionFlag: 'ac',
+    codeRoute: '3',
+    codeProfile: '1',
+  },
+
+  {
+    code: 'aut-adm-historial',
+    addOptionFlag: 'ac',
+    modifyOptionFlag: 'ac',
+    deleteOptionFlag: 'ac',
+    codeRoute: '4',
+    codeProfile: '1',
+  },
+
+  {
+    code: 'aut-med-caseg',
+    addOptionFlag: 'bl',
+    modifyOptionFlag: 'ac',
+    deleteOptionFlag: 'bl',
     codeRoute: '2',
     codeProfile: '2',
   },
 
   {
-    code: 'aut-adm-cuestionarios',
+    code: 'aut-med-ccovid',
     addOptionFlag: 'ac',
     modifyOptionFlag: 'ac',
     deleteOptionFlag: 'ac',
@@ -100,11 +139,19 @@ export const authorizationsData = [
   },
 
   {
-    code: 'aut-med-sellos',
+    code: 'aut-med-historial',
     addOptionFlag: 'ac',
     modifyOptionFlag: 'ac',
     deleteOptionFlag: 'ac',
-    codeRoute: '2',
-    codeProfile: '3',
+    codeRoute: '4',
+    codeProfile: '2',
+  },
+  {
+    code: 'aut-med-act',
+    addOptionFlag: 'ac',
+    modifyOptionFlag: 'ac',
+    deleteOptionFlag: 'ac',
+    codeRoute: '5',
+    codeProfile: '2',
   },
 ];

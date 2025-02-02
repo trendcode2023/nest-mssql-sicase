@@ -7,11 +7,13 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
 import { SeederModule } from './modules/seeder/seeder.module';
 import { ProfilesModule } from './modules/profile/profile.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 //import { AuthModule } from './modules/auth/auth.module';
 //import { JwtModule } from '@nestjs/jwt';
 @Module({
   imports: [
+    MenuModule,
     ProfilesModule,
     SeederModule,
     AuthModule,

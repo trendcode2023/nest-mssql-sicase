@@ -24,14 +24,12 @@ export class AuthController {
   ) {
     return this.authService.signIn(credentials, request.now);
   }
-
-  /*
+}
+/*
   @Get()
   getAuth() {
     return this.authService.getAuth();
   }*/
-}
-
 /*   // para que el mismo usuario se registre
   @Post('signup')
   signup(@Body() user: any) {
