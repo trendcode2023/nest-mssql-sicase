@@ -35,7 +35,7 @@ export class AuthService {
       where: { email },
       relations: ['profile'],
     });
-   console.log(user)
+    
     if (user.isMfaEnabled){
       const isValid = await this.mfaAuthenticationService.verifyCode(mfaCode,user.mfaSecrect)
       if (!isValid) {

@@ -3,10 +3,12 @@ import { CreateUserDto } from '../../users/dtos/createUser.dto';
 import { IsOptional, IsString } from 'class-validator';
 
 export class LoguinUserDto extends PickType(CreateUserDto, [
-  'email',
-  'password',
+  'email'
 ]) {
   @IsOptional()
   @IsString()
   mfaCode: string | null; 
+
+  @IsString()
+  password:string 
 }
