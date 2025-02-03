@@ -71,6 +71,12 @@ export class User {
   @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   passwordExpirationFlag: number;
 
+  @Column({type:'bit', default: false, nullable:false})
+  isMfaEnabled: boolean;
+  
+  @Column({ type: 'varchar', nullable: true })
+  mfaSecrect: string;
+
   @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
   profile: Profile;
 }

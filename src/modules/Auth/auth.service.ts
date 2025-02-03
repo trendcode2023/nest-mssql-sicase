@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  Logger,
   //NotFoundException,
 } from '@nestjs/common';
 //import { UsersRepository } from 'src/Users/users.repository';
@@ -13,17 +14,20 @@ import { User } from '../users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
+import { MfaUser } from '../users/dtos/mfaUser.dto';
+import { MfaAuthenticationService } from './mfa-authentication.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>, // declaramos el el repositorio
     private readonly jwtService: JwtService, // declaramosn el jwservice
+    private readonly mfaAuthenticationService : MfaAuthenticationService 
   ) {}
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
-    const { email, password } = credentialsData || {};
+    const { email, password ,mfaCode} = credentialsData || {};
     // 2. valida si existe email y password no son vacios
     if (!email || !password) return 'email y password es requerido!!';
     // 3. busca usuario por email y lo asigna a user
@@ -31,9 +35,15 @@ export class AuthService {
       where: { email },
       relations: ['profile'],
     });
+   console.log(user)
+    if (user.isMfaEnabled){
+      const isValid = await this.mfaAuthenticationService.verifyCode(mfaCode,user.mfaSecrect)
+      if (!isValid) {
+        throw new BadRequestException("Codigo incorrecto")
+      }
+    }
     // 4. valida si user es vacio
     if (!user) throw new BadRequestException('Credencial nvalida!!');
-
     // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
     /*
@@ -83,7 +93,7 @@ export class AuthService {
       roles: user.profile.name,
     };
     // 9. generamos el token
-    return { token: this.jwtService.sign(payload) };
+    return { token: this.jwtService.sign(payload),idUser:user.id,isMfaEnabled:user.isMfaEnabled };
   }
   // 🔹 Función para validar la expiración de la contraseña
   private validatePasswordExpiration(user: any, now: Date) {
@@ -107,6 +117,18 @@ export class AuthService {
   private isSameDay(date1: Date, date2: Date): boolean {
     return date1?.toDateString() === date2?.toDateString();
   }
+
+  async generateQrCode(dto : MfaUser ) {
+    const user = await this.usersRepository.findOne({
+      where: { id: dto.idUser },
+    });
+    if (!user) {
+      throw new Error('User not found');
+    }
+    const {secret,uri} = await this.mfaAuthenticationService.generateSecretAuthenticator(user.email);
+    await this.mfaAuthenticationService.enableStatusMfa(dto.idUser,secret);
+   return uri;
+  } 
 
   // registro del usuario
 }

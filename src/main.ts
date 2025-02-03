@@ -24,6 +24,14 @@ async function bootstrap() {
       },
     }),
   ); // se declara para que funcione los dtos
+
+  app.enableCors({
+    origin: ['http://localhost:4200'], // Lista de dominios permitidos
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
+    allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
+    credentials: true, // Permitir cookies y credenciales
+  });
+
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')
     .setDescription('BACKEND - SISTEMA DE CUESTIONARIOS DE ASEGURABILIDAD')

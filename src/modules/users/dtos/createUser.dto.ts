@@ -87,7 +87,7 @@ export class CreateUserDto {
   username: string;
   /**
    * Debe tener un formato valido
-   * @example 'jperezd@gmail.com'
+   * @example 'admin@gmail.com'
    */
   @IsNotEmpty()
   @IsString()
