@@ -1,4 +1,11 @@
-import { Body, Controller, Post, Req, Res, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  Req,
+  Res,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
@@ -27,13 +34,13 @@ export class AuthController {
   ) {
     return this.authService.signIn(credentials, request.now);
   }
-
+  // codigo frank
   @Post('mfa/generateQr')
   async generateQrCode(@Body() request: MfaUser, @Res() response: Response) {
     const uri = await this.authService.generateQrCode(request);
-    response.type("png");
-    return toFileStream(response,uri)
-  }  
+    response.type('png');
+    return toFileStream(response, uri);
+  }
 }
 /*
   @Get()

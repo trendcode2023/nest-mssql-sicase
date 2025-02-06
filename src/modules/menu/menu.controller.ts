@@ -1,4 +1,4 @@
-import { Controller, Param, Post } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { MenuService } from './menu.service';
@@ -8,7 +8,7 @@ import { MenuService } from './menu.service';
 export class MenuController {
   constructor(private authService: MenuService) {}
 
-  @Post('menu/:id')
+  @Get('menu/:id')
   signIn(@Param('id') idPerfil: string) {
     return this.authService.getMenu(idPerfil);
   }

@@ -117,14 +117,16 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
   async getAllUsers() {
-    return await this.usersRepository
+    // codigo frank
+    // no esta devolviendo correctamente las autorizaciones
+    /* return await this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('profile.authorizations', 'authorization')
       .leftJoinAndSelect('authorization.route', 'route')
-      .getMany();
-    //return await this.usersRepository.find({
-    // relations: ['profile.authorizations.route'],
-    // });
+      .getMany();*/
+    return await this.usersRepository.find({
+      //relations: ['profile.authorizations'],
+    });
   }
 }
