@@ -76,6 +76,8 @@ export class UsersService {
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
     }
+
+    //base64 string (colocar en el dto), guardas ruta en un campo de la tabla. d:/doctor+/firmas/idusuario/firmas/
   }
 
   async updateUser(
@@ -96,6 +98,8 @@ export class UsersService {
     Object.assign(user, updateData);
     return await this.usersRepository.save(user);
   }
+
+  // funcion elimiar, cmabiariamos el estado del usuario.
 
   async updateUserByDoctor(
     id: string,

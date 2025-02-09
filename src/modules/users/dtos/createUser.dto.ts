@@ -21,7 +21,9 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @Length(2, 2, { message: 'document type must have 3 characters' })
+  @Length(2, 2, {
+    message: 'El codigo de documento debe tener al menos 2 caracteres',
+  })
   documentType: string;
 
   /**
@@ -31,7 +33,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(8, 15, {
-    message: 'document number must be between 8 and 15 characters',
+    message: 'El nro de docuemnto debe tener entre 8 y 15 caracteres',
   })
   documentNum: string;
 
@@ -41,7 +43,7 @@ export class CreateUserDto {
    */
   @IsString()
   @Length(5, 6, {
-    message: 'CMP must be between 5 and 6 characters',
+    message: 'CMP debe tener entre 5 y 6 caracteres.',
   })
   cmp: string;
 
@@ -51,7 +53,9 @@ export class CreateUserDto {
    */
   @IsNotEmpty()
   @IsString()
-  @Length(3, 100, { message: 'names must be between 3 and 100 characters' })
+  @Length(3, 100, {
+    message: 'Los nombres deben tener entre 3 and 100 caracteres.',
+  })
   names: string;
 
   /**
@@ -61,7 +65,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 45, {
-    message: 'paternal surname must be between 2 and 45 characters',
+    message: 'El apellido paterno debe tener entre 2 and 45 caracteres.',
   })
   patSurname: string;
 
@@ -72,7 +76,7 @@ export class CreateUserDto {
   @IsNotEmpty()
   @IsString()
   @Length(2, 45, {
-    message: 'maternal surname must be between 2 and 45 characters',
+    message: 'El apellido materno debe tener entre 2 and 45 caracteres.',
   })
   matSurname: string;
   /**
@@ -81,8 +85,8 @@ export class CreateUserDto {
    */
   @IsNotEmpty()
   @IsString()
-  @Length(2, 20, {
-    message: 'username must be between 4 and 20 characters',
+  @Length(5, 20, {
+    message: 'El nombre de usuario dbe tener entre 5 y 20 caracteres',
   })
   username: string;
   /**
@@ -91,7 +95,7 @@ export class CreateUserDto {
    */
   @IsNotEmpty()
   @IsString()
-  @IsEmail({}, { message: 'The email must be in a valid format.' })
+  @IsEmail({}, { message: 'El email debe tener un formato valido' })
   email: string;
   /**
    * Debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*), y debe tener entre 8 y 15 caracteres
@@ -101,7 +105,7 @@ export class CreateUserDto {
   @IsString()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/, {
     message:
-      'The password must contain at least one lowercase letter, one uppercase letter, one number, and one special character (!@#$%^&*), and must be between 8 and 15 characters.',
+      'La contraseña debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*) y debe tener entre 8 y 15 caracteres.',
   })
   password: string;
   /**
@@ -110,7 +114,7 @@ export class CreateUserDto {
    */
   @IsString()
   @Length(9, 9, {
-    message: 'cellphone number must have 9 characters',
+    message: 'El número de teléfono celular debe tener 9 caracteres.',
   })
   cellphone: string;
   /**
@@ -118,8 +122,8 @@ export class CreateUserDto {
    * @example 'https://example.com'
    */
   @IsString()
-  @Length(2, 45, {
-    message: 'Route Stamp must be up to 250 characters',
+  @Length(2, 150, {
+    message: 'La ruta del sello debe tener hasta 150 caracteres',
   })
   routeStamp: string;
 }

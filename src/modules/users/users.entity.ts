@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { Profile } from '../profile/profile.entity';
+import { Quest } from '../quest/quest.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -79,4 +86,7 @@ export class User {
 
   @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
   profile: Profile;
+
+  @OneToMany(() => Quest, (quest) => quest.user)
+  quests: Quest[];
 }

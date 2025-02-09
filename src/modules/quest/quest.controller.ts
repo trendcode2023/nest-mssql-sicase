@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Req,
   UseInterceptors,
@@ -19,13 +20,24 @@ export class QuestController {
   createQuest(
     @Body() quest: CreateQuestDto,
     @Req() request: Request & { now: Date },
-    @User('username') creatorUser: string,
+    @User('id') userId: string,
+    // @User('username') loggedInUserDni: string,
   ) {
-    return this.questService.createQuest(quest, creatorUser, request.now);
+    return this.questService.createQuest(quest, userId, request.now);
   }
 
   @Get('getall')
   getAllQuest() {
     return this.questService.getAllQuests();
+  }
+  @UseInterceptors(DateAdderInterceptor)
+  @Post(':id')
+  async updateQuest(
+    @Param('id') id: string,
+    @Req() request: Request & { now: Date },
+    @Body() questData: Partial<CreateQuestDto>,
+    @User('id') userId: string,
+  ) {
+    return this.questService.updateQuest(id, questData, userId, request.now);
   }
 }
