@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Profile } from './profile.entity';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class ProfileService {

@@ -24,6 +24,8 @@ export class AuthService {
     private readonly jwtService: JwtService, // declaramosn el jwservice
     private readonly mfaAuthenticationService : MfaAuthenticationService 
   ) {}
+  
+  private blacklist: Set<string> = new Set();
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
@@ -90,10 +92,10 @@ export class AuthService {
       id: user.id,
       username: user.username,
       email: user.email,
-      roles: user.profile.name,
+      roles: user.profile.name
     };
     // 9. generamos el token
-    return { token: this.jwtService.sign(payload),idUser:user.id,isMfaEnabled:user.isMfaEnabled };
+    return { token: this.jwtService.sign(payload),idUser:user.id,isMfaEnabled:user.isMfaEnabled,idProfile: user.profile.id};
   }
   // 🔹 Función para validar la expiración de la contraseña
   private validatePasswordExpiration(user: any, now: Date) {
@@ -129,6 +131,15 @@ export class AuthService {
     await this.mfaAuthenticationService.enableStatusMfa(dto.idUser,secret);
    return uri;
   } 
+
+  async logout(token: string): Promise<string> {
+    this.blacklist.add(token); // Agregar el token a la lista negra
+    return 'Sesión cerrada exitosamente.';
+  }
+
+  isTokenBlacklisted(token: string): boolean {
+    return this.blacklist.has(token);
+  }
 
   // registro del usuario
 }

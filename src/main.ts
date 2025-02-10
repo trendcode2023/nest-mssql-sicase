@@ -26,7 +26,7 @@ async function bootstrap() {
   ); // se declara para que funcione los dtos
 
   app.enableCors({
-    origin: ['http://localhost:4200'], // Lista de dominios permitidos
+    origin: ['http://localhost:3001'], // Lista de dominios permitidos
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
     allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
     credentials: true, // Permitir cookies y credenciales
@@ -42,7 +42,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
-  await seeder.seed();
+  //await seeder.seed();
 
   console.log('Los catalogos fueron registrados correctamente');
 

@@ -14,13 +14,13 @@ const config = {
   autoLoadEntities: true,
   synchronize: true,
   logging: false,
-  dropSchema: true,
+  dropSchema: false,
   entities: ['dist/**/*.entity{.ts,.js}'],
   migrations: ['dist/migrations/*{.ts,.js}'],
   options: {
     encrypt: true, // Cifrado de conexión para SQL Server
     trustServerCertificate: true, // Permite certificados autofirmados, útil con Docker
-  },
+  },  
 };
 export default registerAs('typeorm', () => config);
 export const connectionSource = new DataSource(config as DataSourceOptions);

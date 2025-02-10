@@ -6,16 +6,25 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Observable } from 'rxjs';
+import { AuthService } from 'src/modules/Auth/auth.service';
+import { LogoutService } from 'src/modules/auth/logout.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService) {}
+  constructor(private readonly jwtService: JwtService,
+    private readonly logoutService: LogoutService
+  ) {}
   canActivate(
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers['authorization']?.split(' ')[1] ?? '';
     console.log({ token });
+
+    if (this.logoutService.isTokenBlacklisted(token)) {
+      throw new UnauthorizedException('Token inválido (lista negra)');
+    }
+
     if (!token) {
       throw new UnauthorizedException('Token is missing');
     }

@@ -13,8 +13,7 @@ import { log } from 'util';
   @Injectable()
   export class MfaAuthenticationService {
     constructor(
-      @InjectRepository(User) private usersRepository: Repository<User>, 
-      private readonly jwtService: JwtService, 
+      @InjectRepository(User) private usersRepository: Repository<User>
     ) {}
 
     async generateSecretAuthenticator(email: string) {
@@ -27,8 +26,6 @@ import { log } from 'util';
     }
 
     async verifyCode(code: string, secret: string) {
-       Logger.debug(code,"CODE")
-       Logger.debug(secret,"secret")
         return authenticator.verify({ token : code, secret });
     }
 
