@@ -13,7 +13,7 @@ export class Quest {
   @Column({ type: 'nvarchar', length: 'max', nullable: false })
   jsonQuest: string;
   // atributos de seguridad
-  @Column({ type: 'datetime', nullable: true })
+  @Column({ type: 'datetime', nullable: false })
   createAt: Date;
   @Column({ type: 'varchar', nullable: false }) // por payload
   createdBy: string; // aca se va guardar el nombre del usuario

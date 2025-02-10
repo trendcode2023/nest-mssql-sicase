@@ -38,27 +38,28 @@ export class QuestService {
   //aqui va la fucion actualizar
 
   async updateQuest(
-    id: string,
+    questId: string,
     questData: Partial<CreateQuestDto>,
     userId: string,
     now: Date,
   ) {
-    // Buscar la Quest existente
-    const quest = await this.questsRepository.findOne({ where: { id } });
+    // 1. Buscar la Quest existente
+    const quest = await this.questsRepository.findOne({
+      where: { id: questId },
+    });
     if (!quest) {
-      throw new Error('Quest no encontrada');
+      throw new Error('cuestionario no encontrado');
     }
 
-    // Buscar el usuario que realiza la actualización
+    // 2. Buscar el usuario que realiza la actualización
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
-      throw new Error('Usuario no encontrado');
+      throw new Error('usuario no encontrado');
     }
     console.log(now);
-    // Actualizar la Quest con los nuevos datos
+    // 3. Actualizar la Quest con los nuevos datos
     Object.assign(quest, {
       ...questData,
-
       updateAt: now,
       updatedBy: user.username,
     });

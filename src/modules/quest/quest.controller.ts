@@ -33,11 +33,16 @@ export class QuestController {
   @UseInterceptors(DateAdderInterceptor)
   @Post(':id')
   async updateQuest(
-    @Param('id') id: string,
+    @Param('id') questId: string,
     @Req() request: Request & { now: Date },
     @Body() questData: Partial<CreateQuestDto>,
     @User('id') userId: string,
   ) {
-    return this.questService.updateQuest(id, questData, userId, request.now);
+    return this.questService.updateQuest(
+      questId,
+      questData,
+      userId,
+      request.now,
+    );
   }
 }
