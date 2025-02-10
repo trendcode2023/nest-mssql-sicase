@@ -1,5 +1,4 @@
-import { Body, Controller, Post, Req, Res, UseInterceptors } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+
 import { AuthService } from './auth.service';
 import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
@@ -7,6 +6,8 @@ import { Response } from 'express';
 import { toFileStream } from 'qrcode';
 import { MfaUser } from '../users/dtos/mfaUser.dto';
 import { LogoutService } from './logout.service';
+import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Req, Res, UseInterceptors } from '@nestjs/common';
 //import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 //import { AuthService } from './auth.service';
 
@@ -28,7 +29,7 @@ export class AuthController {
   ) {
     return this.authService.signIn(credentials, request.now);
   }
-
+  // codigo frank
   @Post('mfa/generateQr')
   async generateQrCode(@Body() request: MfaUser, @Res() response: Response) {
     const uri = await this.authService.generateQrCode(request);
@@ -48,6 +49,8 @@ export class AuthController {
   }
 
 } 
+
+
 /*
   @Get()
   getAuth() {

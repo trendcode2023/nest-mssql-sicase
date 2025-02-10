@@ -56,7 +56,7 @@ export class MenuService {
 
     // 3. Convertir el mapa a un array ordenado por `order`
     const menu = Array.from(menuMap.values()).sort((a, b) => a.order - b.order);
-
+    // agregar el atributo imagen del modulo y de la ruta
     return menu;
   }
 }

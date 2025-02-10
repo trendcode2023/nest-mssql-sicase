@@ -12,6 +12,8 @@ import { Profile } from '../profile/profile.entity';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
+import * as fs from 'fs';
+import * as path from 'path';
 @Injectable()
 export class UsersService {
   constructor(
@@ -24,9 +26,18 @@ export class UsersService {
     user: CreateUserDto,
     now: Date,
     id: string, //
+    // file: Express.Multer.File,
   ): Promise<CreateUserDto> {
     try {
-      console.log(id);
+      // Guardar imagen en una carpeta
+      // const uploadDir = `D:/doctor/firmas/${id}/`;
+      // if (!fs.existsSync(uploadDir)) {
+      //   fs.mkdirSync(uploadDir, { recursive: true });
+      // }
+
+      // const filePath = path.join(uploadDir, file.originalname);
+      //  fs.writeFileSync(filePath, file.buffer);
+      //  console.log(id);
       // 1. consulta el tipo de documento por id
       const documentType = await this.catalogsRepository.findOne({
         where: { id: user.documentType },
@@ -53,6 +64,7 @@ export class UsersService {
       const newUser = this.usersRepository.create({
         // ...userWithoutCodProfile,
         ...user,
+        //   routeStamp: filePath,
         documentType: String(documentType.id),
         password: hashedPassword,
         //status esta por defecto 1
@@ -76,6 +88,45 @@ export class UsersService {
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
     }
+
+    //base64 string (colocar en el dto), guardas ruta en un campo de la tabla. d:/doctor+/firmas/idusuario/firmas/
+  }
+
+  async uploadStamp(
+    idUser: string,
+    now: Date,
+    file: Express.Multer.File,
+    username: string,
+  ) {
+    try {
+      // 1. consulta si esxite el usuario
+      const user = await this.usersRepository.findOne({
+        where: { id: idUser },
+      });
+      // 2. si no existe manda excepcion
+      if (!user) throw new BadRequestException('Usuario no existe!!');
+      // 3. Guardar imagen en una carpeta
+      const uploadDir = `D:/doctor/firmas/${idUser}/`;
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      const filePath = path.join(uploadDir, file.originalname);
+      fs.writeFileSync(filePath, file.buffer);
+      console.log(filePath);
+      console.log(now);
+      console.log(username);
+      //user.routeStamp = filePath;
+      //user.updateAt = now;
+      //user.updatedBy = username;
+      Object.assign(user, {
+        // ...questData,
+        routeStamp: filePath,
+        updateAt: now,
+        updatedBy: username,
+      });
+      return await this.usersRepository.save(user);
+      // 1. consulta el tipo de documento por id
+    } catch (error) {}
   }
 
   async updateUser(
@@ -97,6 +148,8 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
 
+  // funcion elimiar, cmabiariamos el estado del usuario.
+
   async updateUserByDoctor(
     id: string,
     updateData: UpdateUserByDoctorDto,
@@ -117,14 +170,16 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
   async getAllUsers() {
-    return await this.usersRepository
+    // codigo frank
+    // no esta devolviendo correctamente las autorizaciones
+    /* return await this.usersRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.profile', 'profile')
       .leftJoinAndSelect('profile.authorizations', 'authorization')
       .leftJoinAndSelect('authorization.route', 'route')
-      .getMany();
-    //return await this.usersRepository.find({
-    // relations: ['profile.authorizations.route'],
-    // });
+      .getMany();*/
+    return await this.usersRepository.find({
+      //relations: ['profile.authorizations'],
+    });
   }
 }

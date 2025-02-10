@@ -29,7 +29,7 @@ export const usersData = [
     RouteStamp: 'https://images.com',
     createdBy: '12345678',
     updatedBy: '12345678',
-    codprofile: '02',
+    codprofile: '01',
   },
 ];
 export const modulosData = [
@@ -153,5 +153,38 @@ export const authorizationsData = [
     deleteOptionFlag: 'ac',
     codeRoute: '5',
     codeProfile: '2',
+  },
+];
+export const questsData = [
+  {
+    patientName: 'Johan Raule Miro Moreira',
+    pdfName: '21.10.25.CASEG.JMIROMO.pdf',
+    jsonQuest: JSON.stringify({
+      title: 'Cuestionario de prueba',
+      questions: [
+        {
+          id: 1,
+          question: '¿Cuál es el lenguaje principal utilizado en Angular?',
+          options: [
+            { id: 'a', text: 'JavaScript', isCorrect: false },
+            { id: 'b', text: 'TypeScript', isCorrect: true },
+            { id: 'c', text: 'Python', isCorrect: false },
+          ],
+        },
+        {
+          id: 2,
+          question: '¿Cuál es el motor de base de datos de SQL Server?',
+          options: [
+            { id: 'a', text: 'MySQL', isCorrect: false },
+            { id: 'b', text: 'PostgreSQL', isCorrect: false },
+            { id: 'c', text: 'MSSQL', isCorrect: true },
+          ],
+        },
+      ],
+    }),
+    createAt: '02/05/2025',
+    createdBy: 'johan rocha',
+    updateAt: '02/05/2025',
+    updatedBy: 'johan rocha',
   },
 ];

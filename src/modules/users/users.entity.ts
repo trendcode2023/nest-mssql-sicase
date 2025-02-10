@@ -1,7 +1,14 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { Profile } from '../profile/profile.entity';
+import { Quest } from '../quest/quest.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -71,12 +78,15 @@ export class User {
   @Column({ type: 'int', default: 1, nullable: false }) // por defecto
   passwordExpirationFlag: number;
 
-  @Column({type:'bit', default: false, nullable:false})
+  @Column({ type: 'bit', default: false, nullable: false })
   isMfaEnabled: boolean;
-  
+
   @Column({ type: 'varchar', nullable: true })
   mfaSecrect: string;
 
   @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
   profile: Profile;
+
+  @OneToMany(() => Quest, (quest) => quest.user)
+  quests: Quest[];
 }

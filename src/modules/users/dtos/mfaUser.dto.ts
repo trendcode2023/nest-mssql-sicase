@@ -1,6 +1,6 @@
 import { IsString } from 'class-validator';
 
-export class MfaUser{
+export class MfaUser {
   @IsString()
   idUser: string;
 }

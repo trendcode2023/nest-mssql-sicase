@@ -8,6 +8,7 @@ import { UsersService } from '../users/users.service';
 import { Modulo } from '../modulos/modulos.entity';
 import { Route } from '../routes/routes.entity';
 import { Authorization } from '../authorizations/authorizations.entity';
+import { Quest } from '../quest/quest.entity';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { Authorization } from '../authorizations/authorizations.entity';
       Modulo,
       Route,
       Authorization,
+      Quest,
     ]),
   ],
   providers: [SeederService, UsersService],

@@ -8,6 +8,7 @@ import {
   catalogsData,
   modulosData,
   profilesData,
+  questsData,
   routesData,
   usersData,
 } from './seeder.data';
@@ -19,6 +20,7 @@ import * as bcrypt from 'bcrypt';
 import { Modulo } from '../modulos/modulos.entity';
 import { Route } from '../routes/routes.entity';
 import { Authorization } from '../authorizations/authorizations.entity';
+import { Quest } from '../quest/quest.entity';
 @Injectable()
 export class SeederService {
   private readonly logger = new Logger(SeederService.name);
@@ -31,6 +33,8 @@ export class SeederService {
     @InjectRepository(Route) private routesRepository: Repository<Route>,
     @InjectRepository(Authorization)
     private authorizationsRepository: Repository<Authorization>,
+    @InjectRepository(Quest)
+    private questsRepository: Repository<Quest>,
     private readonly usersService: UsersService,
   ) {}
 
@@ -41,6 +45,7 @@ export class SeederService {
     await this.seedModulos();
     await this.seedRoutes();
     await this.seedAuthorizations();
+    await this.seedQuests();
   }
 
   private async seedUsers() {
@@ -178,6 +183,23 @@ export class SeederService {
         await this.authorizationsRepository.save(newAuthorization);
         this.logger.log(`Authorization: '${newAuthorization.code}' added.`);
       }
+    }
+  }
+
+  private async seedQuests() {
+    try {
+      for (const quest of questsData) {
+        const exists = await this.questsRepository.findOne({
+          where: { pdfName: quest.pdfName },
+        });
+
+        if (!exists) {
+          await this.questsRepository.save(quest);
+          this.logger.log(`Quest: '${quest.pdfName}' added.`);
+        }
+      }
+    } catch (error) {
+      this.logger.log(`Quest: '${error}' added.`);
     }
   }
 }

@@ -6,6 +6,7 @@ import {
   //Param,
   Post,
   Req,
+  UploadedFile,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -20,6 +21,7 @@ import { RolesGuard } from 'src/guards/roles.guard';
 import { User } from 'src/decorators/user.decorator';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 //import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 //import { ApiBearerAuth } from '@nestjs/swagger';
@@ -33,14 +35,21 @@ export class UsersController {
   @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
+  @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @Post('create')
   createUser(
+    @UploadedFile() file: Express.Multer.File,
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
     @User('username') loggedInUserDni: string, // captura los datos del payload
   ) {
     console.log(loggedInUserDni);
-    return this.usersService.createUser(user, request.now, loggedInUserDni);
+    return this.usersService.createUser(
+      user,
+      request.now,
+      loggedInUserDni,
+      //    file,
+    );
   }
 
   @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
@@ -83,6 +92,24 @@ export class UsersController {
       updateData,
       request.now,
       loggedInUserDni,
+    );
+  }
+  @UseGuards(AuthGuard) // captura el token
+  @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('stamp/:id')
+  async uploadStamp(
+    @Param('id') idUser: string, //id del usuario
+    @Req() request: Request & { now: Date }, // fecha del sistema
+    //@Body() stampData: CreateUserDto, //
+    @UploadedFile() file: Express.Multer.File, //archivo a cargar
+    @User('username') loggedInUsername: string, // captura los datos del payload del token
+  ) {
+    return this.usersService.uploadStamp(
+      idUser,
+      request.now,
+      file,
+      loggedInUsername,
     );
   }
 }

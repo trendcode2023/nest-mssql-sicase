@@ -22,14 +22,14 @@ export class AuthService {
   constructor(
     @InjectRepository(User) private usersRepository: Repository<User>, // declaramos el el repositorio
     private readonly jwtService: JwtService, // declaramosn el jwservice
-    private readonly mfaAuthenticationService : MfaAuthenticationService 
+    private readonly mfaAuthenticationService: MfaAuthenticationService,
   ) {}
   
   private blacklist: Set<string> = new Set();
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
-    const { email, password ,mfaCode} = credentialsData || {};
+    const { email, password, mfaCode } = credentialsData || {};
     // 2. valida si existe email y password no son vacios
     if (!email || !password) return 'email y password es requerido!!';
     // 3. busca usuario por email y lo asigna a user
@@ -37,15 +37,18 @@ export class AuthService {
       where: { email },
       relations: ['profile'],
     });
-    
-    if (user.isMfaEnabled){
-      const isValid = await this.mfaAuthenticationService.verifyCode(mfaCode,user.mfaSecrect)
+
+    if (user.isMfaEnabled) {
+      const isValid = await this.mfaAuthenticationService.verifyCode(
+        mfaCode,
+        user.mfaSecrect,
+      );
       if (!isValid) {
-        throw new BadRequestException("Codigo incorrecto")
+        throw new BadRequestException('Codigo incorrecto');
       }
     }
     // 4. valida si user es vacio
-    if (!user) throw new BadRequestException('Credencial nvalida!!');
+    if (!user) throw new BadRequestException('Credencial invalida!!');
     // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
     /*
@@ -120,17 +123,20 @@ export class AuthService {
     return date1?.toDateString() === date2?.toDateString();
   }
 
-  async generateQrCode(dto : MfaUser ) {
+  async generateQrCode(dto: MfaUser) {
     const user = await this.usersRepository.findOne({
       where: { id: dto.idUser },
     });
     if (!user) {
       throw new Error('User not found');
     }
-    const {secret,uri} = await this.mfaAuthenticationService.generateSecretAuthenticator(user.email);
-    await this.mfaAuthenticationService.enableStatusMfa(dto.idUser,secret);
-   return uri;
-  } 
+    const { secret, uri } =
+      await this.mfaAuthenticationService.generateSecretAuthenticator(
+        user.email,
+      );
+    await this.mfaAuthenticationService.enableStatusMfa(dto.idUser, secret);
+    return uri;
+  }
 
   async logout(token: string): Promise<string> {
     this.blacklist.add(token); // Agregar el token a la lista negra
