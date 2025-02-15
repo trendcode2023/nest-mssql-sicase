@@ -5,6 +5,7 @@ import {
   Param,
   //Param,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -13,7 +14,7 @@ import {
 import { UsersService } from './users.service';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -112,6 +113,36 @@ export class UsersController {
       loggedInUsername,
     );
   }
+
+  @ApiBearerAuth()
+  @Roles('admin')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('paginated')
+  @ApiQuery({ name: 'page', required: false, type: Number, description: 'Número de página' })
+  @ApiQuery({ name: 'limit', required: false, type: Number, description: 'Número de registros por página' })
+  @ApiQuery({ name: 'name', required: false, type: String, description: 'Filtro por nombre' })
+  @ApiQuery({ name: 'email', required: false, type: String, description: 'Filtro por email' })
+  @ApiQuery({ name: 'documentNum', required: false, type: String, description: 'Filtro por número de documento' })
+  @ApiQuery({ name: 'sortBy', required: false, type: String, description: 'Campo para ordenar' })
+  @ApiQuery({ name: 'order', required: false, type: String, description: 'Orden (ASC o DESC)' })
+  async getUsersPaginated(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('name') name?: string,
+    @Query('email') email?: string,
+    @Query('documentNum') documentNum?: string,
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
+  ) {
+    return this.usersService.getUsersPaginated(
+      Number(page),
+      Number(limit),
+      { name, email, documentNum },
+      //sortBy as keyof User,
+      order,
+    );
+  }
+
+
 }
 /*  @Post(':id')
   updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {

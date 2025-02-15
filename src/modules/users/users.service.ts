@@ -182,4 +182,52 @@ export class UsersService {
       //relations: ['profile.authorizations'],
     });
   }
+
+   /**
+   * Método para obtener usuarios con paginación y filtros dinámicos
+   * @param page Número de página
+   * @param limit Cantidad de registros por página
+   * @param filters Filtros opcionales para buscar por nombre, email o documento
+   * @param sortBy Campo por el cual ordenar
+   * @param order Orden de la consulta (ASC o DESC)
+   * @returns Lista paginada de usuarios con metadata
+   */
+   async getUsersPaginated(
+    page: number = 1, // Página por defecto 1
+    limit: number = 10, // 10 registros por defecto
+    filters?: { name?: string; email?: string; documentNum?: string },
+  //  sortBy: keyof User = 'createAt', // Ordenar por fecha de creación por defecto
+    order: 'ASC' | 'DESC' = 'DESC',
+  ) {
+    const query = this.usersRepository.createQueryBuilder('user');
+
+    // Aplicar filtros dinámicos
+    if (filters) {
+      if (filters.name) {
+        query.andWhere('LOWER(user.names) LIKE :name', { name: `%${filters.name.toLowerCase()}%` });
+      }
+      if (filters.email) {
+        query.andWhere('LOWER(user.email) LIKE :email', { email: `%${filters.email.toLowerCase()}%` });
+      }
+      if (filters.documentNum) {
+        query.andWhere('user.documentNum LIKE :documentNum', { documentNum: `%${filters.documentNum}%` });
+      }
+    }
+
+    query.orderBy(`user.${'createAt'}`, order);
+
+    // Aplicar paginación
+    query.skip((page - 1) * limit).take(limit);
+
+    // Obtener datos
+    const [users, total] = await query.getManyAndCount();
+
+    // Retornar datos con metadata
+    return {
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalUsers: total,
+      users,
+    };
+  }
 }
