@@ -1,9 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { LoggerGlobal } from './middlewares/middleware.logger';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ApiResponse, DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
 import { SeederService } from './modules/seeder/seeder.service';
+import { ExceptionsFilter } from './config/ExceptionsFilter';
+import { ResponseApi } from './config/ResponseApi';
+import { log } from 'console';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -12,19 +15,19 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // para que no tome ninguna prodiedad adicional seteda en el dto
-      exceptionFactory: (errors) => {
+      exceptionFactory: (validate) => {
         // para dar otro tipo de salida a los erores
-        const cleanErrors = errors.map((error) => {
-          return { property: error.property, constrains: error.constraints };
-        });
-        return new BadRequestException({
-          alert: 'se han detectado los siguientes errores:',
-          errors: cleanErrors,
-        });
+        const validations = validate.map((validate) => ({
+          property: validate.property,
+          message: Object.values(validate.constraints)[0],
+        }));
+        return new BadRequestException(
+          new ResponseApi(null, 'Campos incorrectos', validations)
+        );
       },
     }),
   ); // se declara para que funcione los dtos
-
+  app.useGlobalFilters(new ExceptionsFilter()); // <---- Filtro global registrado aquí
   app.enableCors({
     origin: ['http://localhost:3001'], // Lista de dominios permitidos
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos

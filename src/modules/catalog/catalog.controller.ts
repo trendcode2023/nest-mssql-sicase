@@ -1,7 +1,7 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { CatalogService } from './catalog.service';
 import { Catalog } from './catalog.entity';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiQuery } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
@@ -16,6 +16,8 @@ export class CatalogController {
   }
 
   @ApiBearerAuth()
+  @ApiOperation({ summary: 'Obtener un catálogo por codeName' })
+  @ApiQuery({ name: 'code', required: true, description: 'Código del catálogo (Ejemplos: td, tc)' })
   @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('/getCatalog')
