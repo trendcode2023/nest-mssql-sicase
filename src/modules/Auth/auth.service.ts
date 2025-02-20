@@ -33,7 +33,7 @@ export class AuthService {
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
     const { email, password, mfaCode } = credentialsData || {};
     // 2. valida si existe email y password no son vacios
-    if (!email || !password) return 'email y password es requerido!!';
+    if (!email || !password) return 'Email y password es requerido!!';
     // 3. busca usuario por email y lo asigna a user
     const user = await this.usersRepository.findOne({
       where: { email },
@@ -41,12 +41,14 @@ export class AuthService {
     });
 
     if (user.isMfaEnabled) {
-      const isValid = await this.mfaAuthenticationService.verifyCode(
-        mfaCode,
-        user.mfaSecrect,
-      );
-      if (!isValid) {
-        throw new BadRequestException('Codigo incorrecto');
+      if(mfaCode){
+        const isValid = await this.mfaAuthenticationService.verifyCode(
+          mfaCode,
+          user.mfaSecrect,
+        );
+        if (!isValid) {
+          throw new BadRequestException('Código incorrecto o expirado');
+        }
       }
     }
     // 4. valida si user es vacio
@@ -82,18 +84,21 @@ export class AuthService {
     user.lastLogin = new Date();
     await this.usersRepository.save(user);
     if (user.isMfaEnabled) {
-    // 8. crea el payload
-      const payload = {
-        id: user.id,
-        username: user.username,
-        email: user.email,
-        roles: user.profile.name
-      };
-      // 9. generamos el token
-      response.token = this.jwtService.sign(payload)
-      response.profileId = user.profile.id
-      response.userId = user.id
+      if(mfaCode) {
+        // 8. crea el payload
+        const payload = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          roles: user.profile.name
+        };
+        // 9. generamos el token
+        response.token = this.jwtService.sign(payload)
+        response.profileId = user.profile.id
+        response.userId = user.id
+      }
     }
+    response.userId = user.id
     response.isMfaEnabled = user.isMfaEnabled
     return response;
   }

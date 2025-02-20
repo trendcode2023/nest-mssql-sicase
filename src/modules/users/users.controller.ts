@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   //Param,
   Post,
   Query,
@@ -14,7 +15,7 @@ import {
 import { UsersService } from './users.service';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -95,7 +96,7 @@ export class UsersController {
       loggedInUserDni,
     );
   }
-  @UseGuards(AuthGuard) // captura el token
+ // @UseGuards(AuthGuard) // captura el token
   @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @UseInterceptors(DateAdderInterceptor)
   @Post('stamp/:id')
@@ -140,6 +141,13 @@ export class UsersController {
       //sortBy as keyof User,
       order,
     );
+  }
+
+ // @UseGuards(AuthGuard) 
+  @ApiBearerAuth()
+  @Get('getUserById/:userId') // Ruta dinámica
+  async getUserById(@Param('userId', new ParseUUIDPipe({ version: '4' })) id: string) {
+    return this.usersService.getUserById(id);
   }
 
 

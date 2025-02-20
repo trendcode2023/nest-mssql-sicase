@@ -29,7 +29,7 @@ async function bootstrap() {
   ); // se declara para que funcione los dtos
   app.useGlobalFilters(new ExceptionsFilter()); // <---- Filtro global registrado aquí
   app.enableCors({
-    origin: ['http://localhost:3001'], // Lista de dominios permitidos
+    origin: ['http://localhost:4200'], // Lista de dominios permitidos
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
     allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
     credentials: true, // Permitir cookies y credenciales

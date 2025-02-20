@@ -124,10 +124,34 @@ export class UsersService {
         updateAt: now,
         updatedBy: username,
       });
-      return await this.usersRepository.save(user);
+      const response = await this.usersRepository.save(user);
+      response.routeStamp = await this.getStampByUser(response.id)
+      return response;
       // 1. consulta el tipo de documento por id
     } catch (error) {}
   }
+
+  async getStampByUser(id:string){
+  //  const filePath = path.join('D:/doctor/firmas', userId, 'nombre-del-archivo.png'); 
+    // 🔥 Cambia 'nombre-del-archivo.png' por el nombre real guardado en tu DB
+    let base64Image=null;
+    try {
+      const user = await this.usersRepository.findOne({ where: { id } });
+      if (!user || !user.routeStamp) {
+        return base64Image;
+      }
+      const filePath = user.routeStamp; 
+      if (!fs.existsSync(filePath)) {
+        return base64Image;
+      }
+      const fileBuffer = fs.readFileSync(filePath);
+      base64Image = fileBuffer.toString('base64');
+      return base64Image
+    } catch (error) {
+      return base64Image
+    }
+  }
+
 
   async updateUser(
     id: string,
@@ -229,5 +253,12 @@ export class UsersService {
       totalUsers: total,
       users,
     };
+  }
+  
+  async getUserById(id: string): Promise<User> {
+    const user = await this.usersRepository.findOne({ where: { id }, relations: ['profile'],});
+    if (!user) throw new BadRequestException('Usuario no encontrado');
+    user.routeStamp= await this.getStampByUser(user.id)
+    return user;
   }
 }
