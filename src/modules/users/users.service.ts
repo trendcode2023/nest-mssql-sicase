@@ -47,12 +47,12 @@ export class UsersService {
       // if (!user) throw new BadRequestException('tipo de documento no existe!!');
 
       // 3. consulta el perfil por id
-      // const profile = await this.profilesRepository.findOne({
-      //   where: { id: user.codprofile },
-      // });
+      const profile = await this.profilesRepository.findOne({
+        where: { id: user.codprofile },
+      });
 
       // 4. valida si existe el perfil
-      // if (!profile) throw new BadRequestException('perfil no existe!!');
+      if (!profile) throw new BadRequestException('perfil no existe!!');
 
       // 5. encripta el password
       const hashedPassword = await bcrypt.hash(user.password, 10);
