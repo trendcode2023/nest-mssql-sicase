@@ -39,20 +39,20 @@ export class UsersService {
       //  fs.writeFileSync(filePath, file.buffer);
       //  console.log(id);
       // 1. consulta el tipo de documento por id
-      const documentType = await this.catalogsRepository.findOne({
-        where: { id: user.documentType },
-      });
+      // const documentType = await this.catalogsRepository.findOne({
+      //   where: { id: user.documentType },
+      // });
 
       // 2. valida si existe el tipo de documento
-      if (!user) throw new BadRequestException('tipo de documento no existe!!');
+      // if (!user) throw new BadRequestException('tipo de documento no existe!!');
 
       // 3. consulta el perfil por id
-      const profile = await this.profilesRepository.findOne({
-        where: { id: user.codprofile },
-      });
+      // const profile = await this.profilesRepository.findOne({
+      //   where: { id: user.codprofile },
+      // });
 
       // 4. valida si existe el perfil
-      if (!profile) throw new BadRequestException('perfil no existe!!');
+      // if (!profile) throw new BadRequestException('perfil no existe!!');
 
       // 5. encripta el password
       const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -66,7 +66,7 @@ export class UsersService {
         // ...userWithoutCodProfile,
         ...user,
         //   routeStamp: filePath,
-        documentType: String(documentType.id),
+        documentType: user.documentType,
         password: hashedPassword,
         //status esta por defecto 1
         //lastLogin: now,
