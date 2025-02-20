@@ -94,7 +94,7 @@ export class UsersService {
           }
           const filePath = path.join(uploadDir, 'firma.png');
           fs.writeFileSync(filePath, buffer);
-          newUser.routeStamp = filePath;
+          newUser.routeStamp = uploadDir;
           await this.usersRepository.update(newUser.id, { routeStamp: newUser.routeStamp });
       }
       return response;
