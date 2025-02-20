@@ -27,7 +27,7 @@ export class UsersService {
     now: Date,
     id: string, //
     // file: Express.Multer.File,
-  ): Promise<CreateUserDto> {
+  ) {
     try {
       // Guardar imagen en una carpeta
       // const uploadDir = `D:/doctor/firmas/${id}/`;
@@ -60,6 +60,7 @@ export class UsersService {
       // 6. passwordExpirationDate expirara en 90 dias
       const passwordExpirationDate = new Date(now);
       passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
+
       // 7. crea la instancia de user
       const newUser = this.usersRepository.create({
         // ...userWithoutCodProfile,
@@ -82,9 +83,19 @@ export class UsersService {
 
         profile: profile,
       } as Partial<CreateUserDto>);
+       const response = await this.usersRepository.save(newUser);
 
-      // 8. guarda en bd el nuevo usuario y lo retorna
-      return await this.usersRepository.save(newUser);
+       if(user.stampBase64){
+          const base64Data = user.stampBase64.replace(/^data:image\/\w+;base64,/, "");
+          const buffer = Buffer.from(base64Data, 'base64');
+          const uploadDir = `D:/doctor/firmas/${response.id}/`;
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          const filePath = path.join(uploadDir, 'firma.png');
+          fs.writeFileSync(filePath, buffer);
+      }
+      return response;
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
     }

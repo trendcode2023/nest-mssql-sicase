@@ -127,6 +127,11 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   routeStamp: string;
+
+  @IsString()
+  @IsOptional()
+  stampBase64: string;
+
 }
 
 /*
