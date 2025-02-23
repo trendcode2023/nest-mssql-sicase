@@ -1,6 +1,8 @@
 import {
   IsEmail,
+  IsEmpty,
   IsNotEmpty,
+  IsOptional,
   IsString,
   Length,
   Matches,
@@ -112,6 +114,7 @@ export class CreateUserDto {
    * Debe contener 9 caracteres
    * @example '978803990'
    */
+  @IsOptional()
   @IsString()
   @Length(9, 9, {
     message: 'El número de teléfono celular debe tener 9 caracteres.',
@@ -122,10 +125,13 @@ export class CreateUserDto {
    * @example 'https://example.com'
    */
   @IsString()
-  @Length(2, 150, {
-    message: 'La ruta del sello debe tener hasta 150 caracteres',
-  })
+  @IsOptional()
   routeStamp: string;
+
+  @IsString()
+  @IsOptional()
+  stampBase64: string;
+
 }
 
 /*

@@ -16,6 +16,7 @@ import { Repository } from 'typeorm';
 import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 import { MfaUser } from '../users/dtos/mfaUser.dto';
 import { MfaAuthenticationService } from './mfa-authentication.service';
+import { LoguinResponse } from '../users/dtos/loguinResponse.dto';
 
 @Injectable()
 export class AuthService {
@@ -28,10 +29,11 @@ export class AuthService {
   private blacklist: Set<string> = new Set();
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
+    const response = new LoguinResponse();
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
     const { email, password, mfaCode } = credentialsData || {};
     // 2. valida si existe email y password no son vacios
-    if (!email || !password) return 'email y password es requerido!!';
+    if (!email || !password) return 'Email y password es requerido!!';
     // 3. busca usuario por email y lo asigna a user
     const user = await this.usersRepository.findOne({
       where: { email },
@@ -39,29 +41,20 @@ export class AuthService {
     });
 
     if (user.isMfaEnabled) {
-      const isValid = await this.mfaAuthenticationService.verifyCode(
-        mfaCode,
-        user.mfaSecrect,
-      );
-      if (!isValid) {
-        throw new BadRequestException('Codigo incorrecto');
+      if(mfaCode){
+        const isValid = await this.mfaAuthenticationService.verifyCode(
+          mfaCode,
+          user.mfaSecrect,
+        );
+        if (!isValid) {
+          throw new BadRequestException('Código incorrecto o expirado');
+        }
       }
     }
     // 4. valida si user es vacio
     if (!user) throw new BadRequestException('Credencial invalida!!');
     // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
-    /*
-    if (
-      // verifica si existe user.passwordExpirationDate existe y tiene un valor
-      user.passwordExpirationDate &&
-      new Date(user.passwordExpirationDate) < now
-    ) {
-      throw new BadRequestException(
-        'Tu contraseña ha expirado. Debes actualizarla.',
-      );
-    }
-    */
     // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
     if (
       user.failedLoginAttempts >= 3 &&
@@ -90,15 +83,24 @@ export class AuthService {
     user.lastFailedLogin = null;
     user.lastLogin = new Date();
     await this.usersRepository.save(user);
-    // 8. crea el payload
-    const payload = {
-      id: user.id,
-      username: user.username,
-      email: user.email,
-      roles: user.profile.name
-    };
-    // 9. generamos el token
-    return { token: this.jwtService.sign(payload),idUser:user.id,isMfaEnabled:user.isMfaEnabled,idProfile: user.profile.id};
+    if (user.isMfaEnabled) {
+      if(mfaCode) {
+        // 8. crea el payload
+        const payload = {
+          id: user.id,
+          username: user.username,
+          email: user.email,
+          roles: user.profile.name
+        };
+        // 9. generamos el token
+        response.token = this.jwtService.sign(payload)
+        response.profileId = user.profile.id
+        response.userId = user.id
+      }
+    }
+    response.userId = user.id
+    response.isMfaEnabled = user.isMfaEnabled
+    return response;
   }
   // 🔹 Función para validar la expiración de la contraseña
   private validatePasswordExpiration(user: any, now: Date) {

@@ -9,6 +9,8 @@ import { SeederModule } from './modules/seeder/seeder.module';
 import { ProfilesModule } from './modules/profile/profile.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { QuestModule } from './modules/quest/quest.module';
+import { catalogsData } from './modules/seeder/seeder.data';
+import { CatalogModule } from './modules/catalog/catalog.module';
 
 //import { AuthModule } from './modules/auth/auth.module';
 //import { JwtModule } from '@nestjs/jwt';
@@ -20,6 +22,7 @@ import { QuestModule } from './modules/quest/quest.module';
     SeederModule,
     AuthModule,
     UsersModule,
+    CatalogModule,
     ConfigModule.forRoot({
       // configura el módulo de configuración globalmente.
       isGlobal: true, // Hace que la configuración esté disponible en toda la aplicación sin necesidad de importarla en cada módulo.

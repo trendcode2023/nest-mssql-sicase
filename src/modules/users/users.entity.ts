@@ -81,6 +81,9 @@ export class User {
   @Column({ type: 'bit', default: false, nullable: false })
   isMfaEnabled: boolean;
 
+  @Column({ type: 'bit', default: true, nullable: false })
+  isNewUser: boolean;
+
   @Column({ type: 'varchar', nullable: true })
   mfaSecrect: string;
 
