@@ -8,6 +8,7 @@ export class Quest {
   id: string = uuid();
   @Column({ type: 'varchar', length: 100, nullable: false })
   patientName: string;
+  // ingresar dni
   @Column({ type: 'varchar', length: 50, nullable: false })
   pdfName: string;
   @Column({ type: 'nvarchar', length: 'max', nullable: false })
