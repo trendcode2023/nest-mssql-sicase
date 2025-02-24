@@ -20,7 +20,7 @@ const config = {
   options: {
     encrypt: true, // Cifrado de conexión para SQL Server
     trustServerCertificate: true, // Permite certificados autofirmados, útil con Docker
-  },  
+  },
 };
 export default registerAs('typeorm', () => config);
 export const connectionSource = new DataSource(config as DataSourceOptions);

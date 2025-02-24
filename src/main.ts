@@ -22,7 +22,7 @@ async function bootstrap() {
           message: Object.values(validate.constraints)[0],
         }));
         return new BadRequestException(
-          new ResponseApi(null, 'Campos incorrectos', validations)
+          new ResponseApi(null, 'Campos incorrectos', validations),
         );
       },
     }),
@@ -45,7 +45,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
-  //await seeder.seed();
+  // await seeder.seed();
 
   console.log('Los catalogos fueron registrados correctamente');
 

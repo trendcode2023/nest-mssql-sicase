@@ -31,10 +31,50 @@ export class QuestService {
     return this.questsRepository.save(newQuest);
   }
 
-  async getAllQuests() {
-    return this.questsRepository.find();
-  }
+  async getAllQuests(
+    page: number,
+    limit: number,
+    doctorName: string,
+    patientName: string,
+    patientDni: string,
+  ) {
+    const query = this.questsRepository
+      .createQueryBuilder('quest')
+      .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
+      .select([
+        'quest.id',
+        'quest.patientName',
+        'quest.patientDni',
+        'quest.pdfName',
+        'quest.jsonQuest',
+        'quest.updateAt',
+        'user.id',
+        'user.patSurname',
+        'user.matSurname',
+      ]); // Solo selecciona estos c
 
+    if (doctorName) {
+      query.andWhere('user.patSurname = :doctorName', { doctorName });
+    }
+    // TRIM quita espacios al inicio y al final
+    if (patientName) {
+      query.andWhere('TRIM(quest.patientName) LIKE :patientName', {
+        patientName: `%${patientName}%`,
+      });
+    }
+
+    if (patientDni) {
+      query.andWhere('quest.patientDni = :patientDni', { patientDni });
+    }
+
+    // Evitar error en SQL Server: Agregar un ORDER BY obligatorio
+    query.orderBy('quest.updateAt', 'DESC'); // Cambia 'id' por la columna correcta
+
+    query.skip((page - 1) * limit).take(limit);
+
+    return query.getMany();
+  }
+  //return this.questsRepository.find({ take: limit, skip: skip });
   //aqui va la fucion actualizar
 
   async updateQuest(
