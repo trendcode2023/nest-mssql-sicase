@@ -1,6 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 import { Quest } from './quest.entity';
 import { CreateQuestDto } from './dtos/createQuest.dto';
 import { User } from '../users/users.entity';
@@ -15,20 +20,43 @@ export class QuestService {
   ) {}
 
   async createQuest(quest: CreateQuestDto, userId: string, now: Date) {
-    const user = await this.usersRepository.findOne({
-      where: { id: userId },
-    });
-    //CAMBIAR CUANDO TE LOGUEAS
+    try {
+      console.log('entro al try');
+      const user = await this.usersRepository.findOne({
+        where: { id: userId },
+      });
+      //CAMBIAR CUANDO TE LOGUEAS
 
-    const newQuest = this.questsRepository.create({
-      ...quest,
-      createAt: now,
-      createdBy: user.username,
-      updateAt: now,
-      updatedBy: user.username,
-      user: user, // referencia al usuario que creo el cuestionario
-    });
-    return this.questsRepository.save(newQuest);
+      const newQuest = this.questsRepository.create({
+        ...quest,
+        createAt: now,
+        createdBy: user.username,
+        updateAt: now,
+        updatedBy: user.username,
+        user: user, // referencia al usuario que creo el cuestionario
+      });
+      console.log('antes de ejecutar el save quest');
+      // return this.questsRepository.save(newQuest);
+      return await this.questsRepository.save(newQuest).catch((error) => {
+        // console.error('Error en save:', error);
+        if (
+          error instanceof QueryFailedError &&
+          error.message.includes('UNIQUE KEY constraint')
+        ) {
+          throw new ConflictException(
+            `A quest with this unique value already exists.`,
+          );
+        }
+        throw new InternalServerErrorException(
+          `Unexpected error: ${error.message}`,
+        );
+      });
+    } catch (error) {
+      console.log('entro al error');
+
+      console.error('Entró al catch:', error);
+      throw error;
+    }
   }
 
   async getAllQuests(

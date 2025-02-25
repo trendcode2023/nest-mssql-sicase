@@ -131,7 +131,6 @@ export class CreateUserDto {
   @IsString()
   @IsOptional()
   stampBase64: string;
-
 }
 
 /*

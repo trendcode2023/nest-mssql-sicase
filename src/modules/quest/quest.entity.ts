@@ -8,7 +8,7 @@ export class Quest {
   id: string = uuid();
   @Column({ type: 'varchar', length: 100, nullable: false })
   patientName: string;
-  @Column({ type: 'varchar', length: 8, nullable: false })
+  @Column({ type: 'varchar', length: 8, unique: true, nullable: false })
   patientDni: string;
   @Column({ type: 'varchar', length: 50, nullable: false })
   pdfName: string;

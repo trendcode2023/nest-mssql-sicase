@@ -45,7 +45,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
 
-  // await seeder.seed();
+  //await seeder.seed();
 
   console.log('Los catalogos fueron registrados correctamente');
 

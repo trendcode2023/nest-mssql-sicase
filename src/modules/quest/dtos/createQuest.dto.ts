@@ -23,7 +23,7 @@ export class CreateQuestDto {
   })
   patientDni: string;
   /**
-   * nombre del pdf debe tener entre 30 y 50 caracteres
+   * nombre del pdf debe tener entre 20 y 50 caracteres
    * @example '12.01.2025-CASEG-JDOMINGUEZA'
    */
 
@@ -35,7 +35,7 @@ export class CreateQuestDto {
   pdfName: string;
 
   /**
-   * aqui va el json
+   * cuestionario en formato json
    * @example '{codigo:'001', nombre:'abcd', questions:[{id:1,question:'tienes covid?'}]}'
    */
 

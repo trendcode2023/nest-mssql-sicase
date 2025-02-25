@@ -7,6 +7,10 @@ export class LoguinUserDto extends PickType(CreateUserDto, ['email']) {
   @IsString()
   mfaCode: string | null;
 
+  /**
+   * debe ser un string
+   * @example 'Qwerty*2025'
+   */
   @IsString()
   password: string;
 }

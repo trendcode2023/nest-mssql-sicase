@@ -83,19 +83,24 @@ export class UsersService {
 
         profile: profile,
       } as Partial<CreateUserDto>);
-       const response = await this.usersRepository.save(newUser);
+      const response = await this.usersRepository.save(newUser);
 
-       if(user.stampBase64){
-          const base64Data = user.stampBase64.replace(/^data:image\/\w+;base64,/, "");
-          const buffer = Buffer.from(base64Data, 'base64');
-          const uploadDir = `D:/doctor/firmas/${response.id}/`;
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-          }
-          const filePath = path.join(uploadDir, 'firma.png');
-          fs.writeFileSync(filePath, buffer);
-          newUser.routeStamp = uploadDir+ "firma.png";
-          await this.usersRepository.update(newUser.id, { routeStamp: newUser.routeStamp });
+      if (user.stampBase64) {
+        const base64Data = user.stampBase64.replace(
+          /^data:image\/\w+;base64,/,
+          '',
+        );
+        const buffer = Buffer.from(base64Data, 'base64');
+        const uploadDir = `D:/doctor/firmas/${response.id}/`;
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        const filePath = path.join(uploadDir, 'firma.png');
+        fs.writeFileSync(filePath, buffer);
+        newUser.routeStamp = uploadDir + 'firma.png';
+        await this.usersRepository.update(newUser.id, {
+          routeStamp: newUser.routeStamp,
+        });
       }
       return response;
     } catch (error) {
@@ -138,33 +143,32 @@ export class UsersService {
         updatedBy: username,
       });
       const response = await this.usersRepository.save(user);
-      response.routeStamp = await this.getStampByUser(response.id)
+      response.routeStamp = await this.getStampByUser(response.id);
       return response;
       // 1. consulta el tipo de documento por id
     } catch (error) {}
   }
 
-  async getStampByUser(id:string){
-  //  const filePath = path.join('D:/doctor/firmas', userId, 'nombre-del-archivo.png'); 
+  async getStampByUser(id: string) {
+    //  const filePath = path.join('D:/doctor/firmas', userId, 'nombre-del-archivo.png');
     // 🔥 Cambia 'nombre-del-archivo.png' por el nombre real guardado en tu DB
-    let base64Image=null;
+    let base64Image = null;
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
       if (!user || !user.routeStamp) {
         return base64Image;
       }
-      const filePath = user.routeStamp; 
+      const filePath = user.routeStamp;
       if (!fs.existsSync(filePath)) {
         return base64Image;
       }
       const fileBuffer = fs.readFileSync(filePath);
       base64Image = fileBuffer.toString('base64');
-      return base64Image
+      return base64Image;
     } catch (error) {
-      return base64Image
+      return base64Image;
     }
   }
-
 
   async updateUser(
     id: string,
@@ -220,7 +224,7 @@ export class UsersService {
     });
   }
 
-   /**
+  /**
    * Método para obtener usuarios con paginación y filtros dinámicos
    * @param page Número de página
    * @param limit Cantidad de registros por página
@@ -229,11 +233,11 @@ export class UsersService {
    * @param order Orden de la consulta (ASC o DESC)
    * @returns Lista paginada de usuarios con metadata
    */
-   async getUsersPaginated(
+  async getUsersPaginated(
     page: number = 1, // Página por defecto 1
     limit: number = 10, // 10 registros por defecto
     filters?: { name?: string; email?: string; documentNum?: string },
-  //  sortBy: keyof User = 'createAt', // Ordenar por fecha de creación por defecto
+    //  sortBy: keyof User = 'createAt', // Ordenar por fecha de creación por defecto
     order: 'ASC' | 'DESC' = 'DESC',
   ) {
     const query = this.usersRepository.createQueryBuilder('user');
@@ -241,13 +245,19 @@ export class UsersService {
     // Aplicar filtros dinámicos
     if (filters) {
       if (filters.name) {
-        query.andWhere('LOWER(user.names) LIKE :name', { name: `%${filters.name.toLowerCase()}%` });
+        query.andWhere('LOWER(user.names) LIKE :name', {
+          name: `%${filters.name.toLowerCase()}%`,
+        });
       }
       if (filters.email) {
-        query.andWhere('LOWER(user.email) LIKE :email', { email: `%${filters.email.toLowerCase()}%` });
+        query.andWhere('LOWER(user.email) LIKE :email', {
+          email: `%${filters.email.toLowerCase()}%`,
+        });
       }
       if (filters.documentNum) {
-        query.andWhere('user.documentNum LIKE :documentNum', { documentNum: `%${filters.documentNum}%` });
+        query.andWhere('user.documentNum LIKE :documentNum', {
+          documentNum: `%${filters.documentNum}%`,
+        });
       }
     }
 
@@ -267,11 +277,14 @@ export class UsersService {
       users,
     };
   }
-  
+
   async getUserById(id: string): Promise<User> {
-    const user = await this.usersRepository.findOne({ where: { id }, relations: ['profile'],});
+    const user = await this.usersRepository.findOne({
+      where: { id },
+      relations: ['profile'],
+    });
     if (!user) throw new BadRequestException('Usuario no encontrado');
-    user.routeStamp= await this.getStampByUser(user.id)
+    user.routeStamp = await this.getStampByUser(user.id);
     return user;
   }
 }

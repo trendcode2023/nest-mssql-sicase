@@ -1,33 +1,33 @@
 import {
-    ExceptionFilter,
-    Catch,
-    ArgumentsHost,
-    HttpException,
-    BadRequestException,
-    InternalServerErrorException,
-    ValidationError,
-    Logger,
-  } from '@nestjs/common';
+  ExceptionFilter,
+  Catch,
+  ArgumentsHost,
+  HttpException,
+  BadRequestException,
+  InternalServerErrorException,
+  ValidationError,
+  Logger,
+} from '@nestjs/common';
 import { log } from 'console';
 import { Response } from 'express';
 import { QueryFailedError } from 'typeorm';
 import { ResponseApi } from './ResponseApi';
-  
-  @Catch(BadRequestException)
-  export class ExceptionsFilter implements ExceptionFilter {
-    catch(exception: BadRequestException, host: ArgumentsHost) {
-        const ctx = host.switchToHttp();
-        const response = ctx.getResponse<Response>();
-        const request = ctx.getRequest<Request>();
-        const exceptionResponse = exception.getResponse() as any;
-        const apiResponse = new ResponseApi(
-          exception.getStatus(),
-          exceptionResponse.message,
-          exceptionResponse.validations || null,
-        );
-        response.status(exception.getStatus()).json(apiResponse);
-      }
+
+@Catch(BadRequestException)
+export class ExceptionsFilter implements ExceptionFilter {
+  catch(exception: BadRequestException, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const response = ctx.getResponse<Response>();
+    const request = ctx.getRequest<Request>();
+    const exceptionResponse = exception.getResponse() as any;
+    const apiResponse = new ResponseApi(
+      exception.getStatus(),
+      exceptionResponse.message,
+      exceptionResponse.validations || null,
+    );
+    response.status(exception.getStatus()).json(apiResponse);
   }
+}
 
 @Catch(InternalServerErrorException)
 export class InternalServerErrorFilter implements ExceptionFilter {
