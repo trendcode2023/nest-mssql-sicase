@@ -15,7 +15,7 @@ export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
   // pendiente agregar nombre de usuario
-  @Column({ type: 'varchar', length: 2, nullable: false })
+  @Column({ type: 'varchar', length: 1, nullable: false })
   documentType: string;
   @Column({ type: 'varchar', length: 15, unique: true, nullable: false })
   documentNum: string;

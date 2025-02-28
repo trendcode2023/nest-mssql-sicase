@@ -1,6 +1,5 @@
 import {
   IsEmail,
-  IsEmpty,
   IsNotEmpty,
   IsOptional,
   IsString,
@@ -10,10 +9,14 @@ import {
 
 export class CreateUserDto {
   /**
-   * debe ser un string de 2 caracteres (02 admin,03 doctor)
-   * @example '02'
+   * debe ser un string de 1 caracter (1-admin,2-doctor)
+   * @example '1'
    */
+  @IsNotEmpty()
   @IsString()
+  @Length(1, 1, {
+    message: 'debe ser un string de 1 caracter',
+  })
   codprofile?: string;
 
   /**
@@ -23,8 +26,8 @@ export class CreateUserDto {
 
   @IsNotEmpty()
   @IsString()
-  @Length(2, 2, {
-    message: 'El codigo de documento debe tener al menos 2 caracteres',
+  @Length(1, 1, {
+    message: 'El codigo de documento debe tener 1 caracter',
   })
   documentType: string;
 
