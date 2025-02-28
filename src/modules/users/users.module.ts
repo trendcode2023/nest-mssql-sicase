@@ -10,7 +10,11 @@ import { ProfilesModule } from '../profile/profile.module';
 import { AuthModule } from '../auth/auth.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Catalog, Profile]), ProfilesModule,AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([User, Catalog, Profile]),
+    ProfilesModule,
+    AuthModule,
+  ],
   exports: [], // Exporting the UsersService to be used in other modules.
   controllers: [UsersController],
   providers: [UsersService],

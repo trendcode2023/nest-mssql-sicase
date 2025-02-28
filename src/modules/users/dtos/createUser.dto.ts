@@ -17,7 +17,7 @@ export class CreateUserDto {
   @Length(1, 1, {
     message: 'debe ser un string de 1 caracter',
   })
-  codprofile?: string;
+  codProfile?: string;
 
   /**
    * debe ser un string de 2 caracteres

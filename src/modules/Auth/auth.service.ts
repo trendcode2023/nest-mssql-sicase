@@ -25,7 +25,7 @@ export class AuthService {
     private readonly jwtService: JwtService, // declaramosn el jwservice
     private readonly mfaAuthenticationService: MfaAuthenticationService,
   ) {}
-  
+
   private blacklist: Set<string> = new Set();
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
@@ -37,11 +37,11 @@ export class AuthService {
     // 3. busca usuario por email y lo asigna a user
     const user = await this.usersRepository.findOne({
       where: { email },
-      relations: ['profile'],
+      //relations: ['profile'],
     });
 
     if (user.isMfaEnabled) {
-      if(mfaCode){
+      if (mfaCode) {
         const isValid = await this.mfaAuthenticationService.verifyCode(
           mfaCode,
           user.mfaSecrect,
@@ -84,22 +84,22 @@ export class AuthService {
     user.lastLogin = new Date();
     await this.usersRepository.save(user);
     if (user.isMfaEnabled) {
-      if(mfaCode) {
+      if (mfaCode) {
         // 8. crea el payload
         const payload = {
           id: user.id,
           username: user.username,
           email: user.email,
-          roles: user.profile.name
+          roles: user.codProfile,
         };
         // 9. generamos el token
-        response.token = this.jwtService.sign(payload)
-        response.profileId = user.profile.id
-        response.userId = user.id
+        response.token = this.jwtService.sign(payload);
+        response.profileId = user.codProfile;
+        response.userId = user.id;
       }
     }
-    response.userId = user.id
-    response.isMfaEnabled = user.isMfaEnabled
+    response.userId = user.id;
+    response.isMfaEnabled = user.isMfaEnabled;
     return response;
   }
   // 🔹 Función para validar la expiración de la contraseña

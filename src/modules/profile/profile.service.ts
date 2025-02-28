@@ -11,8 +11,8 @@ export class ProfileService {
     private readonly profileRepository: Repository<Profile>,
   ) {}
 
-  async getProfileByName(name: string) {
-    return this.profileRepository.findOne({ where: { name } });
+  async getProfileById(id: string) {
+    return this.profileRepository.findOne({ where: { id } });
   }
 
   async getAllProfiles(): Promise<Profile[]> {

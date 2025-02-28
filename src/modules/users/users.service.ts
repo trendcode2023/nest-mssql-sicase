@@ -48,7 +48,7 @@ export class UsersService {
 
       // 3. consulta el perfil por id
       const profile = await this.profilesRepository.findOne({
-        where: { id: user.codprofile },
+        where: { id: user.codProfile },
       });
 
       // 4. valida si existe el perfil
@@ -81,7 +81,7 @@ export class UsersService {
         passwordExpirationDate,
         //passwordExpirationFlag
 
-        profile: profile,
+        //codProfile: profile.id,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
 
@@ -219,9 +219,7 @@ export class UsersService {
       .leftJoinAndSelect('profile.authorizations', 'authorization')
       .leftJoinAndSelect('authorization.route', 'route')
       .getMany();*/
-    return await this.usersRepository.find({
-      //relations: ['profile.authorizations'],
-    });
+    return await this.usersRepository.find();
   }
 
   /**
@@ -278,13 +276,28 @@ export class UsersService {
     };
   }
 
-  async getUserById(id: string): Promise<User> {
+  async getUserById(id: string): Promise<Partial<User>> {
     const user = await this.usersRepository.findOne({
       where: { id },
-      relations: ['profile'],
+      // relations: ['profile'],
     });
     if (!user) throw new BadRequestException('Usuario no encontrado');
     user.routeStamp = await this.getStampByUser(user.id);
-    return user;
+    return {
+      //profile: profile,
+      codProfile: user.codProfile,
+      documentType: user.documentType,
+      documentNum: user.documentNum,
+      cmp: user.cmp,
+      names: user.names,
+      patSurname: user.patSurname,
+      matSurname: user.matSurname,
+      username: user.username,
+      email: user.email,
+      password: user.password,
+      cellphone: user.cellphone,
+      routeStamp: user.routeStamp,
+      // stampBase64: user.stampBase64 ?? '',
+    };
   }
 }

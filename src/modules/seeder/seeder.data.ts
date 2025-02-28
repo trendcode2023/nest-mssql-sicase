@@ -16,7 +16,7 @@ export const profilesData = [
 
 export const usersData = [
   {
-    documentType: '01',
+    documentType: '1',
     documentNum: '12345678',
     cmp: '12345',
     names: 'sicase',
@@ -29,7 +29,7 @@ export const usersData = [
     RouteStamp: 'https://images.com',
     createdBy: '12345678',
     updatedBy: '12345678',
-    codprofile: '01',
+    codProfile: '1',
   },
 ];
 export const modulosData = [

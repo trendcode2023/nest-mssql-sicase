@@ -23,8 +23,8 @@ export class Profile {
   @Column({ type: 'int', default: 1 })
   status: number;
 
-  @OneToMany(() => User, (user) => user.profile)
-  users: User[];
+  // @OneToMany(() => User, (user) => user.profile)
+  // users: User[];
   @OneToMany(() => Authorization, (authorization) => authorization.route)
   authorizations: Authorization[];
 }

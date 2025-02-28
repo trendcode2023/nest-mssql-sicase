@@ -1,19 +1,22 @@
 import {
   Column,
   Entity,
-  ManyToOne,
+  // ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
-import { Profile } from '../profile/profile.entity';
+//import { Profile } from '../profile/profile.entity';
 import { Quest } from '../quest/quest.entity';
 
 @Entity({ name: 'users' })
 export class User {
   @PrimaryGeneratedColumn('uuid')
   id: string = uuid();
+
+  @Column({ type: 'varchar', length: 1, nullable: false })
+  codProfile: string;
   // pendiente agregar nombre de usuario
   @Column({ type: 'varchar', length: 1, nullable: false })
   documentType: string;
@@ -87,8 +90,8 @@ export class User {
   @Column({ type: 'varchar', nullable: true })
   mfaSecrect: string;
 
-  @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
-  profile: Profile;
+  // @ManyToOne(() => Profile, (profile) => profile.users) // centidad profile
+  // profile: Profile;
 
   @OneToMany(() => Quest, (quest) => quest.user)
   quests: Quest[];

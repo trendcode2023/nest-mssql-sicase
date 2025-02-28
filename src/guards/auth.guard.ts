@@ -11,8 +11,9 @@ import { LogoutService } from 'src/modules/auth/logout.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly jwtService: JwtService,
-    private readonly logoutService: LogoutService
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly logoutService: LogoutService,
   ) {}
   canActivate(
     context: ExecutionContext,

@@ -57,7 +57,7 @@ export class SeederService {
       if (!exists) {
         // 3. consulta el perfil por id
         const profile = await this.profilesRepository.findOne({
-          where: { id: user.codprofile },
+          where: { id: user.codProfile },
         });
 
         const hashedPassword = await bcrypt.hash(user.password, 10);
@@ -74,7 +74,7 @@ export class SeederService {
           //userExpirationFlag: 1,
           passwordExpirationDate: '2025-12-31',
           //  passwordExpirationFlag: 1,
-          profile: profile,
+          //profile: profile,
         });
 
         await this.usersRepository.save(newUser);

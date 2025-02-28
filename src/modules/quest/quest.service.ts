@@ -76,12 +76,16 @@ export class QuestService {
         'quest.jsonQuest',
         'quest.updateAt',
         'user.id',
+        'user.names',
         'user.patSurname',
         'user.matSurname',
       ]); // Solo selecciona estos c
 
     if (doctorName) {
-      query.andWhere('user.patSurname = :doctorName', { doctorName });
+      query.andWhere(
+        "CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname) LIKE :doctorName",
+        { doctorName: `%${doctorName}%` },
+      );
     }
     // TRIM quita espacios al inicio y al final
     if (patientName) {

@@ -45,7 +45,7 @@ export class RolesGuard implements CanActivate {
     //console.log('user.profile.name');
     //console.log(user.profile.name);
 
-    const userProfile = await this.profileService.getProfileByName(user.roles);
+    const userProfile = await this.profileService.getProfileById(user.roles);
 
     console.log('userprofile:');
     console.log(userProfile);
