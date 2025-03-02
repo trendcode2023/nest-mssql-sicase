@@ -15,11 +15,15 @@ export class CatalogController {
     return this.catalogService.getAllCatalogs();
   }
 
-  @ApiBearerAuth()
+  // @ApiBearerAuth()
   @ApiOperation({ summary: 'Obtener un catálogo por codeName' })
-  @ApiQuery({ name: 'code', required: true, description: 'Código del catálogo (Ejemplos: td, tc)' })
-  @Roles('admin')
-  @UseGuards(AuthGuard, RolesGuard)
+  @ApiQuery({
+    name: 'code',
+    required: true,
+    description: 'Código del catálogo (Ejemplos: td, tc)',
+  })
+  //@Roles('admin')
+  //@UseGuards(AuthGuard)
   @Get('/getCatalog')
   async getCatalogByCodeName(@Query('code') codeName: string) {
     return this.catalogService.getCatalogByCodeName(codeName);

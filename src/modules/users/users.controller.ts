@@ -35,7 +35,7 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @ApiBearerAuth()
-  @Roles('admin')
+  @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
@@ -55,15 +55,15 @@ export class UsersController {
     );  
   }
 
-  @ApiBearerAuth()
-  @Roles('admin')
+  @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
+  @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
   getAllUsers() {
     return this.usersService.getAllUsers();
   }
 
-  @Roles('doctor')
+  @Roles('DOCTOR')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update/byDoctor/:id')
@@ -117,8 +117,9 @@ export class UsersController {
     );
   }
 
+  // --------------------------
   @ApiBearerAuth()
-  @Roles('admin')
+  @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('paginated')
   @ApiQuery({
@@ -190,7 +191,7 @@ export class UsersController {
   }
 
   @ApiBearerAuth()
-  @Roles('admin')
+  @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update-status/:id')
