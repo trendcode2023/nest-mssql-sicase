@@ -15,7 +15,7 @@ import {
 import { UsersService } from './users.service';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { CreateUserDto } from './dtos/createUser.dto';
-import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -24,6 +24,7 @@ import { User } from 'src/decorators/user.decorator';
 import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateStatus } from './dtos/UpdateStatus.dto';
 //import { Roles } from 'src/decorators/roles.decorator';
 //import { Role } from 'src/utils/roles.enum';
 //import { ApiBearerAuth } from '@nestjs/swagger';
@@ -51,10 +52,10 @@ export class UsersController {
       request.now,
       loggedInUserDni,
       //Sa    file,
-    );
+    );  
   }
 
-  @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
+  @ApiBearerAuth()
   @Roles('admin')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
@@ -80,9 +81,10 @@ export class UsersController {
     );
   }
 
-  @UseGuards(AuthGuard)
-  @UseInterceptors(DateAdderInterceptor)
+  //@UseGuards(AuthGuard)
+  //@UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
+  @ApiBody({type:UpdateUserDto})
   async updateUser(
     @Param('id') id: string,
     @Req() request: Request & { now: Date },
@@ -186,9 +188,17 @@ export class UsersController {
   ) {
     return this.usersService.getUserById(id);
   }
-}
-/*  @Post(':id')
-  updateUser(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(id, updateUserDto);
+
+  @ApiBearerAuth()
+  @Roles('admin')
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('update-status/:id')
+  async updateUserStatus(
+  @Param('id') id: string,
+  @Body() status: UpdateStatus, // El estado se pasa en el Body
+  @Req() request: Request & { now: Date }
+  ) {
+  return this.usersService.updateUserStatus(id, status, request.now);
   }
-  */
+}

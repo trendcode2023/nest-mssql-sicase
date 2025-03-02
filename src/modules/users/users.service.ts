@@ -14,6 +14,7 @@ import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 import * as fs from 'fs';
 import * as path from 'path';
+import { UpdateStatus } from './dtos/UpdateStatus.dto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -29,85 +30,72 @@ export class UsersService {
     // file: Express.Multer.File,
   ) {
     try {
-      // Guardar imagen en una carpeta
-      // const uploadDir = `D:/doctor/firmas/${id}/`;
-      // if (!fs.existsSync(uploadDir)) {
-      //   fs.mkdirSync(uploadDir, { recursive: true });
-      // }
-
-      // const filePath = path.join(uploadDir, file.originalname);
-      //  fs.writeFileSync(filePath, file.buffer);
-      //  console.log(id);
-      // 1. consulta el tipo de documento por id
-      // const documentType = await this.catalogsRepository.findOne({
-      //   where: { id: user.documentType },
-      // });
-
-      // 2. valida si existe el tipo de documento
-      // if (!user) throw new BadRequestException('tipo de documento no existe!!');
-
-      // 3. consulta el perfil por id
       const profile = await this.profilesRepository.findOne({
         where: { id: user.codProfile },
       });
-
-      // 4. valida si existe el perfil
       if (!profile) throw new BadRequestException('perfil no existe!!');
-
-      // 5. encripta el password
       const hashedPassword = await bcrypt.hash(user.password, 10);
 
-      // 6. passwordExpirationDate expirara en 90 dias
+      //PasswordExpirationDate expirara en 90 dias
       const passwordExpirationDate = new Date(now);
       passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
-
-      // 7. crea la instancia de user
       const newUser = this.usersRepository.create({
-        // ...userWithoutCodProfile,
         ...user,
-        //   routeStamp: filePath,
         documentType: user.documentType,
         password: hashedPassword,
-        //status esta por defecto 1
-        //lastLogin: now,
-        //availableLoginNumber =1
-        // loginNumberUsed = 1
         createAt: now,
         createdBy: id,
         updateAt: now,
         updatedBy: id,
         userExpirationDate: now,
-        // userExpirationFlag
         passwordExpirationDate,
-        //passwordExpirationFlag
-
-        //codProfile: profile.id,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
-
-      if (user.stampBase64) {
-        const base64Data = user.stampBase64.replace(
-          /^data:image\/\w+;base64,/,
-          '',
-        );
-        const buffer = Buffer.from(base64Data, 'base64');
-        const uploadDir = `D:/doctor/firmas/${response.id}/`;
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        const filePath = path.join(uploadDir, 'firma.png');
-        fs.writeFileSync(filePath, buffer);
-        newUser.routeStamp = uploadDir + 'firma.png';
-        await this.usersRepository.update(newUser.id, {
-          routeStamp: newUser.routeStamp,
-        });
-      }
+      await this.updateStamp(user.stampBase64,response)
       return response;
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
     }
+  }
 
-    //base64 string (colocar en el dto), guardas ruta en un campo de la tabla. d:/doctor+/firmas/idusuario/firmas/
+  async registerStamOld(stampBase64:string, entity:User){
+    if (stampBase64) {
+      const base64Data = stampBase64.replace(
+        /^data:image\/\w+;base64,/,
+        '',
+      );
+      const buffer = Buffer.from(base64Data, 'base64');
+      const uploadDir = `D:/doctor/firmas/${entity.id}/`;
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      const filePath = path.join(uploadDir, 'firma.png');
+      fs.writeFileSync(filePath, buffer);
+      entity.routeStamp = uploadDir + 'firma.png';
+      await this.usersRepository.update(entity.id, {
+        routeStamp: entity.routeStamp,
+      });
+    }
+  }
+
+  async updateStamp(stampBase64: string, entity: User) {
+    if (stampBase64) {
+      const base64Data = stampBase64.replace(/^data:image\/\w+;base64,/, '');
+      const buffer = Buffer.from(base64Data, 'base64');
+      const uploadDir = `D:/doctor/firmas/${entity.id}/`;
+      const filePath = path.join(uploadDir, 'firma.png');
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      fs.writeFileSync(filePath, buffer);
+      entity.routeStamp = filePath;
+      await this.usersRepository.update(entity.id, {
+        routeStamp: entity.routeStamp,
+      });
+    }
   }
 
   async uploadStamp(
@@ -117,7 +105,6 @@ export class UsersService {
     username: string,
   ) {
     try {
-      // 1. consulta si esxite el usuario
       const user = await this.usersRepository.findOne({
         where: { id: idUser },
       });
@@ -177,16 +164,15 @@ export class UsersService {
     username: string,
   ) {
     const user = await this.usersRepository.findOne({
-      where: { id },
-      relations: ['profile'],
+      where: { id }
     });
-    if (!user) throw new BadRequestException('Usuario no existe!!');
+    if (!user) throw new BadRequestException('El Usuario no existe');
     user.updateAt = now;
-
     user.updatedBy = username;
-
     Object.assign(user, updateData);
-    return await this.usersRepository.save(user);
+    const response =  await this.usersRepository.save(user)
+    await this.updateStamp(updateData.stampBase64,response)
+    return response
   }
 
   // funcion elimiar, cmabiariamos el estado del usuario.
@@ -211,14 +197,6 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
   async getAllUsers() {
-    // codigo frank
-    // no esta devolviendo correctamente las autorizaciones
-    /* return await this.usersRepository
-      .createQueryBuilder('user')
-      .leftJoinAndSelect('user.profile', 'profile')
-      .leftJoinAndSelect('profile.authorizations', 'authorization')
-      .leftJoinAndSelect('authorization.route', 'route')
-      .getMany();*/
     return await this.usersRepository.find();
   }
 
@@ -239,8 +217,6 @@ export class UsersService {
     order: 'ASC' | 'DESC' = 'DESC',
   ) {
     const query = this.usersRepository.createQueryBuilder('user');
-
-    // Aplicar filtros dinámicos
     if (filters) {
       if (filters.name) {
         query.andWhere('LOWER(user.names) LIKE :name', {
@@ -258,16 +234,9 @@ export class UsersService {
         });
       }
     }
-
     query.orderBy(`user.${'createAt'}`, order);
-
-    // Aplicar paginación
     query.skip((page - 1) * limit).take(limit);
-
-    // Obtener datos
     const [users, total] = await query.getManyAndCount();
-
-    // Retornar datos con metadata
     return {
       currentPage: page,
       totalPages: Math.ceil(total / limit),
@@ -279,12 +248,10 @@ export class UsersService {
   async getUserById(id: string): Promise<Partial<User>> {
     const user = await this.usersRepository.findOne({
       where: { id },
-      // relations: ['profile'],
     });
     if (!user) throw new BadRequestException('Usuario no encontrado');
     user.routeStamp = await this.getStampByUser(user.id);
     return {
-      //profile: profile,
       codProfile: user.codProfile,
       documentType: user.documentType,
       documentNum: user.documentNum,
@@ -297,7 +264,30 @@ export class UsersService {
       password: user.password,
       cellphone: user.cellphone,
       routeStamp: user.routeStamp,
-      // stampBase64: user.stampBase64 ?? '',
     };
   }
+
+  async updateUserStatus(id: string, status:UpdateStatus, now: Date) {
+    const user = await this.usersRepository.findOne({
+      where: { id },
+    });
+    if (!user) {
+      throw new BadRequestException('Usuario no encontrado');
+    }
+    if (user.status === status.status) {
+      throw new BadRequestException(`El usuario ya está en estado "${status}"`);
+    }
+    user.status = status.status;
+    user.updateAt = now;
+    user.updatedBy = user.username;
+    await this.usersRepository.save(user);
+    return {
+      message: `Usuario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,
+      userId: user.id,
+      status: user.status,
+      updatedAt: user.updateAt,
+      updatedBy: user.updatedBy,
+    };
+  }
+  
 }

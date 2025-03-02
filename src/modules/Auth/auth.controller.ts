@@ -29,7 +29,7 @@ export class AuthController {
   ) {
     return this.authService.signIn(credentials, request.now);
   }
-  // codigo frank
+
   @Post('mfa/generateQr')
   async generateQrCode(@Body() request: MfaUser, @Res() response: Response) {
     const uri = await this.authService.generateQrCode(request);
@@ -41,7 +41,7 @@ export class AuthController {
   @Post('logout')
   async logout(@Req() request: Request) {
     const authHeader = request.headers['authorization'];
-    const token = authHeader?.split(' ')[1]; // Extraer token del encabezado
+    const token = authHeader?.split(' ')[1]; 
     if (!token) {
       return { message: 'Token no proporcionado' };
     }
@@ -49,17 +49,3 @@ export class AuthController {
   }
 
 } 
-
-
-/*
-  @Get()
-  getAuth() {
-    return this.authService.getAuth();
-  }*/
-/*   // para que el mismo usuario se registre
-  @Post('signup')
-  signup(@Body() user: any) {
-    console.log('entro signup');
-    return this.authService.signup(user);
-  }
-  */
