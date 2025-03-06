@@ -7,10 +7,13 @@ import { SeederService } from './modules/seeder/seeder.service';
 import { ExceptionsFilter } from './config/ExceptionsFilter';
 import { ResponseApi } from './config/ResponseApi';
 import { log } from 'console';
+import * as express from 'express'
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const seeder = app.get(SeederService);
+  app.use(express.json({ limit: '10mb' }));
+  app.use(express.urlencoded({ limit: '10mb', extended: true }));
   app.use(LoggerGlobal);
   app.useGlobalPipes(
     new ValidationPipe({
@@ -34,6 +37,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
     credentials: true, // Permitir cookies y credenciales
   });
+  
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')
