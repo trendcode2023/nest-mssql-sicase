@@ -167,8 +167,10 @@ export class UsersService {
       where: { id }
     });
     if (!user) throw new BadRequestException('El Usuario no existe');
+    const hashedPassword = await bcrypt.hash(updateData.password, 10);
     user.updateAt = now;
     user.updatedBy = username;
+    user.password = hashedPassword
     Object.assign(user, updateData);
     const response =  await this.usersRepository.save(user)
     await this.updateStamp(updateData.stampBase64,response)
