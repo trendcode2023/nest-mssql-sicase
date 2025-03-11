@@ -16,7 +16,7 @@ import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('quests')
 export class QuestController {
-  constructor(private readonly questService: QuestService) {}
+  constructor(private readonly questsService: QuestService) {}
 
   // 1. crear cuestionario
   @UseInterceptors(DateAdderInterceptor)
@@ -27,7 +27,7 @@ export class QuestController {
     @User('id') userId: string,
     // @User('username') loggedInUserDni: string,
   ) {
-    return this.questService.createQuest(quest, userId, request.now);
+    return this.questsService.createQuest(quest, userId, request.now);
   }
 
   // 2. listar cuestionarios
@@ -44,7 +44,7 @@ export class QuestController {
     @Query('patientName') patientName?: string,
     @Query('patientDni') patientDni?: string,
   ) {
-    return this.questService.getAllQuests(
+    return this.questsService.getAllQuests(
       page,
       limit,
       doctorName,
@@ -61,11 +61,55 @@ export class QuestController {
     @Body() questData: Partial<CreateQuestDto>,
     @User('id') userId: string,
   ) {
-    return this.questService.updateQuest(
+    return this.questsService.updateQuest(
       questId,
       questData,
       userId,
       request.now,
     );
+  }
+  @Get('paginated')
+  @ApiQuery({
+    name: 'page',
+    required: false,
+    type: Number,
+    description: 'Número de página',
+  })
+  @ApiQuery({
+    name: 'limit',
+    required: false,
+    type: Number,
+    description: 'Número de registros por página',
+  })
+  @ApiQuery({
+    name: 'doctorName',
+    required: false,
+    type: String,
+    description: 'Filtro por nombre del doctor',
+  })
+  @ApiQuery({
+    name: 'patientName',
+    required: false,
+    type: String,
+    description: 'Filtro por nombre del paciente',
+  })
+  @ApiQuery({
+    name: 'patientDni',
+    required: false,
+    type: String,
+    description: 'Filtro por dni del paciente',
+  })
+  getQuestsPaginated(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 10,
+    @Query('doctorName') doctorName?: string,
+    @Query('patientName') patientName?: string,
+    @Query('patientDni') patientDni?: string,
+  ) {
+    return this.questsService.getQuestsPaginated(Number(page), Number(limit), {
+      doctorName,
+      patientName,
+      patientDni,
+    });
   }
 }

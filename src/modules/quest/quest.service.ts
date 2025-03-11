@@ -137,6 +137,62 @@ export class QuestService {
 
     return this.questsRepository.save(quest);
   }
+
+  async getQuestsPaginated(
+    page: number = 1, // Página por defecto 1
+    limit: number = 10, // 10 registros por defecto
+    filters?: {
+      doctorName?: string;
+      patientName?: string;
+      patientDni?: string;
+    },
+  ) {
+    const query = this.questsRepository
+      .createQueryBuilder('quest')
+      .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
+      .select([
+        'quest.id',
+        'quest.patientName',
+        'quest.patientDni',
+        'quest.pdfName',
+        'quest.jsonQuest',
+        'quest.updateAt',
+        'user.id',
+        'user.names',
+        'user.patSurname',
+        'user.matSurname',
+      ]);
+
+    if (filters) {
+      if (filters.patientName) {
+        query.andWhere('LOWER(quest.patientName) LIKE :patientName', {
+          patientName: `%${filters.patientName.toLowerCase()}%`,
+        });
+      }
+      if (filters.patientDni) {
+        query.andWhere('LOWER(quest.patientDni) LIKE :patientDni', {
+          patientDni: `%${filters.patientDni.toLowerCase()}%`,
+        });
+      }
+
+      if (filters.doctorName) {
+        query.andWhere(
+          "LOWER(CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname)) LIKE :doctorName",
+          { doctorName: `%${filters.doctorName.toLowerCase()}%` },
+        );
+      }
+    }
+
+    query.skip((page - 1) * limit).take(limit);
+    const [quests, total] = await query.getManyAndCount();
+
+    return {
+      currentPage: page,
+      totalPages: Math.ceil(total / limit),
+      totalQuests: total,
+      quests,
+    };
+  }
 }
 
 /*
