@@ -51,19 +51,16 @@ export class UsersService {
         passwordExpirationDate,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
-      await this.updateStamp(user.stampBase64,response)
+      await this.updateStamp(user.stampBase64, response);
       return response;
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
     }
   }
 
-  async registerStamOld(stampBase64:string, entity:User){
+  async registerStamOld(stampBase64: string, entity: User) {
     if (stampBase64) {
-      const base64Data = stampBase64.replace(
-        /^data:image\/\w+;base64,/,
-        '',
-      );
+      const base64Data = stampBase64.replace(/^data:image\/\w+;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
       const uploadDir = `D:/doctor/firmas/${entity.id}/`;
       if (!fs.existsSync(uploadDir)) {
@@ -164,17 +161,17 @@ export class UsersService {
     username: string,
   ) {
     const user = await this.usersRepository.findOne({
-      where: { id }
+      where: { id },
     });
     if (!user) throw new BadRequestException('El Usuario no existe');
     const hashedPassword = await bcrypt.hash(updateData.password, 10);
     Object.assign(user, updateData);
     user.updateAt = now;
     user.updatedBy = username;
-    user.password = hashedPassword
-    const response =  await this.usersRepository.save(user)
-    await this.updateStamp(updateData.stampBase64,response)
-    return response
+    user.password = hashedPassword;
+    const response = await this.usersRepository.save(user);
+    await this.updateStamp(updateData.stampBase64, response);
+    return response;
   }
 
   // funcion elimiar, cmabiariamos el estado del usuario.
@@ -269,7 +266,7 @@ export class UsersService {
     };
   }
 
-  async updateUserStatus(id: string, status:UpdateStatus, now: Date) {
+  async updateUserStatus(id: string, status: UpdateStatus, now: Date) {
     const user = await this.usersRepository.findOne({
       where: { id },
     });
@@ -291,5 +288,4 @@ export class UsersService {
       updatedBy: user.updatedBy,
     };
   }
-  
 }

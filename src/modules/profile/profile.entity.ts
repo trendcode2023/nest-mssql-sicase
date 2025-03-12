@@ -5,7 +5,7 @@ import {
   OneToMany,
   Index,
 } from 'typeorm';
-import { User } from '../users/users.entity';
+
 import { Authorization } from '../authorizations/authorizations.entity';
 
 @Entity('profiles')

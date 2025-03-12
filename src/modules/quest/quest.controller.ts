@@ -82,6 +82,12 @@ export class QuestController {
     description: 'Número de registros por página',
   })
   @ApiQuery({
+    name: 'questType',
+    required: false,
+    type: String,
+    description: 'Filtro por tipo de cuestionario',
+  })
+  @ApiQuery({
     name: 'doctorName',
     required: false,
     type: String,
@@ -102,11 +108,13 @@ export class QuestController {
   getQuestsPaginated(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
+    @Query('questType') questType?: string,
     @Query('doctorName') doctorName?: string,
     @Query('patientName') patientName?: string,
     @Query('patientDni') patientDni?: string,
   ) {
     return this.questsService.getQuestsPaginated(Number(page), Number(limit), {
+      questType,
       doctorName,
       patientName,
       patientDni,

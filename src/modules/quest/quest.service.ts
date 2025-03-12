@@ -1,30 +1,33 @@
-import {
-  ConflictException,
-  Injectable,
-  InternalServerErrorException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Quest } from './quest.entity';
 import { CreateQuestDto } from './dtos/createQuest.dto';
 import { User } from '../users/users.entity';
+import { Catalog } from '../catalog/catalog.entity';
 
 @Injectable()
 export class QuestService {
   constructor(
     @InjectRepository(Quest)
     private questsRepository: Repository<Quest>,
+    @InjectRepository(Catalog) private catalogsRepository: Repository<Catalog>,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
 
   async createQuest(quest: CreateQuestDto, userId: string, now: Date) {
     try {
-      console.log('entro al try');
       const user = await this.usersRepository.findOne({
         where: { id: userId },
       });
-      //CAMBIAR CUANDO TE LOGUEAS
+      if (!user) throw new BadRequestException('Usuario no existe!!');
+
+      const questType = await this.catalogsRepository.findOne({
+        where: { id: quest.questType },
+      });
+      if (!questType)
+        throw new BadRequestException('Tipo de cuestionario no existe!!');
 
       const newQuest = this.questsRepository.create({
         ...quest,
@@ -35,8 +38,9 @@ export class QuestService {
         user: user, // referencia al usuario que creo el cuestionario
       });
       console.log('antes de ejecutar el save quest');
+      return await this.questsRepository.save(newQuest);
       // return this.questsRepository.save(newQuest);
-      return await this.questsRepository.save(newQuest).catch((error) => {
+      /*  return await this.questsRepository.save(newQuest).catch((error) => {
         // console.error('Error en save:', error);
         if (
           error instanceof QueryFailedError &&
@@ -49,7 +53,7 @@ export class QuestService {
         throw new InternalServerErrorException(
           `Unexpected error: ${error.message}`,
         );
-      });
+      });*/
     } catch (error) {
       console.log('entro al error');
 
@@ -143,6 +147,7 @@ export class QuestService {
     page: number = 1, // Página por defecto 1
     limit: number = 10, // 10 registros por defecto
     filters?: {
+      questType?: string;
       doctorName?: string;
       patientName?: string;
       patientDni?: string;
@@ -166,6 +171,12 @@ export class QuestService {
       ]);
 
     if (filters) {
+      if (filters.questType) {
+        query.andWhere('(quest.questType) = :questType', {
+          questType: filters.questType,
+        });
+      }
+
       if (filters.patientName) {
         query.andWhere('LOWER(quest.patientName) LIKE :patientName', {
           patientName: `%${filters.patientName.toLowerCase()}%`,

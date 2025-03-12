@@ -9,8 +9,8 @@ import { LogoutService } from './logout.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])], //UsersModule
-  exports: [AuthService,MfaAuthenticationService,LogoutService],
+  exports: [AuthService, MfaAuthenticationService, LogoutService],
   controllers: [AuthController],
-  providers: [AuthService,MfaAuthenticationService,LogoutService],
+  providers: [AuthService, MfaAuthenticationService, LogoutService],
 })
 export class AuthModule {}
