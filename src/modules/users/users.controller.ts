@@ -52,7 +52,7 @@ export class UsersController {
       request.now,
       loggedInUserDni,
       //Sa    file,
-    );  
+    );
   }
 
   @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
@@ -84,7 +84,7 @@ export class UsersController {
   //@UseGuards(AuthGuard)
   //@UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
-  @ApiBody({type:UpdateUserDto})
+  @ApiBody({ type: UpdateUserDto })
   async updateUser(
     @Param('id') id: string,
     @Req() request: Request & { now: Date },
@@ -196,10 +196,10 @@ export class UsersController {
   @UseInterceptors(DateAdderInterceptor)
   @Post('update-status/:id')
   async updateUserStatus(
-  @Param('id') id: string,
-  @Body() status: UpdateStatus, // El estado se pasa en el Body
-  @Req() request: Request & { now: Date }
+    @Param('id') id: string,
+    @Body() status: UpdateStatus, // El estado se pasa en el Body
+    @Req() request: Request & { now: Date },
   ) {
-  return this.usersService.updateUserStatus(id, status, request.now);
+    return this.usersService.updateUserStatus(id, status, request.now);
   }
 }

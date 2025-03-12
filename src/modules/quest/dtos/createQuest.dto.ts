@@ -2,6 +2,16 @@ import { IsNotEmpty, IsString, Length } from 'class-validator';
 
 export class CreateQuestDto {
   /**
+   * debe ser un string de 1 caracter (3 - asegurabilidad, 4 - covid)
+   * @example '3'
+   */
+  @IsNotEmpty()
+  @IsString()
+  @Length(1, 1, {
+    message: 'El codigo de questionario debe tener entre 1 y 2 caracteres',
+  })
+  questType: string;
+  /**
    * nombre del paciente debe tener entre 5 y 100 caracteres
    * @example 'Juan Alberto Dominguez Alvarado'
    */

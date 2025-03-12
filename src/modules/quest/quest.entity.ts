@@ -24,6 +24,9 @@ export class Quest {
   @Column({ type: 'varchar', nullable: false }) // por payload
   updatedBy: string;
 
+  @Column({ type: 'varchar', length: 1, nullable: false })
+  questType: string;
+
   @ManyToOne(() => User, (user) => user.quests) //
   user: User;
 }

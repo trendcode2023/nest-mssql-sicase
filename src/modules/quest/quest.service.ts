@@ -70,6 +70,7 @@ export class QuestService {
       .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
       .select([
         'quest.id',
+        'quest.questType',
         'quest.patientName',
         'quest.patientDni',
         'quest.pdfName',
@@ -152,6 +153,7 @@ export class QuestService {
       .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
       .select([
         'quest.id',
+        'quest.questType',
         'quest.patientName',
         'quest.patientDni',
         'quest.pdfName',

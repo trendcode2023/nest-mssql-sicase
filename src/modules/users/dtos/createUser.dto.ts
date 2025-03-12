@@ -21,7 +21,7 @@ export class CreateUserDto {
 
   /**
    * debe ser un string de 2 caracteres
-   * @example '01'
+   * @example '1'
    */
 
   @IsNotEmpty()
