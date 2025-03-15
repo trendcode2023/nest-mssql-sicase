@@ -15,6 +15,8 @@ import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 import * as fs from 'fs';
 import * as path from 'path';
 import { UpdateStatus } from './dtos/UpdateStatus.dto';
+import { plainToInstance } from 'class-transformer';
+import { UserResponseDto } from './dtos/UserResponseDto';
 @Injectable()
 export class UsersService {
   constructor(
@@ -26,8 +28,7 @@ export class UsersService {
   async createUser(
     user: CreateUserDto,
     now: Date,
-    id: string, //
-    // file: Express.Multer.File,
+    id: string, 
   ) {
     try {
       const profile = await this.profilesRepository.findOne({
@@ -250,20 +251,9 @@ export class UsersService {
     });
     if (!user) throw new BadRequestException('Usuario no encontrado');
     user.routeStamp = await this.getStampByUser(user.id);
-    return {
-      codProfile: user.codProfile,
-      documentType: user.documentType,
-      documentNum: user.documentNum,
-      cmp: user.cmp,
-      names: user.names,
-      patSurname: user.patSurname,
-      matSurname: user.matSurname,
-      username: user.username,
-      email: user.email,
-      password: user.password,
-      cellphone: user.cellphone,
-      routeStamp: user.routeStamp,
-    };
+    return plainToInstance(UserResponseDto, user, {
+      excludeExtraneousValues: true, // Solo mantiene propiedades con @Expose()
+    });
   }
 
   async updateUserStatus(id: string, status: UpdateStatus, now: Date) {

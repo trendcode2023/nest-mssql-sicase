@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     console.log({ token });
 
     if (this.logoutService.isTokenBlacklisted(token)) {
-      throw new UnauthorizedException('Token inválido (lista negra)');
+      throw new UnauthorizedException('Token inválido');
     }
 
     if (!token) {

@@ -23,9 +23,9 @@ export class LogoutService {
 
   private blacklist: Set<string> = new Set();
 
-  async logout(token: string): Promise<string> {
+  async logout(token: string) {
     this.blacklist.add(token); // Agregar el token a la lista negra
-    return 'Sesión cerrada exitosamente.';
+    return {message:'Sesión cerrada exitosamente.'};
   }
 
   isTokenBlacklisted(token: string): boolean {

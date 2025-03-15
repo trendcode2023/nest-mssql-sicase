@@ -34,14 +34,14 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @ApiBearerAuth()
-  @Roles('ADMIN')
-  @UseGuards(AuthGuard, RolesGuard)
+  //@ApiBearerAuth()
+ // @Roles('ADMIN')
+  ///@UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
-  @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
+  //@UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @Post('create')
   createUser(
-    @UploadedFile() file: Express.Multer.File,
+    //@UploadedFile() file: Express.Multer.File,
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
     @User('username') loggedInUserDni: string, // captura los datos del payload
@@ -50,8 +50,7 @@ export class UsersController {
     return this.usersService.createUser(
       user,
       request.now,
-      loggedInUserDni,
-      //Sa    file,
+      loggedInUserDni
     );
   }
 
@@ -182,7 +181,7 @@ export class UsersController {
   }
 
   // @UseGuards(AuthGuard)
-  @ApiBearerAuth()
+ // @ApiBearerAuth()
   @Get('getUserById/:userId') // Ruta dinámica
   async getUserById(
     @Param('userId', new ParseUUIDPipe({ version: '4' })) id: string,
