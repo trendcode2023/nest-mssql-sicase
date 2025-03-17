@@ -6,6 +6,7 @@ import {
   Post,
   Query,
   Req,
+  Res,
   UseInterceptors,
 } from '@nestjs/common';
 import { QuestService } from './quest.service';
@@ -13,10 +14,13 @@ import { CreateQuestDto } from './dtos/createQuest.dto';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { User } from 'src/decorators/user.decorator';
 import { ApiQuery } from '@nestjs/swagger';
-
+import { PdfService } from './pdf.service';
+import { Response } from 'express';
 @Controller('quests')
 export class QuestController {
-  constructor(private readonly questsService: QuestService) {}
+  constructor(private readonly questsService: QuestService,
+    private readonly pdfService: PdfService
+  ) {}
 
   // 1. crear cuestionario
   @UseInterceptors(DateAdderInterceptor)
@@ -119,5 +123,18 @@ export class QuestController {
       patientName,
       patientDni,
     });
+  }
+
+  @Get('declaracion-salud')
+  async downloadPdf(@Res() res: Response) {
+    const pdfBuffer = await this.pdfService.generatePdf();
+
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': 'attachment; filename="declaracion_salud.pdf"',
+      'Content-Length': pdfBuffer.length,
+    });
+
+    res.end(pdfBuffer);
   }
 }
