@@ -152,6 +152,7 @@ export class QuestService {
       patientName?: string;
       patientDni?: string;
     },
+    order: 'ASC' | 'DESC' = 'DESC',
   ) {
     const query = this.questsRepository
       .createQueryBuilder('quest')
@@ -163,6 +164,7 @@ export class QuestService {
         'quest.patientDni',
         'quest.pdfName',
         'quest.jsonQuest',
+        'quest.createAt',
         'quest.updateAt',
         'user.id',
         'user.names',
@@ -195,7 +197,7 @@ export class QuestService {
         );
       }
     }
-
+    query.orderBy(`quest.${'createAt'}`, order);
     query.skip((page - 1) * limit).take(limit);
     const [quests, total] = await query.getManyAndCount();
 

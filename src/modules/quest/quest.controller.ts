@@ -18,8 +18,9 @@ import { PdfService } from './pdf.service';
 import { Response } from 'express';
 @Controller('quests')
 export class QuestController {
-  constructor(private readonly questsService: QuestService,
-    private readonly pdfService: PdfService
+  constructor(
+    private readonly questsService: QuestService,
+    private readonly pdfService: PdfService,
   ) {}
 
   // 1. crear cuestionario
@@ -109,6 +110,12 @@ export class QuestController {
     type: String,
     description: 'Filtro por dni del paciente',
   })
+  @ApiQuery({
+    name: 'order',
+    required: false,
+    type: String,
+    description: 'Orden (ASC o DESC)',
+  })
   getQuestsPaginated(
     @Query('page') page: number = 1,
     @Query('limit') limit: number = 10,
@@ -116,13 +123,19 @@ export class QuestController {
     @Query('doctorName') doctorName?: string,
     @Query('patientName') patientName?: string,
     @Query('patientDni') patientDni?: string,
+    @Query('order') order: 'ASC' | 'DESC' = 'DESC',
   ) {
-    return this.questsService.getQuestsPaginated(Number(page), Number(limit), {
-      questType,
-      doctorName,
-      patientName,
-      patientDni,
-    });
+    return this.questsService.getQuestsPaginated(
+      Number(page),
+      Number(limit),
+      {
+        questType,
+        doctorName,
+        patientName,
+        patientDni,
+      },
+      order,
+    );
   }
 
   @Get('declaracion-salud')

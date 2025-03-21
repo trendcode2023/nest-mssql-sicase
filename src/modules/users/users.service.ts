@@ -25,11 +25,7 @@ export class UsersService {
     @InjectRepository(Profile) private profilesRepository: Repository<Profile>,
   ) {}
 
-  async createUser(
-    user: CreateUserDto,
-    now: Date,
-    id: string, 
-  ) {
+  async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
       const profile = await this.profilesRepository.findOne({
         where: { id: user.codProfile },
