@@ -1,5 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PDFDocument, rgb, StandardFonts, PDFPage } from 'pdf-lib';
+import { Quest } from './quest.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Formulario } from './dtos/formulario';
 
 @Injectable()
 export class PdfService {
@@ -12,7 +16,29 @@ export class PdfService {
   private readonly margin = 50;
   private readonly lineSpacing = 14; // Espaciado entre líneas
 
+    constructor(
+      @InjectRepository(Quest)
+      private questsRepository: Repository<Quest>,
+    ) {}
+
+  //   async getQuestById(id: string): Promise<Quest> {
+  //     const quest = await this.questsRepository.findOne({
+  //       where: { id }
+  //     });
+  
+  //     if (!quest) {
+  //       throw new NotFoundException(`Quest con id ${id} no encontrado`);
+  //     }
+  
+  //     return quest;
+  // }
+   
+
+
   async generatePdf(): Promise<Buffer> {
+    // const formulario = await this.getQuestById("D4BB5B9E-4682-4406-8D32-7F44F0F78E2D");
+    // const data = JSON.parse(formulario.jsonQuest) as Formulario
+    // console.log("data exportar",data)
     this.pdfDoc = await PDFDocument.create();
     this.page = this.pdfDoc.addPage([this.pageWidth, this.pageHeight]);
     this.font = await this.pdfDoc.embedFont(StandardFonts.Helvetica);
