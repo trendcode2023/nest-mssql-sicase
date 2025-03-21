@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PDFDocument, rgb, StandardFonts, PDFPage } from 'pdf-lib';
 import { Quest } from './quest.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Index, Repository } from 'typeorm';
 import { Formulario } from './dtos/formulario';
 
 @Injectable()
@@ -15,41 +15,41 @@ export class PdfService {
   private readonly pageHeight = 842;
   private readonly margin = 50;
   private readonly lineSpacing = 14; // Espaciado entre líneas
-
+  private index = 0
     constructor(
       @InjectRepository(Quest)
       private questsRepository: Repository<Quest>,
     ) {}
 
-  //   async getQuestById(id: string): Promise<Quest> {
-  //     const quest = await this.questsRepository.findOne({
-  //       where: { id }
-  //     });
+    async getQuestById(id: string): Promise<Quest> {
+      const quest = await this.questsRepository.findOne({
+        where: { id }
+      });
   
-  //     if (!quest) {
-  //       throw new NotFoundException(`Quest con id ${id} no encontrado`);
-  //     }
+      if (!quest) {
+        throw new NotFoundException(`Quest con id ${id} no encontrado`);
+      }
   
-  //     return quest;
-  // }
+      return quest;
+  }
    
 
 
-  async generatePdf(): Promise<Buffer> {
-    // const formulario = await this.getQuestById("D4BB5B9E-4682-4406-8D32-7F44F0F78E2D");
-    // const data = JSON.parse(formulario.jsonQuest) as Formulario
-    // console.log("data exportar",data)
+  async generatePdf(questId:string): Promise<Buffer> {
+    const formulario = await this.getQuestById(questId);
+    const data = JSON.parse(formulario.jsonQuest) as Formulario
+    console.log("data exportar",data)
     this.pdfDoc = await PDFDocument.create();
     this.page = this.pdfDoc.addPage([this.pageWidth, this.pageHeight]);
     this.font = await this.pdfDoc.embedFont(StandardFonts.Helvetica);
     this.y = this.pageHeight - this.margin;
 
     this.addHeader();
-    this.addPersonalInfo();
+    this.addPersonalInfo(data);
     this.addInstructions();
-    this.addSection1();
+    this.addSection1(data);
     this.addNoteSection();
-    this.addHealthQuestions();
+    await this.addHealthQuestions(data);
 
     const pdfBytes = await this.pdfDoc.save();
     return Buffer.from(pdfBytes);
@@ -66,26 +66,26 @@ export class PdfService {
   }
 
   /** 📌 Agrega información personal del asegurado con mejor alineación */
-  private addPersonalInfo() {
+  private addPersonalInfo(data : Formulario) {
     this.addText('Parte II', 20, this.y);
     this.addText('Nº Solicitud:', 350, this.y);
-    this.addText('SOLI000001', 450, this.y);
+    this.addText(data.declaracion.nrosolicitud, 450, this.y);
     this.y -= this.lineSpacing;
 
     this.addText('Declaraciones hechas al médico', 20, this.y);
     this.addText('Asesor:', 350, this.y);
-    this.addText('FRANK ROCHA HORNA', 450, this.y);
+    this.addText(data.declaracion.asesor, 400, this.y);
     this.y -= this.lineSpacing;
 
     this.addText('Propuesto Asegurado:', 20, this.y);
-    this.addText('JOHAN ROCHA HORNA', 140, this.y);
+    this.addText(data.declaracion.names, 140, this.y);
     this.addText('Fecha de Nacimiento:', 350, this.y);
-    this.addText('21/08/1998', 470, this.y);
+    this.addText(data.declaracion.fechanacimiento, 470, this.y);
     this.y -= this.lineSpacing;
     this.addText('Estado Civil:', 20, this.y);
-    this.addText('Casado', 140, this.y);
+    this.addText(data.declaracion.estadocivil, 140, this.y);
     this.addText('DNI:', 350, this.y);
-    this.addText('74047141', 470, this.y);
+    this.addText(data.declaracion.numerodocumento, 470, this.y);
     this.y -= 25;
   }
 
@@ -117,14 +117,14 @@ export class PdfService {
   }
 
     /** 📌 Agrega la Sección 1 con preguntas y respuestas alineadas */
-  private addSection1() {
+  private addSection1(data: Formulario) {
       this.addText('POR FAVOR, CONTESTE A SU MEJOR SABER Y ENTENDER', 150, this.y, 10);
       this.y -= 20;
   
       const section1Questions = [
-        { q: 'a. ¿Nombre y dirección de su médico particular?', a: 'Dr. Acosta - Clínica Internacional (Endocrinólogo)' },
-        { q: 'b. ¿Fecha y motivo de la consulta más reciente?', a: 'Hace 1 mes (control mensual de Diabetes)' },
-        { q: 'c. ¿Qué tratamiento o medicación se prescribió?', a: 'Metformina 850 1tab/d. + Atorvastatina 20mg 1tab/d.' }
+        { q: 'a. ¿Nombre y dirección de su médico particular?', a: data.entender.nameanddirection },
+        { q: 'b. ¿Fecha y motivo de la consulta más reciente?', a: data.entender.fechaandmotivation},
+        { q: 'c. ¿Qué tratamiento o medicación se prescribió?', a: data.entender.medication }
       ];
   
       section1Questions.forEach(({ q, a }) => {
@@ -150,7 +150,7 @@ export class PdfService {
         width: noteWidth,
         height: noteHeight,
         borderWidth: 1.5,
-        borderColor: rgb(1, 0, 0)
+        borderColor: rgb(0, 0, 0)
       });
   
       this.addText('NOTA:', noteX + 20, noteY + 35, 11, rgb(1, 0, 0));
@@ -165,7 +165,7 @@ export class PdfService {
     }
 
   /** 📌 Agrega la sección de preguntas de salud */
-  private addHealthQuestions() {
+  private async addHealthQuestions(data: Formulario) {
     this.addText('2. ¿Ha sido tratado o tiene conocimiento de haber padecido de:', 20, this.y);
     this.y -= 15;
     this.addText('Sí', 520, this.y);
@@ -193,31 +193,36 @@ export class PdfService {
       lines.forEach((line, i) => {
         this.addText(line, 25, this.y - i * 12);
       });
-
-      this.drawCheckboxWithOut(520, this.y);
-      this.drawCheckboxWithOut(540, this.y);
-     // this.drawBox(25, this.y - 10, 520, 30);
-
+      const quest = data.entenderEnfermedades[this.index]
+      this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+      this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+      let sustento = this.wrapText(quest.sustento,500)
+      this.y -= 25
+      sustento.forEach((line, i) => {
+        this.addText(line, 40, this.y - i * 12);
+      });
+      this.index++
       this.y -= 50;
     });
 
     this.y -= 20;
        // 📌 **Pregunta 3: Consumo de tabaco**
-    this.addQuestion3();
-    this.addSignatureSection();
+    this.addQuestion3(data);
+    await this.addSignatureSection(data);
            // 📌 **Preguntas 4, 5 y 6**
-    this.addQuestions456();
-    this.addQuestion7()
-    this.addQuestions8to9()
-    this.addQuestion10()
-    this.addQuestion11()
-    this.addQuestion13()
-    this.addQuestions15To17()
-    this.addSignatureSection2()
+    this.addQuestions456(data);
+    this.addQuestion7(data)
+    this.addQuestions8to9(data)
+    this.addQuestion10(data)
+    this.addQuestion11(data)
+    this.addQuestion13(data)
+    this.addQuestions15To17(data)
+    await this.addSignatureSection2(data)
   }
 
   /** 📌 Agrega la Pregunta 3: Consumo de Tabaco */
-  private addQuestion3() {
+  private addQuestion3(data: Formulario) {
+    const quest = data.entenderEnfermedades[this.index]
     this.checkSpace();
 
     // **Texto de la pregunta 3**
@@ -229,25 +234,21 @@ export class PdfService {
       this.addText(line, 25, this.y - i * this.lineSpacing);
     });
 
-    this.drawCheckboxWithOut(520, this.y);
-    this.drawCheckboxWithOut(540, this.y);
+    this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+    this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
 
     this.y -= this.lineSpacing * lines.length + 10;
 
     // **Subtexto para detallar cigarrillos al día**
     this.addText('(En caso afirmativo, detalle cuántos al día)', 25, this.y);
-    this.page.drawLine({
-      start: { x: 290, y: this.y + 5 },
-      end: { x: 450, y: this.y + 5 },
-      thickness: 1,
-      color: rgb(0, 0, 0),
-    });
 
-    this.y -= 20;
+    this.addText(quest.sustento, 300, this.y);
+
+    this.y -= 50;
   }
 
    /** 📌 Agrega las Preguntas 4, 5 y 6 */
-   private addQuestions456() {
+   private addQuestions456(data: Formulario) {
     this.checkSpace();
 
     const questions = [
@@ -258,32 +259,26 @@ export class PdfService {
 
     questions.forEach((question) => {
       this.checkSpace();
-
-      // **Ajuste del texto si es muy largo**
-      let lines = this.wrapText(question, 480);
+      let lines = this.wrapText(question, 350);
       lines.forEach((line, i) => {
-        this.addText(line, 25, this.y - i * this.lineSpacing);
+        this.addText(line, 25, this.y - i * 12);
       });
-
-      this.drawCheckboxWithOut(520, this.y);
-      this.drawCheckboxWithOut(540, this.y);
-
-      this.y -= this.lineSpacing * lines.length + 10;
-
-      // **Línea para detallar información adicional en caso de respuesta afirmativa**
-      this.page.drawLine({
-        start: { x: 25, y: this.y + 5 },
-        end: { x: 550, y: this.y + 5 },
-        thickness: 1,
-        color: rgb(0, 0, 0),
+      const quest = data.entenderEnfermedades[this.index]
+      this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+      this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+      let sustento = this.wrapText(quest.sustento,500)
+      this.y -= 25
+      sustento.forEach((line, i) => {
+        this.addText(line, 40, this.y - i * 12);
       });
-
-      this.y -= 40;
+      this.index++
+      this.y -= 50;
     });
+
   }
 
    /** 📌 Agrega la Pregunta 7 */
-   private addQuestion7() {
+   private addQuestion7(data: Formulario) {
     this.checkSpace();
 
     // **Título de la Pregunta 7**
@@ -301,22 +296,40 @@ export class PdfService {
 
     subQuestions.forEach((question) => {
       this.checkSpace();
-
-      // **Dividir el texto en varias líneas si es demasiado largo**
-      let lines = this.wrapText(question, 480);
+      let lines = this.wrapText(question, 350);
       lines.forEach((line, i) => {
-        this.addText(line, 25, this.y - i * this.lineSpacing);
+        this.addText(line, 25, this.y - i * 12);
       });
-
-      this.drawCheckboxWithOut(520, this.y);
-      this.drawCheckboxWithOut(540, this.y);
-
-      this.y -= this.lineSpacing * lines.length + 10; // Espacio entre preguntas
+      const quest = data.entenderEnfermedades[this.index]
+      this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+      this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+      let sustento = this.wrapText(quest.sustento,500)
+      this.y -= 25
+      sustento.forEach((line, i) => {
+        this.addText(line, 40, this.y - i * 12);
+      });
+      this.index++
+      this.y -= 50;
     });
+
+    // subQuestions.forEach((question) => {
+    //   this.checkSpace();
+
+    //   // **Dividir el texto en varias líneas si es demasiado largo**
+    //   let lines = this.wrapText(question, 480);
+    //   lines.forEach((line, i) => {
+    //     this.addText(line, 25, this.y - i * this.lineSpacing);
+    //   });
+
+    //   this.drawCheckboxWithOut(520, this.y);
+    //   this.drawCheckboxWithOut(540, this.y);
+
+    //   this.y -= this.lineSpacing * lines.length + 10; // Espacio entre preguntas
+    // });
   }
 
    /** 📌 Agrega las Preguntas 8 y 9 */
-   private addQuestions8to9() {
+   private addQuestions8to9(data:Formulario) {
     this.checkSpace();
 
     const questions = [
@@ -326,20 +339,26 @@ export class PdfService {
 
     questions.forEach((question) => {
       this.checkSpace();
-      let lines = this.wrapText(question, 480);
+      let lines = this.wrapText(question, 350);
       lines.forEach((line, i) => {
-        this.addText(line, 25, this.y - i * this.lineSpacing);
+        this.addText(line, 25, this.y - i * 12);
       });
-
-      this.drawCheckboxWithOut(520, this.y);
-      this.drawCheckboxWithOut(540, this.y);
-
-      this.y -= this.lineSpacing * lines.length + 10;
+      const quest = data.entenderEnfermedades[this.index]
+      this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+      this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+      let sustento = this.wrapText(quest.sustento,500)
+      this.y -= 25
+      sustento.forEach((line, i) => {
+        this.addText(line, 40, this.y - i * 12);
+      });
+      this.index++
+      this.y -= 50;
     });
   }
 
    /** 📌 Agrega la Pregunta 10 con la tabla de antecedentes familiares */
-   private addQuestion10() {
+   private addQuestion10(data: Formulario) {
+    const familiares = data.familiares;
     this.checkSpace();
 
     // 📌 **Título de la pregunta**
@@ -358,75 +377,83 @@ export class PdfService {
 
     // 📌 **Encabezados de la tabla**
     const startX = 25;
-    const colWidths = [100, 280, 80]; // Columnas: Edad si viven, Estado de salud, Edad al morir
+    const colWidths = [120, 80, 280, 80]; // Columnas: Familiar, Edad si viven, Estado de salud, Edad al morir
     const headerY = this.y;
 
-    this.addText("Edad si viven", startX+50, headerY, 9);
-    this.addText("Estado de salud / Causa de muerte", startX + colWidths[0] + 20, headerY, 9);
-    this.addText("Edad al morir", startX + colWidths[0] + colWidths[1] + 20, headerY, 9);
+    this.addText("Familiar", startX + 10, headerY, 9);
+    this.addText("Edad si viven", startX + colWidths[0] + 10, headerY, 9);
+    this.addText("Estado de salud / Causa de muerte", startX + colWidths[0] + colWidths[1] + 10, headerY, 9);
+    this.addText("Edad al morir", startX + colWidths[0] + colWidths[1] + colWidths[2] + 10, headerY, 9);
 
     // 📌 **Dibujar la línea del encabezado**
     this.page.drawLine({
       start: { x: startX, y: headerY - 5 },
-      end: { x: startX + colWidths[0] + colWidths[1] + colWidths[2], y: headerY - 5 },
+      end: { x: startX + colWidths[0] + colWidths[1] + colWidths[2] + colWidths[3], y: headerY - 5 },
       thickness: 1
     });
 
     this.y -= this.lineSpacing;
 
-    // 📌 **Datos de la tabla**
-    const familyData = [
-      ["Padre", "70", "Diabetes Muertos", ""],
-      ["Madre", "68", "HTA", ""],
-      ["Hermanos", "3", "Demás hermanos sanos", ""],
-      ["N° vivo", "1", "Demás hermanos sanos", ""],
-      ["N° muerto", "1", "Por accidente de tránsito", "20"]
-    ];
-
     // 📌 **Dibujar las filas**
-    familyData.forEach(([relation, age, health, deathAge]) => {
-      this.addText(relation, startX, this.y);
-      this.addText(age, startX + colWidths[0] - 20, this.y);
-      
+    familiares.forEach(({ tipo, edadSiVive, estadoSalud, edadAlMorir }) => {
+      this.checkSpace();
+
+      // 📌 **Agregar datos en sus respectivas columnas**
+      this.addText(tipo, startX + 10, this.y); // Familiar
+      this.addText(edadSiVive.toString(), startX + colWidths[0] + 30, this.y); // Edad si viven
+
       // 📌 **Asegurar que el texto largo no se desborde**
-      let wrappedHealth = this.wrapText(health, colWidths[1] - 10);
+      let wrappedHealth = this.wrapText(estadoSalud, colWidths[2] - 10);
       wrappedHealth.forEach((line, i) => {
-        this.addText(line, startX + colWidths[0] + 20, this.y - i * this.lineSpacing);
+        this.addText(line, startX + colWidths[0] + colWidths[1] + 10, this.y - i * this.lineSpacing);
       });
 
-      this.addText(deathAge, startX + colWidths[0] + colWidths[1] + 20, this.y);
+      this.addText(edadAlMorir.toString(), startX + colWidths[0] + colWidths[1] + colWidths[2] + 20, this.y);
 
       this.y -= this.lineSpacing * wrappedHealth.length + 5; // Espaciado extra
     });
 
     this.y -= 15;
-  }
+}
+
+
    /** 📌 Agrega la Pregunta 11 con estatura y peso */
-   private addQuestion11() {
+   private addQuestion11(data:Formulario) {
     this.checkSpace();
 
     this.addText("11. a. Estatura", 20, this.y);
-    this.addText("1", 120, this.y);
+    this.addText(data.entenderEnfermedades[this.index].answer, 120, this.y);
+    this.index++
     this.addText("(m)", 135, this.y);
-    this.addText("82", 170, this.y);
+    this.addText(data.entenderEnfermedades[this.index].answer, 170, this.y);
+    this.index++
     this.addText("(cm)", 190, this.y);
     this.y -= this.lineSpacing;
 
     this.addText("b. Peso", 25, this.y);
-    this.addText("95", 120, this.y);
+    this.addText(data.entenderEnfermedades[this.index].answer, 120, this.y);
+    this.index++
     this.addText("(kg)", 170, this.y);
     this.y -= this.lineSpacing + 5;
 
     // **Checkbox para respuesta Sí/No**
+    const quest = data.entenderEnfermedades[this.index]
     this.addText("12. ¿Ha tenido algún cambio de peso en los últimos 12 meses?", 25, this.y);
-    this.drawCheckboxWithOut(520, this.y);
-    this.drawCheckboxWithOut(540, this.y);
+    this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+    this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+    let sustento = this.wrapText(quest.sustento,500)
+    sustento.forEach((line, i) => {
+      this.addText(line, 40, this.y - i * 12);
+    });
+    this.y -= 25
+    this.index++
     this.y -= this.lineSpacing + 10;
+
   }
 
 
   /** 📌 Agrega la Pregunta 13 sobre embarazo */
-  private addQuestion13() {
+  private addQuestion13(data: Formulario) {
     this.checkSpace();
 
     this.addText("13. SI EL PROPUESTO ASEGURADO ES MUJER", 20, this.y, 10);
@@ -454,10 +481,13 @@ export class PdfService {
 
       this.y -= this.lineSpacing * lines.length + 5;
     });
+
   }
 
     /** 📌 Agrega la Pregunta 15, 16 y 17 con sus checkboxes alineados */
-    private addQuestions15To17() {
+    private addQuestions15To17(data) {
+      this.index++
+      this.index++
       this.checkSpace();
   
       const questions = [
@@ -467,61 +497,157 @@ export class PdfService {
         "17. ¿Tiene usted alguno de estos síntomas sin explicación: fatiga, pérdida de peso, diarrea, ganglios linfáticos inflamados o extrañas lesiones en la piel?"
       ];
   
-      questions.forEach((question) => {
-        this.checkSpace();
-  
-        let wrappedLines = this.wrapText(question, 480); // Ajusta el texto al ancho
-        wrappedLines.forEach((line, i) => {
-          this.addText(line, 20, this.y - i * this.lineSpacing);
-        });
-  
-        this.drawCheckboxWithOut(520, this.y); // Opción "Sí"
-        this.drawCheckboxWithOut(540, this.y); // Opción "No"
-  
-        this.y -= this.lineSpacing * wrappedLines.length + 10; // Espaciado adicional
+      
+    questions.forEach((question) => {
+      this.checkSpace();
+      let lines = this.wrapText(question, 420);
+      lines.forEach((line, i) => {
+        this.addText(line, 25, this.y - i * 12);
       });
+      const quest = data.entenderEnfermedades[this.index]
+      this.drawCheckboxWithX(520, this.y, quest.answer?.toLowerCase() === 's'); // Marca si es 's'
+      this.drawCheckboxWithX(540, this.y, quest.answer?.toLowerCase() === 'n'); // Marca si es 'n'
+      let sustento = this.wrapText(quest.sustento,500)
+      this.y -= 25
+      sustento.forEach((line, i) => {
+        this.addText(line, 40, this.y - i * 12);
+      });
+      this.index++
+      this.y -= 50;
+    });
   
       this.y -= 10; // Espacio antes de la siguiente sección
     }
 
   /** 📌 Agrega la sección de firma */
-  private addSignatureSection() {
+  // private addSignatureSection(data:Formulario) {
+  //   const firmaBase64 = data.firma.propuestoAsegurado
+  //   this.checkSpace();
+  //   this.drawBox(180, this.y, 240, 40);
+  //   this.addText('Firma del Propuesto Asegurado', 220, this.y - 15);
+  //   this.y -=60
+  // }
+
+  private async addSignatureSection(data: Formulario) {
     this.checkSpace();
-    this.drawBox(180, this.y, 240, 40);
-    this.addText('Firma del Propuesto Asegurado', 220, this.y - 15);
-    this.y -=60
-  }
+
+    const firmaBase64 = data.firma.propuestoAsegurado;
+
+    // 📌 Posiciones y dimensiones
+    const boxX = 180;
+    const boxY = this.y;
+    const boxWidth = 240;
+    const boxHeight = 40;
+
+    // 📌 Dibujar la línea base de firma
+    this.page.drawLine({
+        start: { x: boxX, y: boxY - 15 }, 
+        end: { x: boxX + boxWidth, y: boxY - 15 },
+        thickness: 1,
+        color: rgb(0, 0, 0),
+    });
+
+    // 📌 Agregar texto alineado debajo de la línea
+    this.addText('Firma del Propuesto Asegurado', boxX + 40, boxY - 35);
+
+    // 📌 Si existe una firma en Base64, agregarla al PDF
+    if (firmaBase64?.startsWith('data:image/png;base64,')) {
+        const base64Image = firmaBase64.replace('data:image/png;base64,', '');
+        const imageBytes = Buffer.from(base64Image, 'base64');
+        const pngImage = await this.pdfDoc.embedPng(imageBytes);
+        const pngDims = pngImage.scale(1);
+
+        // 📌 Ajustar tamaño de la firma para que sea más grande (1.2x)
+        const scale = Math.min(boxWidth / pngDims.width, (boxHeight - 10) / pngDims.height) * 1.2;
+        const signatureWidth = pngDims.width * scale;
+        const signatureHeight = pngDims.height * scale;
+
+        // 📌 Centrar la imagen sobre la línea sin que cubra el texto
+        const imageX = boxX + (boxWidth - signatureWidth) / 2;
+        const imageY = boxY - 15 + 8; // Se posiciona ligeramente arriba de la línea
+
+        this.page.drawImage(pngImage, {
+            x: imageX,
+            y: imageY,
+            width: signatureWidth,
+            height: signatureHeight,
+        });
+    }
+
+    this.y -= 80; // Espacio después de la firma
+}
+  
 
     /** 📌 Agrega la sección de firmas alineadas */
-    private addSignatureSection2() {
+    private async addSignatureSection2(data: Formulario) {
       this.checkSpace();
+  
+      const firmaMedicoBase64 = data.firma.propuestoAsegurado;
+      const firmaAseguradoBase64 = data.firma.propuestoAsegurado;
+  
       const startX = 100;
       const middleX = this.pageWidth / 2 + 30;
       const yPosition = this.y - 50;
   
       // 📌 Línea de "Firmado en..."
-      this.addText('Firmado en', startX, yPosition);
-      this.drawLine(startX + 50, yPosition, 80); // Espacio para la ciudad
-      this.addText('el', startX + 140, yPosition);
-      this.drawLine(startX + 160, yPosition, 30); // Espacio para el día
-      this.addText('de', startX + 200, yPosition);
-      this.drawLine(startX + 220, yPosition, 80); // Espacio para el mes
-      this.addText('del 20', startX + 310, yPosition);
-      this.drawLine(startX + 340, yPosition, 30); // Espacio para el año
+      this.addText('Firmado en', startX, yPosition+20);
+
+      this.drawLine(startX + 50, yPosition+20, 80); // Espacio para la ciudad
+      this.addText('el', startX + 140, yPosition-20);
+      this.drawLine(startX + 160, yPosition+20, 30); // Espacio para el día
+      this.addText('de', startX + 200, yPosition+20);
+      this.drawLine(startX + 220, yPosition+20, 80); // Espacio para el mes
+      this.addText('del 20', startX + 310, yPosition+20);
+      this.drawLine(startX + 340, yPosition+20, 30); // Espacio para el año
   
       // 📌 Firma del Médico Examinador
       this.drawLine(startX, yPosition - 40, 180);
       this.addText('Firma del Médico Examinador', startX + 20, yPosition - 55);
-      this.addText('MÉDICO - CIRUJANO', startX + 50, yPosition - 70);
-      this.addText('C.M.P. _______', startX + 50, yPosition - 85);
-      
+  
       // 📌 Firma del Propuesto Asegurado
       this.drawLine(middleX, yPosition - 40, 180);
       this.addText('Firma del Propuesto Asegurado', middleX + 10, yPosition - 55);
-      this.addText('Favor de consignar la firma de su D.N.I.', middleX - 10, yPosition - 70);
   
-      this.y -= 100; // Ajustar espacio después de la sección
-    }
+      // 📌 Agregar las imágenes de las firmas
+      if (firmaMedicoBase64?.startsWith('data:image/png;base64,')) {
+          await this.drawSignatureImage(firmaMedicoBase64, startX, yPosition - 40, 180, 50);
+      }
+      if (firmaAseguradoBase64?.startsWith('data:image/png;base64,')) {
+          await this.drawSignatureImage(firmaAseguradoBase64, middleX, yPosition - 40, 180, 50);
+      }
+  
+      this.y -= 120; // Ajustar espacio después de la sección
+  }
+  
+  /** 📌 Método para dibujar la firma en el PDF */
+  private async drawSignatureImage(base64Image: string, x: number, y: number, width: number, height: number) {
+      try {
+          const base64Data = base64Image.replace('data:image/png;base64,', '');
+          const imageBytes = Buffer.from(base64Data, 'base64');
+          const pngImage = await this.pdfDoc.embedPng(imageBytes);
+          const pngDims = pngImage.scale(1);
+  
+          // 📌 Ajustar tamaño de la firma para que sea más grande (1.2x)
+          const scale = Math.min(width / pngDims.width, height / pngDims.height) * 1.2;
+          const signatureWidth = pngDims.width * scale;
+          const signatureHeight = pngDims.height * scale;
+  
+          // 📌 Centrar la imagen sobre la línea sin que cubra el texto
+          const imageX = x + (width - signatureWidth) / 2;
+          const imageY = y + (height - signatureHeight) / 2;
+  
+          this.page.drawImage(pngImage, {
+              x: imageX,
+              y: imageY,
+              width: signatureWidth,
+              height: signatureHeight,
+          });
+  
+      } catch (error) {
+          console.error("🚨 Error al procesar la firma:", error.message);
+          this.addText("⚠ Error al cargar firma", x + 20, y + 10, 8, rgb(1, 0, 0));
+      }
+  }
   
     /** 📌 Dibuja una línea en coordenadas específicas */
     private drawLine(x: number, y: number, length: number) {
@@ -600,4 +726,26 @@ export class PdfService {
     if (currentLine) lines.push(currentLine);
     return lines;
   }
+
+  private drawCheckboxWithX(x: number, y: number, checked: boolean) {
+    this.page.drawRectangle({
+      x,
+      y: y - 12,
+      width: 12,
+      height: 12,
+      borderWidth: 1,
+      borderColor: rgb(0, 0, 0),
+    });
+  
+    if (checked) {
+      this.page.drawText('X', {
+        x: x + 3,
+        y: y - 10,
+        size: 10,
+        font: this.font,
+        color: rgb(0, 0, 0),
+      });
+    }
+  }
+  
 }

@@ -138,9 +138,9 @@ export class QuestController {
     );
   }
 
-  @Get('declaracion-salud')
-  async downloadPdf(@Res() res: Response) {
-    const pdfBuffer = await this.pdfService.generatePdf();
+  @Get('declaracion-salud/:id')
+  async downloadPdf(@Res() res: Response,@Param('id') questId: string,) {
+    const pdfBuffer = await this.pdfService.generatePdf(questId);
 
     res.set({
       'Content-Type': 'application/pdf',

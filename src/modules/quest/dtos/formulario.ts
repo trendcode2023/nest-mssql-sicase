@@ -28,6 +28,7 @@ export interface Declaracion {
   
   export interface Firma {
     medico: string;
+    propuestoAsegurado:string
   }
   
   export interface Formulario {
