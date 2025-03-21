@@ -35,7 +35,7 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   //@ApiBearerAuth()
- // @Roles('ADMIN')
+  // @Roles('ADMIN')
   ///@UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   //@UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
@@ -47,11 +47,7 @@ export class UsersController {
     @User('username') loggedInUserDni: string, // captura los datos del payload
   ) {
     console.log(loggedInUserDni);
-    return this.usersService.createUser(
-      user,
-      request.now,
-      loggedInUserDni
-    );
+    return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
   @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
@@ -181,7 +177,7 @@ export class UsersController {
   }
 
   // @UseGuards(AuthGuard)
- // @ApiBearerAuth()
+  // @ApiBearerAuth()
   @Get('getUserById/:userId') // Ruta dinámica
   async getUserById(
     @Param('userId', new ParseUUIDPipe({ version: '4' })) id: string,
