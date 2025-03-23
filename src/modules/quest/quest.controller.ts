@@ -18,7 +18,7 @@ import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { PdfService } from './pdf.service';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
-import { RolesGuard } from 'src/guards/roles.guard';
+
 @Controller('quests')
 export class QuestController {
   constructor(
@@ -64,6 +64,8 @@ export class QuestController {
     );
   }
   // 3. actualizar cuestionario
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
   async updateQuest(
