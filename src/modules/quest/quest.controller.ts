@@ -7,15 +7,18 @@ import {
   Query,
   Req,
   Res,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { QuestService } from './quest.service';
 import { CreateQuestDto } from './dtos/createQuest.dto';
 import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { User } from 'src/decorators/user.decorator';
-import { ApiQuery } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { PdfService } from './pdf.service';
 import { Response } from 'express';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 @Controller('quests')
 export class QuestController {
   constructor(
@@ -24,6 +27,9 @@ export class QuestController {
   ) {}
 
   // 1. crear cuestionario
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
   createQuest(
@@ -59,12 +65,12 @@ export class QuestController {
   }
   // 3. actualizar cuestionario
   @UseInterceptors(DateAdderInterceptor)
-  @Post(':id')
+  @Post('update/:id')
   async updateQuest(
     @Param('id') questId: string,
     @Req() request: Request & { now: Date },
-    @Body() questData: Partial<CreateQuestDto>,
     @User('id') userId: string,
+    @Body() questData: string,
   ) {
     return this.questsService.updateQuest(
       questId,
@@ -139,7 +145,7 @@ export class QuestController {
   }
 
   @Get('declaracion-salud/:id')
-  async downloadPdf(@Res() res: Response,@Param('id') questId: string,) {
+  async downloadPdf(@Res() res: Response, @Param('id') questId: string) {
     const pdfBuffer = await this.pdfService.generatePdf(questId);
 
     res.set({
