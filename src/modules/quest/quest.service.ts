@@ -39,21 +39,6 @@ export class QuestService {
       });
       console.log('antes de ejecutar el save quest');
       return await this.questsRepository.save(newQuest);
-      // return this.questsRepository.save(newQuest);
-      /*  return await this.questsRepository.save(newQuest).catch((error) => {
-        // console.error('Error en save:', error);
-        if (
-          error instanceof QueryFailedError &&
-          error.message.includes('UNIQUE KEY constraint')
-        ) {
-          throw new ConflictException(
-            `A quest with this unique value already exists.`,
-          );
-        }
-        throw new InternalServerErrorException(
-          `Unexpected error: ${error.message}`,
-        );
-      });*/
     } catch (error) {
       console.log('entro al error');
 
