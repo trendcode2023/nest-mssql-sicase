@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Declaración de Salud</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      line-height: 1.6;
+      padding-top: 3px;
+      padding-right: 2px;
+      padding-left: 2px;
+      padding-bottom: 3px;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    h1,
+    h2,
+    h3 {
+      text-align: center;
+      margin: 2px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+    }
+
+    th,
+    td {
+      border: 1px solid #000;
+      padding: 6px;
+      text-align: left;
+    }
+
+    .firma {
+      height: 80px;
+      border-bottom: 1px solid #000;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .checkbox {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border: 1px solid #000;
+      text-align: center;
+      line-height: 12px;
+      margin-left: 10px;
+    }
+
+    .label {
+      font-weight: bold;
+    }
+
+    .question-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 2px;
+
+      /* espacio entre pares de pregunta-respuesta */
+    }
+
+    .question {
+      font-weight: bold;
+      max-width: 300px;
+      /* ancho fijo para alinear todas las preguntas */
+    }
+
+    .answer {
+      flex: 1;
+            margin-left: 10px;
+      /* ocupará el resto del espacio disponible */
+    }
+
+    .checkbox {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 1px solid #000;
+      text-align: center;
+      font-size: 10px;
+      line-height: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <h5>Pacífico Seguro</h2>
+  <h2 style="text-align: left;">Declaración Adicional De Salud</h2>
+  <hr style="margin: 5px 0;" />
+  <div class="sectionHeader">
+    <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;">
+      <div>
+        <div><span>Parte II</span></div>
+        <span><strong>Declaraciones hechas al médico</strong></span>
+        <div><span class="label">Propuesto Asegurado:</span> TESSA KARINA PARIONA SALAZAR</div>
+        <div><span class="label">Estado Civil</span> S</div>
+      </div>
+      <div>
+        <div><span class="label">N° Solicitud:</span> 123456</div>
+        <div><span class="label">Asesor:</span> SHEYLA KARINA SALAZAR GAMARRA </div>
+        <div>
+          <span class="label">Fecha de Nacimiento:</span>
+           /  / 
+        </div>
+        <div><span class="label">D.N.I. Nº:</span> 75166648</div>
+      </div>
+    </div>
+    <hr style="margin: 5px 0;" />
+    <div style="font-size: 11px; margin-left: 10px;margin-right: 10px;">
+      <div class="label" style="text-align: center; margin-bottom: 5px;">INSTRUCCIONES PARA EL MÉDICO EXAMINADOR</div>
+      <ol>
+        <li>Una vez comenzado el examen, el informe correspondiente pasa a ser propiedad de la Compañía y no debe ser
+          alterado o destruido cualquiera sea el dictamen, incluso si el Propuesto Asegurado u otra persona se ofrecen a
+          pagar sus honorarios.</li>
+        <li>No se permite al M.E. examinar a sus pacientes o familiares, o a los clientes de un familiar suyo.</li>
+        <li>El Propuesto Asegurado debe poner su firma en cualquier alteración en las declaraciones hechas por él.</li>
+        <li>Tanto las declaraciones del Propuesto Asegurado como su informe deben ser registradas a mano por usted.</li>
+        <li>Si está usando sistema métrico para la medida, indicarlo.</li>
+      </ol>
+    </div>
+  </div>
+  <h4 style="text-align: center;">POR FAVOR, CONTESTE A SU MEJOR SABER Y ATENDER</h2>
+    <section class="QuestPartOne">
+      <div class="question-section">
+        <div class="question">1 a. ¿ Nombre y dirección de su médico particular?(Si no tiene, último médico consultado)
+        </div>
+        <div class="answer">12/03/25 REVISIÓN</div>
+      </div>
+
+      <div class="question-section">
+        <div class="question">b. ¿Fecha y motivo de la consulta más reciente? (Si fue dentro de los últimos 10 años)
+        </div>
+        <div class="answer">12/03/25 REVISIÓN</div>
+      </div>
+
+      <div class="question-section">
+        <div class="question">c. ¿Qué tratamiento o medicación se prescribió?</div>
+        <div class="answer">12/03/25 REVISIÓN</div>
+      </div>
+    </section>
+
+    <section style="margin-top: 10px;">
+      <div style="font-weight: bold; margin-bottom: 5px;">
+        2. ¿Ha sido tratado o tiene conocimiento de haber padecido de: (SUBRAYE LOS DATOS PERTINENTES)
+      </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">a..</span> Enfermedad o defecto de ojos, oídos, nariz o garganta?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">b..</span> Mareos, desmayos, convulsiones, cefaleas, torpeza al hablar, parálisis o ataque cerebral; enfermedades de tipo mental o nerviosa?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">c..</span> Dificultad al respirar, ronquera o tos persistente, hemoptisis, bronquitis, pleuresía, asma, enfisema, tuberculosis o enfermedad respiratoria crónica?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">d..</span> Dolor en el pecho, palpitaciones, hipertensión, fiebre reumática, soplo cardíaco, ataque cardíaco u otra enfermedad del sistema cardiovascular?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox"></div>
+              <div class="checkbox">X</div>
+            </div>
+          </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">e..</span> Ictericia, hemorragia intestinal, úlcera, hernia, apendicitis, colitis, diverticulitis, hemorroides, indigestión frecuente o cualquier otra enfermedad del estómago, intestino, hígado o vesícula?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">f..</span> Azúcar, albúmina, sangre o pus en la orina, enfermedad venérea, piedra u otras enfermedades de los riñones, vejiga, próstata o aparato reproductor?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox"></div>
+              <div class="checkbox">X</div>
+            </div>
+          </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">g..</span> Diabetes, enfermedad de la tiroides u otras glándulas endocrinas?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">h..</span> Neuritis, ciática, reumatismo, artritis, gota o cualquier otra enfermedad de los músculos o huesos, incluyendo la columna, espalda y articulaciones?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox"></div>
+              <div class="checkbox">X</div>
+            </div>
+          </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">i..</span> Alguna deformidad, cojera o amputación?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">j..</span> Enfermedad de la piel, ganglios linfáticos, quistes, tumores, cáncer?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox"></div>
+              <div class="checkbox">X</div>
+            </div>
+          </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">k..</span> Alergias, anemia u otra enfermedad de la sangre?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">X</div>
+              <div class="checkbox"></div>
+            </div>
+          </div>
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              PRUEBA
+            </div>
+            <hr style="margin: 5px 0;" />
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">l..</span> Consumo excesivo del alcohol?
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox"></div>
+              <div class="checkbox">X</div>
+            </div>
+          </div>
+            <hr style="margin: 5px 0;" />
+   </section>
+    
+
+
+</body>
+
+</html>
