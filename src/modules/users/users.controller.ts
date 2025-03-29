@@ -34,9 +34,9 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  //@ApiBearerAuth()
+  @ApiBearerAuth()
   // @Roles('ADMIN')
-  ///@UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
   //@UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @Post('create')

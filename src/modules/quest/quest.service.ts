@@ -39,21 +39,6 @@ export class QuestService {
       });
       console.log('antes de ejecutar el save quest');
       return await this.questsRepository.save(newQuest);
-      // return this.questsRepository.save(newQuest);
-      /*  return await this.questsRepository.save(newQuest).catch((error) => {
-        // console.error('Error en save:', error);
-        if (
-          error instanceof QueryFailedError &&
-          error.message.includes('UNIQUE KEY constraint')
-        ) {
-          throw new ConflictException(
-            `A quest with this unique value already exists.`,
-          );
-        }
-        throw new InternalServerErrorException(
-          `Unexpected error: ${error.message}`,
-        );
-      });*/
     } catch (error) {
       console.log('entro al error');
 
@@ -80,6 +65,7 @@ export class QuestService {
         'quest.pdfName',
         'quest.jsonQuest',
         'quest.updateAt',
+        'quest.updatebBy',
         'user.id',
         'user.names',
         'user.patSurname',
@@ -115,7 +101,7 @@ export class QuestService {
 
   async updateQuest(
     questId: string,
-    questData: Partial<CreateQuestDto>,
+    questData: string,
     userId: string,
     now: Date,
   ) {
@@ -126,20 +112,21 @@ export class QuestService {
     if (!quest) {
       throw new Error('cuestionario no encontrado');
     }
-
+    console.log(quest);
     // 2. Buscar el usuario que realiza la actualización
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new Error('usuario no encontrado');
     }
-    console.log(now);
+    console.log(user);
+    console.log(questData);
     // 3. Actualizar la Quest con los nuevos datos
     Object.assign(quest, {
-      ...questData,
+      jsonQuest: JSON.stringify(questData),
       updateAt: now,
       updatedBy: user.username,
     });
-
+    console.log(quest.createdBy);
     return this.questsRepository.save(quest);
   }
 
