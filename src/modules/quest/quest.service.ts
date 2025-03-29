@@ -195,17 +195,22 @@ export class QuestService {
       quests,
     };
   }
-}
 
-/*
-    // 1. validamos si existe el quest por nombre de pdf
-    const questionnaire = await this.questRepository.findOne({
-      where: { pdfName: quest.pdfName },
-    });
-    //CAMBIAR CUANDO TE LOGUEAS
-    creatorUser = 'JOHAN ROCHA';
-    // valida si existe el nombre del pdf del cuestionario
-    if (questionnaire)
-      throw new BadRequestException(
-        'cuestionario ya se encuentra registrado!!',
-      );*/
+  async getQuestById(id: string) {
+    // const quest = await this.questsRepository.findOne({
+    //   where: { id },
+    //  });
+    //if (!quest) throw new BadRequestException('Cuestionario no encontrado');
+
+    const quest = await this.questsRepository
+      .createQueryBuilder('quest')
+      .leftJoin('quest.user', 'user') // Hacer el JOIN sin seleccionar todos los campos
+      .addSelect('user.id') // Seleccionar solo user.id
+      .where('quest.id = :id', { id })
+      .getOne();
+
+    if (!quest) throw new BadRequestException('Cuestionario no encontrado');
+
+    return quest;
+  }
+}

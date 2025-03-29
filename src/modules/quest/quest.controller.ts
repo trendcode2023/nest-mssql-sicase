@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Query,
   Req,
@@ -157,5 +158,14 @@ export class QuestController {
     });
 
     res.end(pdfBuffer);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get('getQuestById/:id') // Ruta dinámica
+  async getUserById(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    return this.questsService.getQuestById(id);
   }
 }
