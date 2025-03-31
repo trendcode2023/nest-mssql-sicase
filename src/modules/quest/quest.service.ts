@@ -5,6 +5,7 @@ import { Quest } from './quest.entity';
 import { CreateQuestDto } from './dtos/createQuest.dto';
 import { User } from '../users/users.entity';
 import { Catalog } from '../catalog/catalog.entity';
+import { UpdateQuestDto } from './dtos/updateQuest.dto';
 
 @Injectable()
 export class QuestService {
@@ -101,7 +102,7 @@ export class QuestService {
 
   async updateQuest(
     questId: string,
-    questData: string,
+    updateData: UpdateQuestDto,
     userId: string,
     now: Date,
   ) {
@@ -112,20 +113,23 @@ export class QuestService {
     if (!quest) {
       throw new Error('cuestionario no encontrado');
     }
-    console.log(quest);
+    console.log(updateData);
     // 2. Buscar el usuario que realiza la actualización
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new Error('usuario no encontrado');
     }
-    console.log(user);
-    console.log(questData);
+
     // 3. Actualizar la Quest con los nuevos datos
-    Object.assign(quest, {
-      jsonQuest: JSON.stringify(questData),
-      updateAt: now,
-      updatedBy: user.username,
-    });
+    Object.assign(quest, updateData);
+
+    quest.updateAt = now;
+    quest.updatedBy = user.username;
+    // {
+    //   jsonQuest: JSON.stringify(questData),
+    //   updateAt: now,
+    //   updatedBy: user.username,
+    //});
     console.log(quest.createdBy);
     return this.questsRepository.save(quest);
   }

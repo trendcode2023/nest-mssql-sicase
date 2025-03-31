@@ -19,6 +19,7 @@ import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { PdfService } from './pdf.service';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { UpdateQuestDto } from './dtos/updateQuest.dto';
 
 @Controller('quests')
 export class QuestController {
@@ -73,11 +74,11 @@ export class QuestController {
     @Param('id') questId: string,
     @Req() request: Request & { now: Date },
     @User('id') userId: string,
-    @Body() questData: string,
+    @Body() updateData: UpdateQuestDto,
   ) {
     return this.questsService.updateQuest(
       questId,
-      questData,
+      updateData,
       userId,
       request.now,
     );
