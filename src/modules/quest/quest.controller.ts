@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Param,
+  ParseUUIDPipe,
   Post,
   Query,
   Req,
@@ -18,6 +19,7 @@ import { ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { PdfService } from './pdf.service';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { UpdateQuestDto } from './dtos/updateQuest.dto';
 
 @Controller('quests')
 export class QuestController {
@@ -72,11 +74,11 @@ export class QuestController {
     @Param('id') questId: string,
     @Req() request: Request & { now: Date },
     @User('id') userId: string,
-    @Body() questData: string,
+    @Body() updateData: UpdateQuestDto,
   ) {
     return this.questsService.updateQuest(
       questId,
-      questData,
+      updateData,
       userId,
       request.now,
     );
@@ -157,5 +159,14 @@ export class QuestController {
     });
 
     res.end(pdfBuffer);
+  }
+
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @Get('getQuestById/:id') // Ruta dinámica
+  async getUserById(
+    @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
+  ) {
+    return this.questsService.getQuestById(id);
   }
 }

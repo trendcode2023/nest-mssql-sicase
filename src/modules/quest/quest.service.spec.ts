@@ -14,32 +14,21 @@ describe('QuestService', () => {
   let questsRepository: Repository<Quest>;
   let catalogsRepository: Repository<Catalog>;
 
-  // beforeEach() se ejecuta antes de cada prueba, Se usa para inicializar valores, instancias de servicios o configurar mocks antes de ejecutar cada test individual.
-  // mock: version simulada de un objeto
   beforeEach(async () => {
-    // configuracion de entorno de prueba
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         QuestService,
         {
-          // Se usa getRepositoryToken() para obtener los repositorios en memoria y simular sus métodos con Jest (jest.fn()).
           provide: getRepositoryToken(User),
-          useValue: {
-            findOne: jest.fn(),
-          },
+          useClass: Repository,
         },
         {
           provide: getRepositoryToken(Quest),
-          useValue: {
-            create: jest.fn(),
-            save: jest.fn(),
-          },
+          useClass: Repository,
         },
         {
           provide: getRepositoryToken(Catalog),
-          useValue: {
-            findOne: jest.fn(),
-          },
+          useClass: Repository,
         },
       ],
     }).compile();
@@ -52,8 +41,8 @@ describe('QuestService', () => {
     );
   });
 
-  it('debería crear un cuestionario exitosamente', async () => {
-    const userId = '15b957f4-1fc2-48cb-a280-f53e2672038d'; // usuario valido
+  describe('createQuest', () => {
+    const userId = '15b957f4-1fc2-48cb-a280-f53e2672038d';
     const now = new Date();
     const createQuestDto: CreateQuestDto = {
       questType: '3',
@@ -64,70 +53,107 @@ describe('QuestService', () => {
         '{codigo:001, nombre:abcd, questions:[{id:1,question:tienes covid?}]}',
     };
 
-    const mockUser = { id: userId, username: 'testUser' };
-    const mockQuestType = { id: '1', name: 'Test Type' };
-    const mockNewQuest = {
-      ...createQuestDto,
-      createdBy: mockUser.username,
-      createAt: now,
-    };
+    describe('cuando la creación es exitosa', () => {
+      it('debería crear un cuestionario exitosamente', async () => {
+        const mockUser: User = {
+          id: userId,
+          codProfile: '1',
+          documentType: '1',
+          documentNum: '52052020',
+          cmp: '250520',
+          names: 'PEDROe',
+          patSurname: 'CABRERAe',
+          matSurname: 'QUISPEe',
+          username: 'PEDRO05e',
+          email: 'pedro@gmail.com',
+          password:
+            '$2b$10$WvYtUPY8V9Nc4eSwjkUSNuk/ycN22JnI85VtRX5EcluBgAQT9Cuvu',
+          cellphone: '934602459',
+          routeStamp:
+            'D:\\doctor\\firmas\\15B957F4-1FC2-48CB-A280-F53E2672038D\\firma.png',
+          status: 'ac',
+          lastLogin: new Date(),
+          lastFailedLogin: null,
+          availableLoginNumber: 5,
+          failedLoginAttempts: 0,
+          createAt: new Date(),
+          createdBy: 'SADMINS',
+          updateAt: new Date(),
+          updatedBy: 'SADMINS',
+          userExpirationDate: new Date(),
+          userExpirationFlag: 1,
+          passwordExpirationDate: new Date(),
+          passwordExpirationFlag: 1,
+          isMfaEnabled: true,
+          isNewUser: true,
+          mfaSecrect: 'HMQQGVRUDYSHWXJW',
+          quests: [],
+        };
+        const mockQuestType: Catalog = {
+          id: '1',
+          name: 'Test Type',
+          codeName: 'CODE_123',
+          detail: 'Detail of test type',
+        };
+        const mockNewQuest: Quest = {
+          id: '123',
+          createdBy: mockUser.username,
+          createAt: now,
+          updateAt: now,
+          updatedBy: mockUser.username,
+          questType: createQuestDto.questType,
+          patientName: createQuestDto.patientName,
+          patientDni: createQuestDto.patientDni,
+          pdfName: createQuestDto.pdfName,
+          jsonQuest: createQuestDto.jsonQuest,
+          user: mockUser, // Relación con el usuario
+        };
 
-    usersRepository.findOne = jest.fn().mockResolvedValue(mockUser); // devuelve un usuario
-    catalogsRepository.findOne = jest.fn().mockResolvedValue(mockQuestType); // devuelve un tipo de cuestionario
-    questsRepository.create = jest.fn().mockReturnValue(mockNewQuest); // devuelve un objeto de cuestionario nuevo
-    questsRepository.save = jest.fn().mockResolvedValue(mockNewQuest); // guarda una cuestionario
-    // se ejecuta service.createQuest()
-    const result = await service.createQuest(createQuestDto, userId, now);
+        jest.spyOn(usersRepository, 'findOne').mockResolvedValue(mockUser);
+        jest
+          .spyOn(catalogsRepository, 'findOne')
+          .mockResolvedValue(mockQuestType);
+        jest.spyOn(questsRepository, 'create').mockReturnValue(mockNewQuest);
+        jest.spyOn(questsRepository, 'save').mockResolvedValue(mockNewQuest);
 
-    expect(usersRepository.findOne).toHaveBeenCalledWith({
-      where: { id: userId },
+        const result = await service.createQuest(createQuestDto, userId, now);
+
+        expect(usersRepository.findOne).toHaveBeenCalledWith({
+          where: { id: userId },
+        });
+        expect(catalogsRepository.findOne).toHaveBeenCalledWith({
+          where: { id: createQuestDto.questType },
+        });
+        expect(questsRepository.create).toHaveBeenCalledWith(
+          expect.objectContaining({ createdBy: 'testUser' }),
+        );
+        expect(questsRepository.save).toHaveBeenCalledWith(mockNewQuest);
+        expect(result).toEqual(mockNewQuest);
+      });
     });
-    expect(catalogsRepository.findOne).toHaveBeenCalledWith({
-      where: { id: createQuestDto.questType },
+
+    describe('cuando hay errores', () => {
+      it('debería lanzar un error si el usuario no existe', async () => {
+        jest.spyOn(usersRepository, 'findOne').mockResolvedValue(null);
+
+        await expect(
+          service.createQuest(createQuestDto, 'invalidUserId', new Date()),
+        ).rejects.toThrow(BadRequestException);
+      });
+
+      it('debería lanzar un error si el tipo de cuestionario no existe', async () => {
+        jest.spyOn(usersRepository, 'findOne').mockResolvedValue({
+          id: '123',
+          username: 'testUser',
+        } as User);
+        jest.spyOn(catalogsRepository, 'findOne').mockResolvedValue(null);
+
+        await expect(
+          service.createQuest(createQuestDto, '123', new Date()),
+        ).rejects.toThrow(BadRequestException);
+      });
     });
-    expect(questsRepository.create).toHaveBeenCalledWith(
-      expect.objectContaining({ createdBy: 'testUser' }),
-    );
-    expect(questsRepository.save).toHaveBeenCalledWith(mockNewQuest);
-    expect(result).toEqual(mockNewQuest);
   });
 
-  it('debería lanzar un error si el usuario no existe', async () => {
-    usersRepository.findOne = jest.fn().mockResolvedValue(null);
-    const createQuestDto: CreateQuestDto = {
-      questType: '3',
-      patientName: 'Juan Alberto Dominguez Alvarado',
-      patientDni: '05236589',
-      pdfName: '12.01.2025-CASEG-JDOMINGUEZA',
-      jsonQuest:
-        '{codigo:001, nombre:abcd, questions:[{id:1,question:tienes covid?}]}',
-    };
-
-    await expect(
-      service.createQuest(createQuestDto, 'invalidUserId', new Date()),
-    ).rejects.toThrow(BadRequestException);
-  });
-
-  it('debería lanzar un error si el tipo de cuestionario no existe', async () => {
-    // simula que el usuario existe en la base de datos
-    usersRepository.findOne = jest
-      .fn()
-      .mockResolvedValue({ id: '123', username: 'testUser' }); // crea el mock con esos valores
-
-    // simula que el catalogo no existe en la base de datos, devuele null
-    catalogsRepository.findOne = jest.fn().mockResolvedValue(null);
-
-    const createQuestDto: CreateQuestDto = {
-      questType: '3',
-      patientName: 'Juan Alberto Dominguez Alvarado',
-      patientDni: '05236589',
-      pdfName: '12.01.2025-CASEG-JDOMINGUEZA',
-      jsonQuest:
-        '{codigo:001, nombre:abcd, questions:[{id:1,question:tienes covid?}]}',
-    };
-
-    await expect(
-      service.createQuest(createQuestDto, '123', new Date()),
-    ).rejects.toThrow(BadRequestException);
-  });
+  // Aquí se pueden agregar más describe para otros métodos de QuestService
 });
