@@ -131,12 +131,12 @@
       </ol>
     </div>
   </div>
-  <h4 style="text-align: center;">POR FAVOR, CONTESTE A SU MEJOR SABER Y ATENDER</h2>
+  <h4 style="text-align: center; margin-top: 10px; margin-bottom: 10px;">POR FAVOR, CONTESTE A SU MEJOR SABER Y ATENDER</h2>
     <section class="QuestPartOne">
       <div class="question-section">
         <div class="question">1 a. ¿ Nombre y dirección de su médico particular?(Si no tiene, último médico consultado)
         </div>
-        <div class="answer">{{entender.fechaandmotivation}}</div>
+        <div class="answer">{{entender.nameanddirection}}</div>
       </div>
 
       <div class="question-section">
@@ -147,17 +147,30 @@
 
       <div class="question-section">
         <div class="question">c. ¿Qué tratamiento o medicación se prescribió?</div>
-        <div class="answer">{{entender.fechaandmotivation}}</div>
+        <div class="answer">{{entender.medication}}</div>
       </div>
     </section>
 
-    <section style="margin-top: 10px;">
+    <!-- BLOQUE DE NOTA -->
+    <div style="border: 1px solid #000; padding: 8px; margin: 15px auto; max-width: 95%;">
+      <span style="color: red; font-weight: bold;">NOTA:</span>
+      En caso de respuesta afirmativa a alguna pregunta, indique el número de ésta e incluya el diagnóstico, fecha, duración,
+      grado de recuperación y nombre/dirección de médicos a quienes se pueda pedir información.
+    </div>
+
+    <section style="margin-top: 15px;">
       <div style="font-weight: bold; margin-bottom: 5px;">
         2. ¿Ha sido tratado o tiene conocimiento de haber padecido de: (SUBRAYE LOS DATOS PERTINENTES)
       </div>
-
       {{#each entenderEnfermedades}}
         {{#if (lte @index 11)}}
+
+          {{#isMultipleOf @index 10}}
+            <div style="display: flex; justify-content: flex-end; gap: 25px; font-weight: bold; margin-bottom: 4px; margin-top: 10px;">
+              <div>SÍ</div>
+              <div>NO</div>
+            </div>
+          {{/isMultipleOf}}
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
             <div style="flex: 1;">
               <span style="font-weight: bold;">{{getLetra @index}}</span> {{getTextoPregunta @index}}
@@ -177,7 +190,218 @@
       {{/each}}
    </section>
     
+    <section style="margin-top: 15px;">
+      {{#each entenderEnfermedades}}
+        {{#if (eq @index 12)}}
+      <!-- Pregunta -->
+      <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 2px;">
+        <div style="flex: 1;">
+          <span style="font-weight: bold;">3.</span>
+          ¿En la actualidad fuma usted o durante los últimos 12 meses ha fumado cigarrillos, cigarros, pipa o ha usado tabaco en cualquier forma?
+          <br />
+          (En caso afirmativo, detalle cuántos al día) ____{{this.sustento}}________
+        </div>
+        <div style="display: flex; gap: 15px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
 
+      {{/if}}
+    {{/each}}
+
+        <!-- Firma -->
+    <div style="margin-top: 30px; display: flex; justify-content: center;">
+      <div style="text-align: center;">
+        <div style="border-bottom: 1px solid black; width: 220px; height: 60px; display: flex; justify-content: center; align-items: center;">
+          {{#if firma.propuestoAsegurado}}
+            <img src="{{firma.propuestoAsegurado}}" style="max-height: 60px; max-width: 100%;" />
+          {{/if}}
+        </div>
+        <div>Firma del Propuesto Asegurado</div>
+      </div>
+    </div>
+
+    <!-- Preguntas 4 a 10 -->
+  <section style="margin-top: 15px;">
+    {{#each entenderEnfermedades}}
+      {{#if (and (gte @index 13) (lte @index 15))}}
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+          <div style="flex: 1;">
+            {{getTextoPregunta @index}}
+          </div>
+          <div style="display: flex; gap: 15px;">
+            <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+            <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          </div>
+        </div>
+        {{#if this.sustento}}
+          <div style="margin-left: 20px; margin-bottom: 5px;">
+            {{this.sustento}}
+          </div>
+        {{/if}}
+        <hr style="margin: 5px 0;" />
+      {{/if}}
+    {{/each}}
+  </section>
+
+     <section style="margin-top: 15px;">
+      <div style="font-weight: bold; margin-bottom: 5px;">
+        7. En los últimos 5 años:
+      </div>
+      {{#each entenderEnfermedades}}
+        {{#if (and (gte @index 16) (lte @index 19))}}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+             {{getTextoPregunta @index}}
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+          {{#if this.sustento}}
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              {{this.sustento}}
+            </div>
+          {{/if}}
+            <hr style="margin: 5px 0;" />
+        {{/if}}
+      {{/each}}
+   </section>
+
+  <!-- Pregunta 10 -->
+  <section style="margin-top: 15px;">
+    <!-- Pregunta -->
+    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 5px;">
+      <div style="flex: 1;">
+        <span style="font-weight: bold;">10.</span>
+        ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o renal, enfermedad mental o suicidio?
+      </div>
+      <div style="display: flex; gap: 15px;">
+        <div class="checkbox">{{#if (eq declaracion.antecedenteFamiliar "S")}}X{{/if}}</div>
+        <div class="checkbox">{{#if (eq declaracion.antecedenteFamiliar "N")}}X{{/if}}</div>
+      </div>
+    </div>
+
+    <!-- Tabla de antecedentes familiares -->
+    <table>
+      <thead>
+        <tr>
+          <th>Pariente</th>
+          <th>Edad si viven</th>
+          <th>Estado de salud / Causa de muerte</th>
+          <th>Edad al morir</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each familiares}}
+        <tr>
+          <td>{{this.tipo}}</td>
+          <td>{{this.edadSiVive}}</td>
+          <td>{{this.estadoSalud}}</td>
+          <td>{{this.edadAlMorir}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+
+   <section style="margin-top: 15px;">
+    <div class="question-section">
+      <div class="question">11.a. Estatura</div>
+      <div class="answer"> {{#each entenderEnfermedades}}
+             {{#if (eq @index 20)}}
+            {{this.answer}} 
+            {{/if}}
+         {{/each}} (m) {{#each entenderEnfermedades}}
+             {{#if (eq @index 21)}}
+            {{this.answer}} 
+            {{/if}}
+         {{/each}}(cm)</div>
+    </div>
+    <div class="question-section">
+      <div class="question">11.b. Peso</div>
+      <div class="answer">{{#each entenderEnfermedades}}
+             {{#if (eq @index 22)}}
+            {{this.answer}} 
+            {{/if}}
+         {{/each}} (kg)</div>
+    </div>
+
+    <div style="display: flex; justify-content: flex-end; gap: 25px; font-weight: bold; margin-top: 10px;">
+      <div>SÍ</div>
+      <div>NO</div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+      <div style="flex: 1;">
+        <span style="font-weight: bold;">12.</span> ¿Ha tenido algún cambio de peso en los últimos 12 meses?
+      </div>
+      <div style="display: flex; gap: 15px;">
+        {{#each entenderEnfermedades}}
+             {{#if (eq @index 22)}}
+            {{this.answer}} 
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            {{/if}}
+         {{/each}}
+      </div>
+    </div>
+
+    <section style="margin-top: 15px;">
+      <div style="font-weight: bold; margin-bottom: 5px;">
+       13. SI EL PROPUESTO ASEGURADO ES MUJER
+      </div>
+      {{#each entenderEnfermedades}}
+        {{#if (lte @index 11)}}
+
+          {{#isMultipleOf @index 10}}
+            <div style="display: flex; justify-content: flex-end; gap: 25px; font-weight: bold; margin-bottom: 4px; margin-top: 10px;">
+              <div>SÍ</div>
+              <div>NO</div>
+            </div>
+          {{/isMultipleOf}}
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
+            <div style="flex: 1;">
+              <span style="font-weight: bold;">{{getLetra @index}}</span> {{getTextoPregunta @index}}
+            </div>
+            <div style="display: flex; gap: 15px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+          {{#if this.sustento}}
+            <div style="margin-left: 20px; margin-bottom: 5px;">
+              {{this.sustento}}
+            </div>
+          {{/if}}
+            <hr style="margin: 5px 0;" />
+        {{/if}}
+      {{/each}}
+   </section>
+
+    <section style="margin-top: 15px;">
+    {{#each entenderEnfermedades}}
+      {{#if (and (gte @index 20) (lte @index 24))}}
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+          <div style="flex: 1;">
+            {{getTextoPregunta @index}}
+          </div>
+          <div style="display: flex; gap: 15px;">
+            <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+            <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          </div>
+        </div>
+        {{#if this.sustento}}
+          <div style="margin-left: 20px; margin-bottom: 5px;">
+            {{this.sustento}}
+          </div>
+        {{/if}}
+        <hr style="margin: 5px 0;" />
+      {{/if}}
+    {{/each}}
+  </section>
 
 </body>
 

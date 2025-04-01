@@ -86,9 +86,30 @@ export function registerCustomHandlebarsHelpers() {
       9: "Enfermedad de la piel, ganglios linfáticos, quistes, tumores, cáncer?",
       10: "Alergias, anemia u otra enfermedad de la sangre?",
       11: "Consumo excesivo del alcohol?",
+      12: "¿En la actualidad fuma usted o durante los últimos 12 meses ha fumado cigarrillos, cigarros, pipa o ha usado tabaco en cualquier forma? (En caso afirmativo, detalle cuántos al día)",
+      13: "4. ¿Ha usado alguna vez drogas estupefacientes, a menos que fuera bajo consejo médico?",
+      14: "5. ¿Está usted actualmente sometido a observación, tratamiento o medicación por alguna enfermedad?",
+      15: "6. ¿Tiene usted la intención de buscar consejo médico, tratamiento o hacer cualquier prueba médica?",
+      16: " a. ¿Ha tenido alguna enfermedad física o mental aparte de las ya mencionadas?",
+      17: " b. ¿Ha tenido alguna revisión, consulta, lesión u operación quirúrgica?",
+      18: " d. ¿Ha sido sometido a electrocardiograma, rayos X u otro tipo de análisis?",
+      19: " e. ¿Se le ha aconsejado algún análisis, hospitalización u operación que no se hubiera realizado?",
+      20: "8. ¿Ha tenido aplazamiento, rechazo o reducción del servicio militar por deficiencia física o mental?",
+      21: "9. ¿Ha solicitado o percibido alguna vez indemnización por incapacidad de cualquier tipo?",
+      22: "10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o "
+            + "renal, enfermedad mental o suicidio?",
+      23: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
+      24: "b. ¿Está embarazada en la actualidad?" 
       // Puedes continuar con más si necesitas
     };
   
     return preguntas[id] || "";
+  });
+
+  Handlebars.registerHelper('isMultipleOf', function (index: number, divisor: number, options: any) {
+    if (index % divisor === 0) {
+      return options.fn(this); // se renderiza el bloque dentro del helper
+    }
+    return ''; // no se muestra nada
   });
 }
