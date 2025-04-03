@@ -6,6 +6,7 @@ import { CreateQuestDto } from './dtos/createQuest.dto';
 import { User } from '../users/users.entity';
 import { Catalog } from '../catalog/catalog.entity';
 import { UpdateQuestDto } from './dtos/updateQuest.dto';
+import { UpdateStatus } from '../users/dtos/UpdateStatus.dto';
 
 @Injectable()
 export class QuestService {
@@ -216,5 +217,35 @@ export class QuestService {
     if (!quest) throw new BadRequestException('Cuestionario no encontrado');
 
     return quest;
+  }
+
+  async updateQuestStatus(
+    questId: string,
+    username: string,
+    status: UpdateStatus,
+    now: Date,
+  ) {
+    const quest = await this.questsRepository.findOne({
+      where: { id: questId },
+    });
+    if (!quest) {
+      throw new BadRequestException('Cuestionario no encontrado');
+    }
+    if (quest.status === status.status) {
+      throw new BadRequestException(
+        `El cuestionario ya está en estado "${status.status}"`,
+      );
+    }
+    quest.status = status.status;
+    quest.updateAt = now;
+    quest.updatedBy = username;
+    await this.questsRepository.save(quest);
+    return {
+      message: `Cuestionario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,
+      questId: quest.id,
+      status: quest.status,
+      updatedAt: quest.updateAt,
+      updatedBy: quest.updatedBy,
+    };
   }
 }

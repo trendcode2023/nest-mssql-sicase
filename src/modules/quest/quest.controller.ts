@@ -20,6 +20,9 @@ import { PdfService } from './pdf.service';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { UpdateQuestDto } from './dtos/updateQuest.dto';
+import { UpdateStatus } from '../users/dtos/UpdateStatus.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('quests')
 export class QuestController {
@@ -27,8 +30,6 @@ export class QuestController {
     private readonly questsService: QuestService,
     private readonly pdfService: PdfService,
   ) {}
-
-  // 1. crear cuestionario
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
@@ -168,5 +169,24 @@ export class QuestController {
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
     return this.questsService.getQuestById(id);
+  }
+
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('update-status/:id')
+  async updateUserStatus(
+    @Param('id') questId: string,
+    @User('username') username: string,
+    @Body() status: UpdateStatus, // El estado se pasa en el Body
+    @Req() request: Request & { now: Date },
+  ) {
+    return this.questsService.updateQuestStatus(
+      questId,
+      username,
+      status,
+      request.now,
+    );
   }
 }
