@@ -7,6 +7,8 @@ import { User } from '../users/users.entity';
 import { Catalog } from '../catalog/catalog.entity';
 import { UpdateQuestDto } from './dtos/updateQuest.dto';
 import { UpdateStatus } from '../users/dtos/UpdateStatus.dto';
+import { plainToInstance } from 'class-transformer';
+import { QuestResponseDto } from './dtos/QuestResponse.dto';
 
 @Injectable()
 export class QuestService {
@@ -49,55 +51,6 @@ export class QuestService {
     }
   }
 
-  async getAllQuests(
-    page: number,
-    limit: number,
-    doctorName: string,
-    patientName: string,
-    patientDni: string,
-  ) {
-    const query = this.questsRepository
-      .createQueryBuilder('quest')
-      .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
-      .select([
-        'quest.id',
-        'quest.questType',
-        'quest.patientName',
-        'quest.patientDni',
-        'quest.pdfName',
-        'quest.jsonQuest',
-        'quest.updateAt',
-        'quest.updatebBy',
-        'user.id',
-        'user.names',
-        'user.patSurname',
-        'user.matSurname',
-      ]); // Solo selecciona estos c
-
-    if (doctorName) {
-      query.andWhere(
-        "CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname) LIKE :doctorName",
-        { doctorName: `%${doctorName}%` },
-      );
-    }
-    // TRIM quita espacios al inicio y al final
-    if (patientName) {
-      query.andWhere('TRIM(quest.patientName) LIKE :patientName', {
-        patientName: `%${patientName}%`,
-      });
-    }
-
-    if (patientDni) {
-      query.andWhere('quest.patientDni = :patientDni', { patientDni });
-    }
-
-    // Evitar error en SQL Server: Agregar un ORDER BY obligatorio
-    query.orderBy('quest.updateAt', 'DESC'); // Cambia 'id' por la columna correcta
-
-    query.skip((page - 1) * limit).take(limit);
-
-    return query.getMany();
-  }
   //return this.questsRepository.find({ take: limit, skip: skip });
   //aqui va la fucion actualizar
 
@@ -216,7 +169,11 @@ export class QuestService {
 
     if (!quest) throw new BadRequestException('Cuestionario no encontrado');
 
-    return quest;
+    return plainToInstance(QuestResponseDto, quest, {
+      excludeExtraneousValues: true,
+    });
+
+    //return quest;
   }
 
   async updateQuestStatus(
@@ -249,3 +206,55 @@ export class QuestService {
     };
   }
 }
+
+/*
+  async getAllQuests(
+    page: number,
+    limit: number,
+    doctorName: string,
+    patientName: string,
+    patientDni: string,
+  ) {
+    const query = this.questsRepository
+      .createQueryBuilder('quest')
+      .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
+      .select([
+        'quest.id',
+        'quest.questType',
+        'quest.patientName',
+        'quest.patientDni',
+        'quest.pdfName',
+        'quest.jsonQuest',
+        'quest.updateAt',
+        'quest.updatebBy',
+        'user.id',
+        'user.names',
+        'user.patSurname',
+        'user.matSurname',
+      ]); // Solo selecciona estos c
+
+    if (doctorName) {
+      query.andWhere(
+        "CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname) LIKE :doctorName",
+        { doctorName: `%${doctorName}%` },
+      );
+    }
+    // TRIM quita espacios al inicio y al final
+    if (patientName) {
+      query.andWhere('TRIM(quest.patientName) LIKE :patientName', {
+        patientName: `%${patientName}%`,
+      });
+    }
+
+    if (patientDni) {
+      query.andWhere('quest.patientDni = :patientDni', { patientDni });
+    }
+
+    // Evitar error en SQL Server: Agregar un ORDER BY obligatorio
+    query.orderBy('quest.updateAt', 'DESC'); // Cambia 'id' por la columna correcta
+
+    query.skip((page - 1) * limit).take(limit);
+
+    return query.getMany();
+  }
+*/
