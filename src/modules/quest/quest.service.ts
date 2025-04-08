@@ -1,4 +1,9 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Quest } from './quest.entity';
@@ -20,72 +25,58 @@ export class QuestService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async createQuest(quest: CreateQuestDto, userId: string, now: Date) {
-    try {
-      const user = await this.usersRepository.findOne({
-        where: { id: userId },
-      });
-      if (!user) throw new BadRequestException('Usuario no existe!!');
+  // ok
+  async createQuest(questData: CreateQuestDto, userId: string, now: Date) {
+    const user = await this.usersRepository.findOne({
+      where: { id: userId },
+    });
+    if (!user)
+      throw new BadRequestException(`Usuario con ID ${userId} no existe!!`);
 
-      const questType = await this.catalogsRepository.findOne({
-        where: { id: quest.questType },
-      });
-      if (!questType)
-        throw new BadRequestException('Tipo de cuestionario no existe!!');
+    const questType = await this.catalogsRepository.findOne({
+      where: { id: questData.questType },
+    });
+    if (!questType)
+      throw new BadRequestException(
+        `Tipo de cuestionario ${questData.questType} no existe!!`,
+      );
 
-      const newQuest = this.questsRepository.create({
-        ...quest,
-        createAt: now,
-        createdBy: user.username,
-        updateAt: now,
-        updatedBy: user.username,
-        user: user, // referencia al usuario que creo el cuestionario
-      });
-      console.log('antes de ejecutar el save quest');
-      return await this.questsRepository.save(newQuest);
-    } catch (error) {
-      console.log('entro al error');
+    const newQuest = this.questsRepository.create({
+      ...questData,
+      createAt: now,
+      createdBy: user.username,
+      updateAt: now,
+      updatedBy: user.username,
+      user: user,
+    });
 
-      console.error('Entró al catch:', error);
-      throw error;
-    }
+    return await this.questsRepository.save(newQuest);
   }
 
-  //return this.questsRepository.find({ take: limit, skip: skip });
-  //aqui va la fucion actualizar
-
+  // ok
   async updateQuest(
     questId: string,
     updateData: UpdateQuestDto,
     userId: string,
     now: Date,
   ) {
-    // 1. Buscar la Quest existente
     const quest = await this.questsRepository.findOne({
       where: { id: questId },
     });
     if (!quest) {
-      throw new Error('cuestionario no encontrado');
+      throw new NotFoundException('Cuestionario no encontrado');
     }
-    console.log(updateData);
-    // 2. Buscar el usuario que realiza la actualización
+
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
-      throw new Error('usuario no encontrado');
+      throw new UnauthorizedException('Usuario no encontrado');
     }
 
-    // 3. Actualizar la Quest con los nuevos datos
     Object.assign(quest, updateData);
-
     quest.updateAt = now;
     quest.updatedBy = user.username;
-    // {
-    //   jsonQuest: JSON.stringify(questData),
-    //   updateAt: now,
-    //   updatedBy: user.username,
-    //});
-    console.log(quest.createdBy);
-    return this.questsRepository.save(quest);
+
+    return await this.questsRepository.save(quest);
   }
 
   async getQuestsPaginated(
@@ -208,53 +199,17 @@ export class QuestService {
 }
 
 /*
-  async getAllQuests(
-    page: number,
-    limit: number,
-    doctorName: string,
-    patientName: string,
-    patientDni: string,
-  ) {
-    const query = this.questsRepository
-      .createQueryBuilder('quest')
-      .leftJoin('quest.user', 'user') // Unimos la tabla 'user'
-      .select([
-        'quest.id',
-        'quest.questType',
-        'quest.patientName',
-        'quest.patientDni',
-        'quest.pdfName',
-        'quest.jsonQuest',
-        'quest.updateAt',
-        'quest.updatebBy',
-        'user.id',
-        'user.names',
-        'user.patSurname',
-        'user.matSurname',
-      ]); // Solo selecciona estos c
+    const filterConditions = [
+  { field: 'questType', value: filters?.questType },
+  { field: 'patientName', value: filters?.patientName, transform: val => `LOWER(quest.patientName) LIKE :patientName`, transformValue: val => `%${val.toLowerCase()}%` },
+  { field: 'patientDni', value: filters?.patientDni, transform: val => `LOWER(quest.patientDni) LIKE :patientDni`, transformValue: val => `%${val.toLowerCase()}%` },
+  { field: 'doctorName', value: filters?.doctorName, transform: val => `LOWER(CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname)) LIKE :doctorName`, transformValue: val => `%${val.toLowerCase()}%` }
+];
 
-    if (doctorName) {
-      query.andWhere(
-        "CONCAT(user.names, ' ', user.patSurname, ' ', user.matSurname) LIKE :doctorName",
-        { doctorName: `%${doctorName}%` },
-      );
-    }
-    // TRIM quita espacios al inicio y al final
-    if (patientName) {
-      query.andWhere('TRIM(quest.patientName) LIKE :patientName', {
-        patientName: `%${patientName}%`,
-      });
-    }
-
-    if (patientDni) {
-      query.andWhere('quest.patientDni = :patientDni', { patientDni });
-    }
-
-    // Evitar error en SQL Server: Agregar un ORDER BY obligatorio
-    query.orderBy('quest.updateAt', 'DESC'); // Cambia 'id' por la columna correcta
-
-    query.skip((page - 1) * limit).take(limit);
-
-    return query.getMany();
+filterConditions.forEach(condition => {
+  if (condition.value) {
+    query.andWhere(condition.transform, { [condition.field]: condition.transformValue ? condition.transformValue(condition.value) : condition.value });
   }
-*/
+});
+
+    */
