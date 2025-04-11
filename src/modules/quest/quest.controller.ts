@@ -20,6 +20,9 @@ import { PdfService } from './pdf.service';
 import { Response } from 'express';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { UpdateQuestDto } from './dtos/updateQuest.dto';
+import { UpdateStatus } from '../users/dtos/UpdateStatus.dto';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('quests')
 export class QuestController {
@@ -27,8 +30,6 @@ export class QuestController {
     private readonly questsService: QuestService,
     private readonly pdfService: PdfService,
   ) {}
-
-  // 1. crear cuestionario
 
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
@@ -43,29 +44,6 @@ export class QuestController {
     return this.questsService.createQuest(quest, userId, request.now);
   }
 
-  // 2. listar cuestionarios
-  @Get('getall')
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'doctorName', required: false })
-  @ApiQuery({ name: 'patientName', required: false })
-  @ApiQuery({ name: 'patientDni', required: false })
-  getAllQuest(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
-    @Query('doctorName') doctorName?: string,
-    @Query('patientName') patientName?: string,
-    @Query('patientDni') patientDni?: string,
-  ) {
-    return this.questsService.getAllQuests(
-      page,
-      limit,
-      doctorName,
-      patientName,
-      patientDni,
-    );
-  }
-  // 3. actualizar cuestionario
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
@@ -83,6 +61,8 @@ export class QuestController {
       request.now,
     );
   }
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Get('paginated')
   @ApiQuery({
     name: 'page',
@@ -148,6 +128,8 @@ export class QuestController {
     );
   }
 
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
   @Get('declaracion-salud/:id')
   async downloadPdf(@Res() res: Response, @Param('id') questId: string) {
     const pdfBuffer = await this.pdfService.generatePdf(questId);
@@ -169,4 +151,47 @@ export class QuestController {
   ) {
     return this.questsService.getQuestById(id);
   }
+
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
+  @UseInterceptors(DateAdderInterceptor)
+  @Post('update-status/:id')
+  async updateUserStatus(
+    @Param('id') questId: string,
+    @User('username') username: string,
+    @Body() status: UpdateStatus, // El estado se pasa en el Body
+    @Req() request: Request & { now: Date },
+  ) {
+    return this.questsService.updateQuestStatus(
+      questId,
+      username,
+      status,
+      request.now,
+    );
+  }
 }
+
+/*
+ @Get('getall')
+  @ApiQuery({ name: 'page', required: false })
+  @ApiQuery({ name: 'limit', required: false })
+  @ApiQuery({ name: 'doctorName', required: false })
+  @ApiQuery({ name: 'patientName', required: false })
+  @ApiQuery({ name: 'patientDni', required: false })
+  getAllQuest(
+    @Query('page') page: number = 1,
+    @Query('limit') limit: number = 5,
+    @Query('doctorName') doctorName?: string,
+    @Query('patientName') patientName?: string,
+    @Query('patientDni') patientDni?: string,
+  ) {
+    return this.questsService.getAllQuests(
+      page,
+      limit,
+      doctorName,
+      patientName,
+      patientDni,
+    );
+  }
+*/

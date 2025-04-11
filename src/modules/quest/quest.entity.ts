@@ -26,7 +26,9 @@ export class Quest {
 
   @Column({ type: 'varchar', length: 1, nullable: false })
   questType: string;
-
+  // atributo de estado
+  @Column({ type: 'varchar', default: 'ac', nullable: false }) // por defecto
+  status: string;
   @ManyToOne(() => User, (user) => user.quests) //
   user: User;
 }
