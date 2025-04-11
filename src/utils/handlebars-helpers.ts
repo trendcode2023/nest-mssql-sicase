@@ -98,8 +98,15 @@ export function registerCustomHandlebarsHelpers() {
       21: "9. ¿Ha solicitado o percibido alguna vez indemnización por incapacidad de cualquier tipo?",
       22: "10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o "
             + "renal, enfermedad mental o suicidio?",
-      23: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
-      24: "b. ¿Está embarazada en la actualidad?" 
+      29: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
+      30: "b. ¿Está embarazada en la actualidad?",
+      31: "14.¿Ha recibido usted tratamiento o consejo médico en relación al SIDA o condiciones relacionadas con él, o"
+            +" en relación con enfermedades de transmisión sexual?",
+      32: "15.¿Le han dicho que ha tenido SIDA o el Complejo Relacionado al SIDA?",
+      33: "16.¿Ha tenido o le han informado que tiene pruebas sanguíneas positivas para anticuerpos del virus del SIDA?",
+      34: "17.¿Tiene usted alguno de estos síntomas sin explicación: fatiga, pérdida de peso, diarrea, ganglios"
+            +" linfáticos inflamados o extrañas lesiones en la piel?"      
+
       // Puedes continuar con más si necesitas
     };
   
