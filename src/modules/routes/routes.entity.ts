@@ -13,7 +13,7 @@ export class Route {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ type: 'varchar', length: 25, nullable: false })
+  @Column({ type: 'varchar', length: 60, nullable: false })
   code: string;
 
   @Column({ type: 'varchar', length: 80, nullable: false })
