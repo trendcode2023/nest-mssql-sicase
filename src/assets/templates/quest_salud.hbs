@@ -100,8 +100,16 @@
 </head>
 
 <body>
-  <h5>Pacífico Seguro</h2>
-  <h2 style="text-align: left;">Declaración Adicional De Salud</h2>
+  <div style="display: flex; justify-content: space-between; align-: flex-start; margin-bottom: 5px;">
+  <div>
+    <h4 style="margin: 0;">Pacífico Seguros</h5>
+    <h2 style="margin: 0;padding-top: 10px;">DECLARACIÓN ADICIONAL DE SALUD</h2>
+  </div>
+  <div>
+    <img src="{{logo}}" style="height: 35px;" />
+  </div>
+</div>
+
   <hr style="margin: 5px 0;" />
   <div class="sectionHeader">
     <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;">
@@ -109,7 +117,7 @@
         <div><span>Parte II</span></div>
         <span><strong>Declaraciones hechas al médico</strong></span>
         <div><span class="label">Propuesto Asegurado:</span> {{declaracion.names}}</div>
-        <div><span class="label">Estado Civil</span> {{declaracion.estadocivil}}</div>
+        <div><span class="label">Estado Civil:</span> {{declaracion.estadocivil}}</div>
       </div>
       <div>
         <div><span class="label">N° Solicitud:</span> {{declaracion.nrosolicitud}}</div>
@@ -135,23 +143,24 @@
       </ol>
     </div>
   </div>
+  <hr style="margin: 5px 0;" />
   <h4 style="text-align: center; margin-top: 10px; margin-bottom: 10px;">POR FAVOR, CONTESTE A SU MEJOR SABER Y ATENDER</h2>
     <section class="QuestPartOne">
       <div class="question-section">
         <div class="question">1 a. ¿ Nombre y dirección de su médico particular?(Si no tiene, último médico consultado)
         </div>
-        <div class="answer">{{entender.nameanddirection}}</div>
+        <div class="answer" style="border-bottom:0.5px solid #9c9a9a;">{{entender.nameanddirection}}</div>
       </div>
 
       <div class="question-section">
         <div class="question">b. ¿Fecha y motivo de la consulta más reciente? (Si fue dentro de los últimos 10 años)
         </div>
-        <div class="answer">{{entender.fechaandmotivation}}</div>
+        <div class="answer" style="border-bottom:1px solid #9c9a9a;">{{entender.fechaandmotivation}}</div>
       </div>
 
       <div class="question-section">
         <div class="question">c. ¿Qué tratamiento o medicación se prescribió?</div>
-        <div class="answer">{{entender.medication}}</div>
+        <div class="answer" style="border-bottom:1px solid #9c9a9a;">{{entender.medication}}</div>
       </div>
     </section>
 
@@ -555,8 +564,16 @@
 
     </section>
 
-<div class="page-break"></div>
-  <h2 style="text-align: left;">PINFORME CONFIDENCIAL DEL MÉDICO EXAMINADOR</h2>
+  <div class="page-break"></div>
+
+    <div style="display: flex; justify-content: space-between; align-: flex-start; margin-bottom: 5px;">
+    <div>
+      <h2 style="margin: 0;padding-top: 10px;">INFORME CONFIDENCIAL DEL MÉDICO EXAMINADOR</h2>
+    </div>
+    <div>
+      <img src="{{logo}}" style="height: 35px;" />
+    </div>
+  </div>
     <div class="sectionHeader">
     <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;">
       <div>
@@ -570,6 +587,211 @@
     </div>
     <hr style="margin: 5px 0;" />
   </div>
+
+<!-- Tabla con medidas físicas -->
+  <div style="width: 50%;">
+      <table>
+        <tr>
+          <th>18.a Estatura (Calzado)</th>
+          <th>Peso (Vestido)</th>
+          <th>Pecho (Expiración forzada)</th>
+          <th>Pecho (Inspiración completa)</th>
+          <th>Abdomen (sobre el ombligo)</th>
+        </tr>
+        <tr>
+          <td>{{entenderEnfermedades.[35].answer}}</td>
+          <td>{{entenderEnfermedades.[36].answer}}</td>
+          <td>{{entenderEnfermedades.[37].answer}}</td>
+          <td>{{entenderEnfermedades.[38].answer}}</td>
+          <td>{{entenderEnfermedades.[39].answer}}</td>
+        </tr>
+      </table>
+  </div>
+  <div style="width: 48%;">
+
+  </div>
+
+
+<!-- Preguntas con checkboxes -->
+<div class="question-section">
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+    <div style="width: 44%;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+          b. ¿Pesó usted?
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; center; margin-top: 4px;">
+        <div style="margin-right: 0">
+           ¿Midió usted?
+        </div>
+        <div style="display: flex; gap: 1px;margin-left: 16px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+    </div>
+    <div style="width: 52%;">
+       <div style="display: flex; justify-content: center; align-items: center; center;width:100%;">
+        <div style="margin-right: 0;">
+           c. ¿Es el Propuesto Asegurado de aspecto enfermo o aparenta más edad de la declarada?
+        </div>
+        <div style="display: flex; gap: 1px; padding-bottom: 37px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width: 48%;">
+
+  </div>
+</div>
+
+
+  <div style="font-weight: bold; margin-bottom: 1px; width: 50%;margin-top: 1px;">
+    19. Presión arterial(si es superior a 138 sistólica o 87 diastólica,tómele 2 veces más)
+  </div>
+  <div style="width: 50%;">
+  </div>
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
+      <div style="width: 50%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+                <table style="margin: 1px;">
+                  <tr>
+                    <td style="width: 40%;">Sistólica</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[45].answer}}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 40%;">Diastólica (5a. fase)</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[47].answer}}</td>
+                  </tr>
+                </table>
+        </div>
+      </div>
+      <div style="width: 48%;">
+      </div>
+  </div>
+
+  <div style="font-weight: bold; margin-bottom: 1px; width: 50%;margin-top: 1px;">
+    20. Pulso
+  </div>
+  <div style="width: 50%;">
+  </div>
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
+      <div style="width: 50%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+                <table style="margin: 1px;">
+                   <tr>
+                    <td style="width: 40%;">Medición</td>
+                    <td style="width: 20%; text-align: center;">EN DESCANSO</td>
+                    <td style="width: 20%; text-align: center;">DESPUES DE ESFUERZO</td>
+                    <td style="width: 20%; text-align: center;">PASADO 5 MINUTOS</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 40%;">Frecuencia p.m.</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[45].answer}}</td>
+                  </tr>
+                  <tr>
+                    <td style="width: 40%;">Irregularidades p.m.</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[47].answer}}</td>
+                  </tr>
+                </table>
+        </div>
+      </div>
+      <div style="width: 48%;">
+      </div>
+  </div>
+
+<div class="question-section">
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+    <div style="width: 25%;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+          21. Corazón: Hay
+        </div>
+      </div>
+    </div>
+
+    <div style="width: 40%;">
+      <div style="display: flex; justify-content: space-center; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+          Hipertrofia
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; al  |ign-items: center; center; margin-top: 4px;">
+        <div style="margin-right: 0">
+           Soplo(s)
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+    </div>
+    <div style="width: 40%;">
+      <div style="display: flex; justify-content: center; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+          Disnea
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+      <div style="display: flex; justify-content: center; align-items: center; center; margin-top: 4px;">
+        <div style="margin-right: 0">
+           Edema
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+        </div>
+      </div>
+    </div>
+    <span>(Describa soplo a continuación - Si más de uno, separadamente)</span>
+  </div>
+  <div style="width: 48%;">
+  </div>
+</div>
+
+
+<!-- (Describa soplo a continuación - Si más de uno, separadamente)  -->
+
+
+
+<!-- Pulso -->
+<table>
+  <tr>
+    <th>Frecuencia p.m.</th>
+    <th>EN DESCANSO</th>
+    <th>DESPUÉS DE ESFUERZO</th>
+    <th>PASADOS 5 MINUTOS</th>
+  </tr>
+  <tr>
+    <td>Valor</td>
+    <td>{{entenderEnfermedades.[49].answer}}</td>
+    <td>{{entenderEnfermedades.[50].answer}}</td>
+    <td>{{entenderEnfermedades.[51].answer}}</td>
+  </tr>
+</table>
+
 
 </body>
 

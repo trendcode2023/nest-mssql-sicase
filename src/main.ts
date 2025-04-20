@@ -8,6 +8,7 @@ import { ExceptionsFilter } from './config/ExceptionsFilter';
 import { ResponseApi } from './config/ResponseApi';
 import { log } from 'console';
 import * as express from 'express'
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -37,7 +38,7 @@ async function bootstrap() {
     allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
     credentials: true, // Permitir cookies y credenciales
   });
-  
+  app.use('/assets', express.static(join(__dirname, '..', 'assets')));
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')

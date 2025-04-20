@@ -32,6 +32,7 @@ export interface Declaracion {
   }
   
   export interface Formulario {
+    logo: string;
     declaracion: Declaracion;
     entender: Entender;
     entenderEnfermedades: Enfermedad[];

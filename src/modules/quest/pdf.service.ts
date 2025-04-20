@@ -32,6 +32,11 @@ export class PdfService {
       throw new NotFoundException(`Formulario con id ${questId} no encontrado`);
     }
     const data = JSON.parse(quest.jsonQuest) as Formulario;
+    const imagePath = path.join(process.cwd(), 'dist', 'assets', 'images', 'logo_pacifico.png');
+    const imageBuffer = fs.readFileSync(imagePath);
+    const imageBase64 = imageBuffer.toString('base64');
+    const logoMimeType = 'image/png'; // o image/jpeg si fuera JPG
+    data.logo = `data:${logoMimeType};base64,${imageBase64}`;
     console.log(data)
     const html = this.generateHtmlFromTemplate('quest_salud', data);    
     const browser = await puppeteer.launch({

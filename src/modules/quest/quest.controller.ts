@@ -128,8 +128,8 @@ export class QuestController {
     );
   }
 
-  @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+ // @ApiBearerAuth()
+ // @UseGuards(AuthGuard)
   @Get('declaracion-salud/:id')
   async downloadPdf(@Res() res: Response, @Param('id') questId: string) {
     const pdfBuffer = await this.pdfService.generatePdf(questId);
