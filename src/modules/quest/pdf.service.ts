@@ -35,8 +35,12 @@ export class PdfService {
     const imagePath = path.join(process.cwd(), 'dist', 'assets', 'images', 'logo_pacifico.png');
     const imageBuffer = fs.readFileSync(imagePath);
     const imageBase64 = imageBuffer.toString('base64');
+    const imageSoplo = path.join(process.cwd(), 'dist', 'assets', 'images', 'imageform.png');
+    const imageBufferSoplo = fs.readFileSync(imageSoplo);
+    const imageBase64Soplo = imageBufferSoplo.toString('base64');
     const logoMimeType = 'image/png'; // o image/jpeg si fuera JPG
     data.logo = `data:${logoMimeType};base64,${imageBase64}`;
+    data.imageSoplo = `data:${logoMimeType};base64,${imageBase64Soplo}`;
     console.log(data)
     const html = this.generateHtmlFromTemplate('quest_salud', data);    
     const browser = await puppeteer.launch({

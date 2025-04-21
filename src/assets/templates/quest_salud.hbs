@@ -207,7 +207,7 @@
       {{/each}}
    </section> --}}
 
-   <section style="margin-top: 15px;">
+<section style="margin-top: 15px;">
   <div style="font-weight: bold; margin-bottom: 5px;">
     2. ¿Ha sido tratado o tiene conocimiento de haber padecido de: (SUBRAYE LOS DATOS PERTINENTES)
   </div>
@@ -566,7 +566,7 @@
 
   <div class="page-break"></div>
 
-    <div style="display: flex; justify-content: space-between; align-: flex-start; margin-bottom: 5px;">
+  <div style="display: flex; justify-content: space-between; align-: flex-start; margin-bottom: 5px;">
     <div>
       <h2 style="margin: 0;padding-top: 10px;">INFORME CONFIDENCIAL DEL MÉDICO EXAMINADOR</h2>
     </div>
@@ -574,7 +574,7 @@
       <img src="{{logo}}" style="height: 35px;" />
     </div>
   </div>
-    <div class="sectionHeader">
+  <div class="sectionHeader">
     <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;">
       <div>
         <div><span class="label">Propuesto Asegurado:</span> {{declaracion.names}}</div>
@@ -585,12 +585,12 @@
         <div><span class="label">¿Es paciente o familiar suyo?:</span> {{declaracion.asesor}}</div>
       </div>
     </div>
-    <hr style="margin: 5px 0;" />
+     <hr style="margin: 2px 0;" /> 
   </div>
 
 <!-- Tabla con medidas físicas -->
-  <div style="width: 50%;">
-      <table>
+  <div style="width: 55%; margin: 0;padding: 0;">
+      <table style="margin: 0;padding: 0; font-size: 9px">
         <tr>
           <th>18.a Estatura (Calzado)</th>
           <th>Peso (Vestido)</th>
@@ -607,14 +607,14 @@
         </tr>
       </table>
   </div>
-  <div style="width: 48%;">
+  <div style="width: 43%;">
 
   </div>
 
 
 <!-- Preguntas con checkboxes -->
-<div class="question-section">
-  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+<div class="question-section" style="margin-top: 1px;">
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 55%;" >
     <div style="width: 44%;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="margin-right: 0;padding-right: 0;">
@@ -637,31 +637,31 @@
     </div>
     <div style="width: 52%;">
        <div style="display: flex; justify-content: center; align-items: center; center;width:100%;">
-        <div style="margin-right: 0;">
+        <div style="margin-right: 0; width: 60%;">
            c. ¿Es el Propuesto Asegurado de aspecto enfermo o aparenta más edad de la declarada?
         </div>
-        <div style="display: flex; gap: 1px; padding-bottom: 37px;">
+        <div style="display: flex; gap: 1px; padding-bottom: 37px;width: 40%;">
           <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
           <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
     </div>
   </div>
-  <div style="width: 48%;">
+  <div style="width: 43%;">
 
   </div>
 </div>
 
 
-  <div style="font-weight: bold; margin-bottom: 1px; width: 50%;margin-top: 1px;">
+  <div style="font-weight: bold; margin-bottom: 1px; width: 55%;margin-top: 1px;">
     19. Presión arterial(si es superior a 138 sistólica o 87 diastólica,tómele 2 veces más)
   </div>
   <div style="width: 50%;">
   </div>
   <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
-      <div style="width: 50%;">
+      <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-                <table style="margin: 1px;">
+                <table style="margin: 1px; font-size: 9px">
                   <tr>
                     <td style="width: 40%;">Sistólica</td>
                     <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
@@ -677,24 +677,24 @@
                 </table>
         </div>
       </div>
-      <div style="width: 48%;">
+      <div style="width: 43%;">
       </div>
   </div>
 
-  <div style="font-weight: bold; margin-bottom: 1px; width: 50%;margin-top: 1px;">
+  <div style="font-weight: bold; margin-bottom: 1px; width: 55%;margin-top: 1px;">
     20. Pulso
   </div>
-  <div style="width: 50%;">
+  <div style="width: 43%;">
   </div>
   <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
-      <div style="width: 50%;">
+      <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
-                <table style="margin: 1px;">
+                <table style="margin: 1px; font-size: 9px">
                    <tr>
-                    <td style="width: 40%;">Medición</td>
-                    <td style="width: 20%; text-align: center;">EN DESCANSO</td>
-                    <td style="width: 20%; text-align: center;">DESPUES DE ESFUERZO</td>
-                    <td style="width: 20%; text-align: center;">PASADO 5 MINUTOS</td>
+                    <td style="width: 40%; height: 40%;">Medición</td>
+                    <td style="width: 20%; text-align: center;height: 40%;">EN DESCANSO</td>
+                    <td style="width: 20%; text-align: center;height: 40%;">DESPUES DE ESFUERZO</td>
+                    <td style="width: 20%; text-align: center;height: 40%;">PASADO 5 MINUTOS</td>
                   </tr>
                   <tr>
                     <td style="width: 40%;">Frecuencia p.m.</td>
@@ -711,11 +711,11 @@
                 </table>
         </div>
       </div>
-      <div style="width: 48%;">
+      <div style="width: 43%;">
       </div>
   </div>
 
-<div class="question-section">
+<div class="question-section" style="margin-top: 2px;">
   <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
     <div style="width: 25%;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -765,33 +765,550 @@
         </div>
       </div>
     </div>
-    <span>(Describa soplo a continuación - Si más de uno, separadamente)</span>
   </div>
   <div style="width: 48%;">
   </div>
 </div>
 
 
+<div class="question-section">
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+    <div style="width: 15%;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+        </div>
+      </div>
+    </div>
+    <div style="width: 85%;">
+      <div style="display: flex; justify-content: space-center; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+         (Describa soplo a continuación - Si más de uno, separadamente)
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width: 48%;">
+  </div>
+</div>
+
+<div class="question-section">
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%; align-items: center;" >
+    <div style="width: 25%;">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0;">
+            Situación Soplo(s)
+        </div>
+      </div>
+    </div>
+    <div style="width: 45%;">
+      <div style="display: flex; justify-content: space-center; align-items: center;">
+        <div style="margin-right: 0;padding-right: 0; width: 100%;">
+            <table style="margin: 0px; font-size: 9px; ">
+                   <tr style="margin: 0; padding: 0;">
+                    <td style="width: 50%;">Grave</td>
+                    <td style="width: 50%; text-align: center;">Leve</td>
+                  </tr>
+              </table>
+        </div>
+      </div>
+    </div>
+    <div style="width: 30%;">
+      <div style="display: flex; justify-content: end; align-items: center;">
+        <div style="margin-right: 2px;padding-right: 0;">
+           Indique en el diagrama
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="width: 48%;">
+  </div>
+</div>
+
+<div class="question-section">
+  <div style="display: flex;justify-content:space-between; margin: 0px; padding: 0px;width: 55%; align-items: center;" >
+    <div style="width: 35%;display: flex;flex-direction: column; justify-content:flex-start;">
+      <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Constante
+        </div>
+         <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+            Inconstante
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+            Irradiado
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Localizado
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Sistólico
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Presistólico
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Diastólico
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Suave (Gr 1-2)
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Mod. (Gr. 5-6)
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Al esfuerzo:
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Se acentúa
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Desaparece
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Sin cambio
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+        <div style="margin-right: 0;padding-right: 0;">
+           Se atenúa
+        </div>
+        <div style="display: flex; gap: 1px;">
+          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+        </div>
+      </div>
+    </div>
+    <div style="width: 63%;">
+       <img src="{{imageSoplo}}" style="height:100%; width: 100%;" />
+    </div>
+  </div>
+  <div style="width: 43%;">
+     
+  </div>
+</div>
+
+<section style="margin-top: 2px;">
+  <div style="margin-bottom: 1px; width: 55%;">
+   <span style="font-weight: bold;">2.</span>  ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
+  </div>
+  <div style="width: 43%;">
+
+  </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+            <div style="display: flex; justify-content: flex-end; gap: 8px; font-weight: bold; margin-bottom: 2px;">
+              <div>SÍ</div>
+              <div>NO</div>
+            </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">a)</span> Ojos, oídos, boca, nariz, faringe?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">b)</span> Piel, ganglios linfáticos, arterias periféricas o venas varicosas?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">C)</span> Sistema nervioso (incluye reflejos, forma de andar, parálisis)?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">d)</span> Aparato respiratorio?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">e)</span>Abdomen (incluye cicatrices)?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">f)</span>Aparato genitourinario (incluye próstata)?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">g)</span>Sistema endocrino (incluye tiroides y senos)?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;">h)</span>Aparato locomotor (incluye columna, articulaciones, deformidades)?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+</section>
+
+
+<section style="margin-top: 2px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;"> 23.</span>¿Hay alguna hernia?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+</section>
+
+<section style="margin-top: 2px;">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+        <!-- Columna izquierda: Pregunta y checkboxes -->
+        <div style="width: 55%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1; margin-right: 0;" >
+              <span style="font-weight: bold;"> 24.</span> ¿Tiene usted conocimiento de historial médico adicional?
+            </div>
+            <div style="display: flex; gap: 1px;">
+              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+        </div>
+        <!-- Columna derecha: Sustento si existe -->
+        <div style="width: 43%;">
+          {{#if this.sustento}}
+            <div>{{this.sustento}}</div>
+          {{/if}}
+        </div>
+      </div>
+</section>
+
+
 <!-- (Describa soplo a continuación - Si más de uno, separadamente)  -->
 
+<div style="margin-right: 0;padding-right: 0;">
+  <table style="margin: 1px;">
+        <tr>
+          <td style="width: 12%;">25. Análisis de orina</td>
+          <td style="width: 12%; text-align: center;">Densidad</td>
+          <td style="width: 12%; text-align: center;">Albumina</td>
+          <td style="width: 12%; text-align: center;">Glucosa</td>
+          <td style="width: 48%; text-align: center;">26. ¿Conoce usted o sospecha algo inusual respecto a la salud, carácter, mentalidad o costumbre del
+        candidato, que no se haya indicado?</td>
+        </tr>
+        <tr >
+           <td colspan="4" style="width: 100%;">
+            <div style="display: flex;flex-direction: column; justify-content:flex-start;">
+             <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                   Envíe la muestra a un laboratorio para su examen microscópico, en los casos siguientes:
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                   A. A instancias de la Compañía.
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                  B. El candidato tiene más de 60 años.
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                  C. La P.A. es superior a 140 sistólica o 90 diastólica.
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                  D. Si sospecha alguna anormalidad en la muestra.
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                  D. Si sospecha alguna anormalidad en la muestra.
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                <div style="margin-right: 0;padding-right: 0;">
+                  F. Hay antecedentes de enfermedad de riñón, próstata, vejiga o aparato genitourinario.
+                </div>
+              </div>
+            </div>
+            </td>
+             <td style="width: 50%;">
+              <div style="text-align: left; width:100%">
+               (Puede remitir informe confidencial al director Médico)
+              </div>
+              <div style="margin-top: 10px; display: flex; justify-content: center;">
+                 <div style="text-align: center;">
+                    <div style="width: 220px; height: 60px; display: flex; justify-content: center; align-items: center;">
+                      {{#if firma.medico}}
+                        <img src="{{firma.medico}}" style="max-height: 60px; max-width: 100%;" />
+                      {{/if}}
+                    </div>
+                  </div>
+              </div>
+             <hr style="margin: 5px 0;" />
+             Firma del M.E
+             </td>
+        </tr>
+        <tr>
+           <td colspan="4" style="width: 100%;">
+            <div style="display: flex;justify-content:space-between; margin: 0px; padding: 0px;width: 100%; align-items: center;" >
+              <div style="display: flex;flex-direction: column; justify-content:flex-start;width: 30%;">
+              <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
+                  <div style="margin-right: 0;padding-right: 0;">
+                    Examen médico realizado en:
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
+                  <div style="margin-right: 0;padding-right: 0;">
+                    Lugar de trabajo del candidato
+                  </div>
+                  <div style="display: flex; gap: 1px;">
+                    <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                  <div style="margin-right: 0;padding-right: 0;">
+                    Domicilio del candidato
+                  </div>
+                  <div style="display: flex; gap: 1px;">
+                    <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+                  </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
+                  <div style="margin-right: 0;padding-right: 0;">
+                    Consultorio de M.E.
+                  </div>
+                  <div style="display: flex; gap: 1px;">
+                    <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
+                  </div>
+                </div>
+              </div>
+              <div style="width: 60%;">
+                           A las
+              </div>
 
 
-<!-- Pulso -->
-<table>
-  <tr>
-    <th>Frecuencia p.m.</th>
-    <th>EN DESCANSO</th>
-    <th>DESPUÉS DE ESFUERZO</th>
-    <th>PASADOS 5 MINUTOS</th>
-  </tr>
-  <tr>
-    <td>Valor</td>
-    <td>{{entenderEnfermedades.[49].answer}}</td>
-    <td>{{entenderEnfermedades.[50].answer}}</td>
-    <td>{{entenderEnfermedades.[51].answer}}</td>
-  </tr>
-</table>
+            </div>
 
+           </td>
+           <td style="padding: 0;margin: 0;">
+              <div style="width: 100%; border-bottom: 1px #000 solid; height: 30%;">
+                Nombre
+              </div>
+              <div style="width: 100%; border-bottom: 1px #000 solid;height: 30%;">
+                Nombre
+              </div>
+             <div style="width: 100%; border-bottom: 1px #000 solid;height: 30%;">
+                Nombre
+              </div>
+           </td>
+        </tr>
+    </table>
+</div>
 
 </body>
 

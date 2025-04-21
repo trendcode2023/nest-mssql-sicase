@@ -105,8 +105,15 @@ export function registerCustomHandlebarsHelpers() {
       32: "15.¿Le han dicho que ha tenido SIDA o el Complejo Relacionado al SIDA?",
       33: "16.¿Ha tenido o le han informado que tiene pruebas sanguíneas positivas para anticuerpos del virus del SIDA?",
       34: "17.¿Tiene usted alguno de estos síntomas sin explicación: fatiga, pérdida de peso, diarrea, ganglios"
-            +" linfáticos inflamados o extrañas lesiones en la piel?"      
-
+            +" linfáticos inflamados o extrañas lesiones en la piel?",
+      35: "a) Ojos, oídos, boca, nariz, faringe?",
+      36: "b) Piel, ganglios linfáticos, arterias periféricas o venas varicosas?",
+      37: "c) Sistema nervioso (incluye reflejos, forma de andar, parálisis)?",
+      38: "d) Aparato respiratorio?",
+      39: "e) Abdomen (incluye cicatrices)?",
+      40: "f) Aparato genitourinario (incluye próstata)?",
+      41: "g) Sistema endocrino (incluye tiroides y senos)?",
+      42: "h) Aparato locomotor (incluye columna, articulaciones, deformidades)?"             
       // Puedes continuar con más si necesitas
     };
   
