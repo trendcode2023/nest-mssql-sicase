@@ -72,7 +72,6 @@
     }
 
     .question {
-      font-weight: bold;
       max-width: 300px;
       /* ancho fijo para alinear todas las preguntas */
     }
@@ -164,51 +163,13 @@
       </div>
     </section>
 
-    <!-- BLOQUE DE NOTA -->
-    <div style="border: 1px solid #000; padding: 8px; margin: 15px auto; max-width: 95%;">
-      <span style="color: red; font-weight: bold;">NOTA:</span>
+    <div style="padding: 8px; margin: 8px auto; max-width: 95%;">
       En caso de respuesta afirmativa a alguna pregunta, indique el número de ésta e incluya el diagnóstico, fecha, duración,
       grado de recuperación y nombre/dirección de médicos a quienes se pueda pedir información.
     </div>
 
-{{!--     <section style="margin-top: 15px;">
-      <div style="font-weight: bold; margin-bottom: 5px;">
-        2. ¿Ha sido tratado o tiene conocimiento de haber padecido de: (SUBRAYE LOS DATOS PERTINENTES)
-      </div>
-      {{#each entenderEnfermedades}}
-        {{#if (lte @index 11)}}
-          
-          {{#isMultipleOf @index 10}}
-            <div style="display: flex; justify-content: flex-end; gap: 25px; font-weight: bold; margin-bottom: 4px; margin-top: 10px;">
-              <div>SÍ</div>
-              <div>NO</div>
-            </div>
-          {{/isMultipleOf}}
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px;">
-            <div style="flex: 1;">
-              <span style="font-weight: bold;">{{getLetra @index}}</span> {{getTextoPregunta @index}}
-            </div>
-            <div style="display: flex; gap: 15px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
-            </div>
-          </div>
-          <hr style="margin: 5px 0;" />
-
-
-
-          {{#if this.sustento}}
-            <div style="margin-left: 20px; margin-bottom: 5px;">
-              {{this.sustento}}
-            </div>
-          {{/if}}
-            
-        {{/if}}
-      {{/each}}
-   </section> --}}
-
 <section style="margin-top: 15px;">
-  <div style="font-weight: bold; margin-bottom: 5px;">
+  <div style="margin-bottom: 5px;">
     2. ¿Ha sido tratado o tiene conocimiento de haber padecido de: (SUBRAYE LOS DATOS PERTINENTES)
   </div>
   {{#each entenderEnfermedades}}
@@ -217,14 +178,14 @@
         <!-- Columna izquierda: Pregunta y checkboxes -->
         <div style="width: 50%;">
          {{#isMultipleOf @index 20}}
-            <div style="display: flex; justify-content: flex-end; gap: 8px; font-weight: bold; margin-bottom: 2px; margin-top: 5px;">
+            <div style="display: flex; justify-content: flex-end; gap: 8px;margin-bottom: 2px; margin-top: 5px;">
               <div>SÍ</div>
               <div>NO</div>
             </div>
          {{/isMultipleOf}}
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">{{getLetra @index}}</span> {{getTextoPregunta @index}}
+              <span >{{getLetra @index}}</span> {{getTextoPregunta @index}}
             </div>
             <div style="display: flex; gap: 1px;">
               <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
@@ -253,7 +214,7 @@
         <div style="width: 50%;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
               <div style="flex: 1;">
-                <span style="font-weight: bold;">3.</span>
+                <span >3.</span>
                 ¿En la actualidad fuma usted o durante los últimos 12 meses ha fumado cigarrillos, cigarros, pipa o ha usado tabaco en cualquier forma?
                 <br />
                 (En caso afirmativo, detalle cuántos al día) ___{{this.sustento}}__
@@ -319,7 +280,7 @@
     </section>
 
      <section style="margin-top: 5px;">
-          <div style="font-weight: bold;">
+          <div>
             7. En los últimos 5 años:
           </div>
           {{#each entenderEnfermedades}}
@@ -327,7 +288,7 @@
               <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
                  <div style="width: 50%;">
                       {{#isMultipleOf @index 16}}
-                      <div style="display: flex; justify-content: flex-end; gap: 8px; font-weight: bold; margin-bottom: 2px; margin-top: 5px;">
+                      <div style="display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 2px; margin-top: 5px;">
                         <div>SÍ</div>
                         <div>NO</div>
                       </div>
@@ -384,6 +345,26 @@
     {{/each}}
     </section>
   <!-- Pregunta 10 -->
+   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+      <div style="width: 50%;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="flex: 1;">
+             10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o renal, enfermedad mental o suicidio?
+            </div>
+            <div style="display: flex; gap: 1px;">
+                    <div class="checkbox">{{#if (eq entenderEnfermedades.[23].answer "S")}}X{{/if}}</div>
+                    <div class="checkbox">{{#if (eq entenderEnfermedades.[23].answer "N")}}X{{/if}}</div>
+            </div>
+          </div>
+      </div>
+      <div style="width: 48%;">
+          {{#if entenderEnfermedades.[23].sustento}}
+            <div>
+              {{ entenderEnfermedades.[23].sustento}}
+            </div>
+          {{/if}}
+      </div>
+    </div>
   <section style="margin-top: 15px;">
         <div style="width: 50%;">
             <!-- Tabla de antecedentes familiares -->
@@ -415,57 +396,38 @@
    <section style="margin-top: 15px;">
     <div class="question-section">
       <div class="question">11.a. Estatura</div>
-      <div class="answer"> {{#each entenderEnfermedades}}
-             {{#if (eq @index 24)}}
-            {{this.answer}} 
-            {{/if}}
-         {{/each}} (m) {{#each entenderEnfermedades}}
-             {{#if (eq @index 25)}}
-            {{this.answer}} 
-            {{/if}}
-         {{/each}}(cm)</div>
+      <div class="answer"> {{entenderEnfermedades.[24].answer}}(m) {{entenderEnfermedades.[25].answer}} (cm)</div>
     </div>
     <div class="question-section" style="margin-left: 15px;">
       <div class="question">b. Peso</div>
-      <div class="answer">{{#each entenderEnfermedades}}
-             {{#if (eq @index 26)}}
-            {{this.answer}} 
-            {{/if}}
-         {{/each}} (kg)</div>
+      <div class="answer">{{entenderEnfermedades.[26].answer}}(kg)</div>
     </div>
 
-{{!-- 12 --}}
-  {{#each entenderEnfermedades}}
-      {{#if (eq @index 27)}}
     <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
       <div style="width: 50%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1;">
-              <span style="font-weight: bold;">12.</span> ¿Ha tenido algún cambio de peso en los últimos 12 meses?
+              12. ¿Ha tenido algún cambio de peso en los últimos 12 meses?
             </div>
             <div style="display: flex; gap: 1px;">
-                    <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-                    <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+                    <div class="checkbox">{{#if (eq entenderEnfermedades.[27].answer "S")}}X{{/if}}</div>
+                    <div class="checkbox">{{#if (eq entenderEnfermedades.[27].answer "N")}}X{{/if}}</div>
             </div>
           </div>
       </div>
       <div style="width: 48%;">
-          {{#if this.sustento}}
+          {{#if entenderEnfermedades.[27].sustento}}
             <div>
-              {{this.sustento}}
+              {{entenderEnfermedades.[27].sustento}}
             </div>
           {{/if}}
       </div>
     </div>
-      {{/if}}
-  {{/each}}
 
      <section style="margin-top: 5px;">
-          <div style="font-weight: bold;">
              13. SI EL PROPUESTO ASEGURADO ES MUJER
-          </div>
           {{#each entenderEnfermedades}}
-            {{#if (and (gte @index 29) (lte @index 30))}}
+            {{#if (and (gte @index 28) (lte @index 29))}}
               <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
                  <div style="width: 50%;">
                     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -494,13 +456,13 @@
       <h4>SIDA(Síndrome de Inmunodeficiencia Adquirida)
             En caso afirmativo, dé detalles completos.</h4>
      </div>
-                 <div style="width: 48%;">
-            </div>
+       <div style="width: 48%;">
+      </div>
 
 
-            <section style="margin-top: 5px;">
+   <section style="margin-top: 5px;">
     {{#each entenderEnfermedades}}
-      {{#if (and (gte @index 31) (lte @index 34))}}
+      {{#if (and (gte @index 30) (lte @index 33))}}
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
           <div style="width: 50%;">
               <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -599,9 +561,9 @@
           <th>Abdomen (sobre el ombligo)</th>
         </tr>
         <tr>
-          <td>{{entenderEnfermedades.[35].answer}}</td>
-          <td>{{entenderEnfermedades.[36].answer}}</td>
           <td>{{entenderEnfermedades.[37].answer}}</td>
+          <td>{{entenderEnfermedades.[25].answer}}</td>
+          <td>{{entenderEnfermedades.[39].answer}}</td> 
           <td>{{entenderEnfermedades.[38].answer}}</td>
           <td>{{entenderEnfermedades.[39].answer}}</td>
         </tr>
@@ -653,7 +615,7 @@
 </div>
 
 
-  <div style="font-weight: bold; margin-bottom: 1px; width: 55%;">
+  <div style="margin-bottom: 1px; width: 55%;">
     19. Presión arterial(si es superior a 138 sistólica o 87 diastólica,tómele 2 veces más)
   </div>
   <div style="width: 50%;">
@@ -664,15 +626,15 @@
                 <table style="margin: 1px; font-size: 9px">
                   <tr>
                     <td style="width: 40%;">Sistólica</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[45].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[0].sistolica}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[1].sistolica}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[2].sistolica}}</td>
                   </tr>
                   <tr>
                     <td style="width: 40%;">Diastólica (5a. fase)</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[47].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[0].diastolica}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[1].diastolica}}</td>
+                    <td style="width: 20%; text-align: center;">{{presionArterial.[2].diastolica}}</td>
                   </tr>
                 </table>
         </div>
@@ -681,7 +643,7 @@
       </div>
   </div>
 
-  <div style="font-weight: bold; margin-bottom: 1px; width: 55%;margin-top: 1px;">
+  <div style="margin-bottom: 1px; width: 55%;margin-top: 1px;">
     20. Pulso
   </div>
   <div style="width: 43%;">
@@ -698,15 +660,15 @@
                   </tr>
                   <tr>
                     <td style="width: 40%;">Frecuencia p.m.</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[45].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[0].frecuencia}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[1].frecuencia}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[2].frecuencia}}</td>
                   </tr>
                   <tr>
                     <td style="width: 40%;">Irregularidades p.m.</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[43].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[44].answer}}</td>
-                    <td style="width: 20%; text-align: center;">{{entenderEnfermedades.[47].answer}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[0].irregularidad}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[1].irregularidad}}</td>
+                    <td style="width: 20%; text-align: center;">{{pulso.[2].irregularidad}}</td>
                   </tr>
                 </table>
         </div>
@@ -832,8 +794,8 @@
            Constante
         </div>
          <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Constante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Constante true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -841,8 +803,8 @@
             Inconstante
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Inconstante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Inconstante true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -850,8 +812,8 @@
             Irradiado
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Irradiado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Irradiado true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -859,8 +821,8 @@
            Localizado
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Localizado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Localizado true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -868,8 +830,8 @@
            Sistólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Sistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Sistólico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -877,8 +839,8 @@
            Presistólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Presistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Presistólico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -886,8 +848,8 @@
            Diastólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Diastólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Diastólico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -895,8 +857,8 @@
            Suave (Gr 1-2)
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Presistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Presistólico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -904,8 +866,8 @@
            Mod. (Gr. 5-6)
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.Diastólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.Diastólico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -965,32 +927,39 @@
 
 <section style="margin-top: 2px;">
   <div style="margin-bottom: 1px; width: 55%;">
-   <span style="font-weight: bold;">2.</span>  ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
+   2. ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
   </div>
   <div style="width: 43%;">
 
   </div>
-      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
-        <!-- Columna izquierda: Pregunta y checkboxes -->
-        <div style="width: 55%;">
-            <div style="display: flex; justify-content: flex-end; gap: 8px; font-weight: bold; margin-bottom: 2px;">
-              <div>SÍ</div>
-              <div>NO</div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+          <div style="width: 55%;">
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 2px;">
+                <div>SÍ</div>
+                <div>NO</div>
             </div>
+          </div>
+          <div style="width: 43%;">
+
+          </div>
+        </div>
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+
+        <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">a)</span> Ojos, oídos, boca, nariz, faringe?
+              a) Ojos, oídos, boca, nariz, faringe?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[52].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[52].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[52].sustento}}
+            <div>{{ entenderEnfermedades.[52].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -999,18 +968,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">b)</span> Piel, ganglios linfáticos, arterias periféricas o venas varicosas?
+              b) Piel, ganglios linfáticos, arterias periféricas o venas varicosas?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[53].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[53].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[53].sustento}}
+            <div>{{entenderEnfermedades.[53].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1019,18 +988,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">C)</span> Sistema nervioso (incluye reflejos, forma de andar, parálisis)?
+              c) Sistema nervioso (incluye reflejos, forma de andar, parálisis)?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[54].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[54].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[54].sustento}}
+            <div>{{entenderEnfermedades.[54].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1039,18 +1008,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">d)</span> Aparato respiratorio?
+              d) Aparato respiratorio?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[55].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[55].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[55].sustento}}
+            <div>{{entenderEnfermedades.[55].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1059,18 +1028,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">e)</span>Abdomen (incluye cicatrices)?
+            e) Abdomen (incluye cicatrices)?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[56].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[56].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[56].sustento}}
+            <div>{{entenderEnfermedades.[56].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1079,18 +1048,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">f)</span>Aparato genitourinario (incluye próstata)?
+              f) Aparato genitourinario (incluye próstata)?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[57].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[57].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[57].sustento}}
+            <div>{{entenderEnfermedades.[57].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1099,18 +1068,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">g)</span>Sistema endocrino (incluye tiroides y senos)?
+             g) Sistema endocrino (incluye tiroides y senos)?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[58].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[58].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[58].sustento}}
+            <div>{{ entenderEnfermedades.[58].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1119,18 +1088,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;">h)</span>Aparato locomotor (incluye columna, articulaciones, deformidades)?
+              h) Aparato locomotor (incluye columna, articulaciones, deformidades)?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[59].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[59].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[59].sustento}}
+            <div>{{ entenderEnfermedades.[59].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1143,18 +1112,18 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;"> 23.</span>¿Hay alguna hernia?
+              23. ¿Hay alguna hernia?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[60].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[60].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[60].sustento}}
+            <div>{{entenderEnfermedades.[60].sustento}}</div>
           {{/if}}
         </div>
       </div>
@@ -1166,25 +1135,22 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              <span style="font-weight: bold;"> 24.</span> ¿Tiene usted conocimiento de historial médico adicional?
+              24. ¿Tiene usted conocimiento de historial médico adicional?
             </div>
             <div style="display: flex; gap: 1px;">
-              <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-              <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[61].answer "S")}}X{{/if}}</div>
+              <div class="checkbox">{{#if (eq entenderEnfermedades.[61].answer "N")}}X{{/if}}</div>
             </div>
           </div>
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if this.sustento}}
-            <div>{{this.sustento}}</div>
+          {{#if entenderEnfermedades.[61].sustento}}
+            <div>{{ entenderEnfermedades.[61].sustento}}</div>
           {{/if}}
         </div>
       </div>
 </section>
-
-
-<!-- (Describa soplo a continuación - Si más de uno, separadamente)  -->
 
 <div style="margin-right: 0;padding-right: 0;">
   <table style="margin: 1px;">
@@ -1194,7 +1160,14 @@
           <td style="width: 12%; text-align: center;">Albumina</td>
           <td style="width: 12%; text-align: center;">Glucosa</td>
           <td style="width: 48%; text-align: center;">26. ¿Conoce usted o sospecha algo inusual respecto a la salud, carácter, mentalidad o costumbre del
-        candidato, que no se haya indicado?</td>
+                      candidato, que no se haya indicado?
+              {{#if (eq entenderEnfermedades.[65].answer "S")}}
+                    <span style="font-weight: bold;">SI</span>
+                {{/if}}
+              {{#if (eq entenderEnfermedades.[65].answer "N")}}
+                    <span style="font-weight: bold;">NO</span>
+              {{/if}}
+          </td>
         </tr>
         <tr >
            <td colspan="4" style="width: 100%;">
@@ -1288,22 +1261,31 @@
                 </div>
               </div>
               <div style="width: 55%;">
-                           A las
+                  <div style="display: flex;flex-direction: column; justify-content:flex-start;width: 100%;padding-left: 10px;">
+                        <div style="display: flex; justify-content: end; align-items: center;margin-bottom: 1px;">
+                          <div style="margin-right: 0;padding-right: 0;">
+                           Alas 6:30 am
+                          </div>
+                        </div>
+                                        <div style="display: flex; justify-content: end; align-items: center;margin-bottom: 1px;">
+                          <div style="margin-right: 0;padding-right: 0;">
+                             del 10 de Marzo del 2018
+                          </div>
+                        </div>
+                  </div>
               </div>
-
-
             </div>
 
            </td>
            <td style="padding: 0;margin: 0;">
-              <div style=" display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid; height: 30%;">
-                <div>Nombre del M.E</div>  
+              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid;">
+                <div style="padding: 10px;">Nombre del M.E {{this.doctorInf.nombre }}</div>
               </div>
-              <div style="width: 100%; border-bottom: 1px #000 solid;height: 30%;">
-                <div>Dirección del M.E</div>  
+              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid;">
+                <div  style="padding: 10px;">Dirección del M.E {{this.doctorInf.direccion }}</div>  
               </div>
-             <div style="width: 100%; border-bottom: 1px #000 solid;height: 30%;">
-                <div>Ciudad</div>  
+             <div style="display: flex;align-items: center;justify-content: start;width: 100%;">
+                <div style="padding: 10px;">Ciudad {{this.doctorInf.ciudad }}</div>  
               </div>
            </td>
         </tr>

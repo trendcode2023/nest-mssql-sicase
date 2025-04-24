@@ -92,29 +92,21 @@ export function registerCustomHandlebarsHelpers() {
       15: "6. ¿Tiene usted la intención de buscar consejo médico, tratamiento o hacer cualquier prueba médica?",
       16: " a. ¿Ha tenido alguna enfermedad física o mental aparte de las ya mencionadas?",
       17: " b. ¿Ha tenido alguna revisión, consulta, lesión u operación quirúrgica?",
-      18: " d. ¿Ha sido sometido a electrocardiograma, rayos X u otro tipo de análisis?",
-      19: " e. ¿Se le ha aconsejado algún análisis, hospitalización u operación que no se hubiera realizado?",
-      20: "8. ¿Ha tenido aplazamiento, rechazo o reducción del servicio militar por deficiencia física o mental?",
-      21: "9. ¿Ha solicitado o percibido alguna vez indemnización por incapacidad de cualquier tipo?",
-      22: "10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o "
+      18: " c. ¿Ha sido paciente en hospital, clínica, sanatorio u otros establecimientos médicos?",
+      19: " d. ¿Ha sido sometido a electrocardiograma, rayos X u otro tipo de análisis?",
+      20: " e. ¿Se le ha aconsejado algún análisis, hospitalización u operación que no se hubiera realizado?",
+      21: "8. ¿Ha tenido aplazamiento, rechazo o reducción del servicio militar por deficiencia física o mental?",
+      22: "9. ¿Ha solicitado o percibido alguna vez indemnización por incapacidad de cualquier tipo?",
+      23: "10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o "
             + "renal, enfermedad mental o suicidio?",
-      29: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
-      30: "b. ¿Está embarazada en la actualidad?",
-      31: "14.¿Ha recibido usted tratamiento o consejo médico en relación al SIDA o condiciones relacionadas con él, o"
+      28: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
+      29: "b. ¿Está embarazada en la actualidad?",
+      30: "14.¿Ha recibido usted tratamiento o consejo médico en relación al SIDA o condiciones relacionadas con él, o"
             +" en relación con enfermedades de transmisión sexual?",
-      32: "15.¿Le han dicho que ha tenido SIDA o el Complejo Relacionado al SIDA?",
-      33: "16.¿Ha tenido o le han informado que tiene pruebas sanguíneas positivas para anticuerpos del virus del SIDA?",
-      34: "17.¿Tiene usted alguno de estos síntomas sin explicación: fatiga, pérdida de peso, diarrea, ganglios"
-            +" linfáticos inflamados o extrañas lesiones en la piel?",
-      35: "a) Ojos, oídos, boca, nariz, faringe?",
-      36: "b) Piel, ganglios linfáticos, arterias periféricas o venas varicosas?",
-      37: "c) Sistema nervioso (incluye reflejos, forma de andar, parálisis)?",
-      38: "d) Aparato respiratorio?",
-      39: "e) Abdomen (incluye cicatrices)?",
-      40: "f) Aparato genitourinario (incluye próstata)?",
-      41: "g) Sistema endocrino (incluye tiroides y senos)?",
-      42: "h) Aparato locomotor (incluye columna, articulaciones, deformidades)?"             
-      // Puedes continuar con más si necesitas
+      31: "15.¿Le han dicho que ha tenido SIDA o el Complejo Relacionado al SIDA?",
+      32: "16.¿Ha tenido o le han informado que tiene pruebas sanguíneas positivas para anticuerpos del virus del SIDA?",
+      33: "17.¿Tiene usted alguno de estos síntomas sin explicación: fatiga, pérdida de peso, diarrea, ganglios"
+            +" linfáticos inflamados o extrañas lesiones en la piel?"         
     };
   
     return preguntas[id] || "";
