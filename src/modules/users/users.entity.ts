@@ -48,7 +48,7 @@ export class User {
   @Column({ type: 'varchar', length: 250, nullable: true })
   routeStamp: string; // it is true becuase initialy dont have a stamp
   // staus del logueo
-  @Column({ type: 'varchar', default: 'ac', nullable: false }) // por defecto
+  @Column({ type: 'varchar', length: 2, default: 'ac', nullable: false }) // por defecto
   status: string;
   // datos de logueo
   @Column({ type: 'datetime', nullable: true }) // por defecto
@@ -62,11 +62,11 @@ export class User {
   // usuario y fechas de creacion y modificacion
   @Column({ type: 'datetime', nullable: false }) // por defecto
   createAt: Date;
-  @Column({ type: 'varchar', nullable: false }) // por payload
+  @Column({ type: 'varchar', length: 85, nullable: true }) // por payload //cambiar
   createdBy: string; // aca se va guardar el nombre del usuario
   @Column({ type: 'datetime', nullable: false }) // por defecto
   updateAt: Date;
-  @Column({ type: 'varchar', nullable: false }) // por payload
+  @Column({ type: 'varchar', length: 85, nullable: true }) // por payload // cambiar
   updatedBy: string;
   // fechas de expiration de usuario y password
   @Column({ type: 'datetime', nullable: false }) // por defecto

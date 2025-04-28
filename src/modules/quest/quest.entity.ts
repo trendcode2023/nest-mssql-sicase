@@ -17,17 +17,17 @@ export class Quest {
   // atributos de seguridad
   @Column({ type: 'datetime', nullable: false })
   createAt: Date;
-  @Column({ type: 'varchar', nullable: false }) // por payload
+  @Column({ type: 'varchar', length: 85, nullable: true }) // por payload
   createdBy: string; // aca se va guardar el nombre del usuario
   @Column({ type: 'datetime', nullable: false }) //
   updateAt: Date;
-  @Column({ type: 'varchar', nullable: false }) // por payload
+  @Column({ type: 'varchar', length: 85, nullable: true }) // por payload
   updatedBy: string;
 
   @Column({ type: 'varchar', length: 1, nullable: false })
   questType: string;
   // atributo de estado
-  @Column({ type: 'varchar', default: 'ac', nullable: false }) // por defecto
+  @Column({ type: 'varchar', length: 2, default: 'ac', nullable: false }) // por defecto
   status: string;
   @ManyToOne(() => User, (user) => user.quests) //
   user: User;
