@@ -48,7 +48,7 @@ export class User {
   @Column({ type: 'varchar', length: 250, nullable: true })
   routeStamp: string; // it is true becuase initialy dont have a stamp
   // staus del logueo
-  @Column({ type: 'varchar', default: 'ac', nullable: false }) // por defecto
+  @Column({ type: 'varchar', length: 2, default: 'ac', nullable: false }) // por defecto
   status: string;
   // datos de logueo
   @Column({ type: 'datetime', nullable: true }) // por defecto
