@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      font-size: 11px;
+      font-size: 10px;
       line-height: 1;
       padding-top: 3px;
       padding-right: 2px;
@@ -31,7 +31,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 20px 0;
+      margin: 15px 0;
     }
 
     th,
@@ -50,8 +50,8 @@
 
     .checkbox {
       display: inline-block;
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border: 1px solid #000;
       text-align: center;
       line-height: 12px;
@@ -84,12 +84,12 @@
 
     .checkbox {
       display: inline-block;
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       border: 1px solid #000;
       text-align: center;
-      font-size: 10px;
-      line-height: 14px;
+      font-size: 8px;
+      line-height: 10px;
     }
 
       .page-break {
@@ -551,14 +551,15 @@
   </div>
 
 <!-- Tabla con medidas físicas -->
+<div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
   <div style="width: 55%; margin: 0;padding: 0;">
-      <table style="margin: 0;padding: 0; font-size: 9px">
+      <table style="margin: 0;padding: 0; font-size: 8px">
         <tr>
-          <th>18.a Estatura (Calzado)</th>
-          <th>Peso (Vestido)</th>
-          <th>Pecho (Expiración forzada)</th>
-          <th>Pecho (Inspiración completa)</th>
-          <th>Abdomen (sobre el ombligo)</th>
+          <th style="margin: 0.5px;padding: 0.5px;  ">18.a Estatura (Calzado)</th>
+          <th style="margin:0.5px;padding: 0.5px;  ">Peso (Vestido)</th>
+          <th style="margin: 0.5px;padding: 0.5px;  ">Pecho (Expiración forzada)</th>
+          <th style="margin: 0.5px;padding: 0.5px;  ">Pecho (Inspiración completa)</th>
+          <th style="margin: 0.5px;padding: 0.5px;  ">Abdomen (sobre el ombligo)</th>
         </tr>
         <tr>
           <td>{{entenderEnfermedades.[37].answer}}</td>
@@ -570,8 +571,12 @@
       </table>
   </div>
   <div style="width: 43%;">
-
+      {{#if entenderEnfermedades.[52].sustento}}
+            <div>{{ entenderEnfermedades.[52].sustento}}</div>
+          {{/if}}
   </div>
+</div>
+
 
 
 <!-- Preguntas con checkboxes -->
@@ -610,6 +615,9 @@
     </div>
   </div>
   <div style="width: 43%;">
+    {{#if entenderEnfermedades.[53].sustento}}
+            <div>{{entenderEnfermedades.[53].sustento}}</div>
+          {{/if}}
 
   </div>
 </div>
@@ -621,7 +629,7 @@
   <div style="width: 50%;">
   </div>
   <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
-      <div style="width: 55%;">
+      <div style="width: 55%;margin: 0px;padding: 0px;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
                 <table style="margin: 1px; font-size: 9px">
                   <tr>
@@ -639,21 +647,21 @@
                 </table>
         </div>
       </div>
-      <div style="width: 43%;">
+      <div style="width: 43%;margin: 0px;padding: 0px;">
+          {{#if entenderEnfermedades.[54].sustento}}
+            <div>{{entenderEnfermedades.[54].sustento}}</div>
+          {{/if}}
+        
       </div>
   </div>
 
-  <div style="margin-bottom: 1px; width: 55%;margin-top: 1px;">
-    20. Pulso
-  </div>
-  <div style="width: 43%;">
-  </div>
+ 
   <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;" >
       <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
                 <table style="margin: 1px; font-size: 9px">
                    <tr>
-                    <td style="width: 40%; height: 40%;">Medición</td>
+                    <td style="width: 40%; height: 40%;">    20. Pulso</td>
                     <td style="width: 20%; text-align: center;height: 40%;">EN DESCANSO</td>
                     <td style="width: 20%; text-align: center;height: 40%;">DESPUES DE ESFUERZO</td>
                     <td style="width: 20%; text-align: center;height: 40%;">PASADO 5 MINUTOS</td>
@@ -674,6 +682,11 @@
         </div>
       </div>
       <div style="width: 43%;">
+         
+            {{#if entenderEnfermedades.[55].sustento}}
+            <div>{{entenderEnfermedades.[55].sustento}}</div>
+          {{/if}}
+   
       </div>
   </div>
 
@@ -729,12 +742,17 @@
     </div>
   </div>
   <div style="width: 48%;">
+     {{#if entenderEnfermedades.[56].sustento}}
+            <div>{{entenderEnfermedades.[56].sustento}}</div>
+          {{/if}}
+        
+   
   </div>
 </div>
 
 
 <div class="question-section">
-  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+  <div style="display: flex; justify-content:space-between; width: 55%;" >
     <div style="width: 15%;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="margin-right: 0;padding-right: 0;">
@@ -749,12 +767,15 @@
       </div>
     </div>
   </div>
-  <div style="width: 48%;">
+  <div style="width: 43%;">
+   {{#if entenderEnfermedades.[57].sustento}}
+            <div>{{entenderEnfermedades.[57].sustento}}</div>
+          {{/if}} 
   </div>
 </div>
 
 <div class="question-section">
-  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%; align-items: center;" >
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 55%; align-items: center;" >
     <div style="width: 25%;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="margin-right: 0;padding-right: 0;">
@@ -782,7 +803,11 @@
       </div>
     </div>
   </div>
-  <div style="width: 48%;">
+  <div style="width: 43%;">
+      
+        {{#if entenderEnfermedades.[58].sustento}}
+            <div>{{ entenderEnfermedades.[58].sustento}}</div>
+          {{/if}}
   </div>
 </div>
 
@@ -921,18 +946,33 @@
     </div>
   </div>
   <div style="width: 43%;">
+   
      
+       
+                {{#if entenderEnfermedades.[59].sustento}}
+            <div>{{ entenderEnfermedades.[59].sustento}}</div>
+          {{/if}}
+     {{#if entenderEnfermedades.[60].sustento}}
+            <div>{{entenderEnfermedades.[60].sustento}}</div>
+          {{/if}}
+        {{#if entenderEnfermedades.[61].sustento}}
+            <div>{{ entenderEnfermedades.[61].sustento}}</div>
+          {{/if}}
   </div>
 </div>
 
-<section style="margin-top: 2px;">
+<section style="margin-top: 0.5px;">
+   <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
   <div style="margin-bottom: 1px; width: 55%;">
    2. ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
   </div>
-  <div style="width: 43%;">
+  <div style="margin-bottom: 1px;width: 43%;">
+  
 
   </div>
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
+   </div>
+
+ <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
           <div style="width: 55%;">
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-bottom: 2px;">
                 <div>SÍ</div>
@@ -940,7 +980,7 @@
             </div>
           </div>
           <div style="width: 43%;">
-
+ 
           </div>
         </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -958,9 +998,8 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[52].sustento}}
-            <div>{{ entenderEnfermedades.[52].sustento}}</div>
-          {{/if}}
+      
+    
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -978,9 +1017,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[53].sustento}}
-            <div>{{entenderEnfermedades.[53].sustento}}</div>
-          {{/if}}
+          
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -998,9 +1035,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[54].sustento}}
-            <div>{{entenderEnfermedades.[54].sustento}}</div>
-          {{/if}}
+        
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -1018,9 +1053,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[55].sustento}}
-            <div>{{entenderEnfermedades.[55].sustento}}</div>
-          {{/if}}
+       
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -1038,9 +1071,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[56].sustento}}
-            <div>{{entenderEnfermedades.[56].sustento}}</div>
-          {{/if}}
+         
         </div>
       </div>
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -1058,9 +1089,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[57].sustento}}
-            <div>{{entenderEnfermedades.[57].sustento}}</div>
-          {{/if}}
+      
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -1078,9 +1107,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[58].sustento}}
-            <div>{{ entenderEnfermedades.[58].sustento}}</div>
-          {{/if}}
+       
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -1098,9 +1125,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[59].sustento}}
-            <div>{{ entenderEnfermedades.[59].sustento}}</div>
-          {{/if}}
+        
         </div>
       </div>
 </section>
@@ -1122,9 +1147,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[60].sustento}}
-            <div>{{entenderEnfermedades.[60].sustento}}</div>
-          {{/if}}
+       
         </div>
       </div>
 </section>
@@ -1145,9 +1168,7 @@
         </div>
         <!-- Columna derecha: Sustento si existe -->
         <div style="width: 43%;">
-          {{#if entenderEnfermedades.[61].sustento}}
-            <div>{{ entenderEnfermedades.[61].sustento}}</div>
-          {{/if}}
+        
         </div>
       </div>
 </section>
