@@ -39,4 +39,5 @@ export interface Declaracion {
     entenderEnfermedades: Enfermedad[];
     familiares: Familiar[];
     firma: Firma;
+    dateCuestionarioString:string
   }

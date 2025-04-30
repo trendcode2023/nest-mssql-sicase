@@ -233,12 +233,12 @@
     {{/each}}
     <div style="width: 50%;">
             <!-- Firma -->
-        <div style="margin-top: 10px; display: flex; justify-content: flex-end;">
+        <div style="margin-top: 2px; display: flex; justify-content: flex-end;">
           
           <div style="text-align: center;">
-            <div style="border-bottom: 1px solid black; width: 220px; height: 60px; display: flex; justify-content: center; align-items: center;">
+            <div style="border-bottom: 1px solid black; width: 200px; height: 40px; display: flex; justify-content: center; align-items: center;">
               {{#if firma.propuestoAsegurado}}
-                <img src="{{firma.propuestoAsegurado}}" style="max-height: 60px; max-width: 100%;" />
+                <img src="{{firma.propuestoAsegurado}}" height="50" width="150" />
               {{/if}}
             </div>
             <div>Firma del Propuesto Asegurado</div>
@@ -425,7 +425,8 @@
     </div>
 
      <section style="margin-top: 5px;">
-             13. SI EL PROPUESTO ASEGURADO ES MUJER
+             13. SI EL PROPUESTO ASEGURADO ES MUJER<br>
+             A su mejor saber y entender
           {{#each entenderEnfermedades}}
             {{#if (and (gte @index 28) (lte @index 29))}}
               <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
@@ -492,14 +493,14 @@
             Confirmo que soy la persona arriba mencionada como Propuesto Asegurado y que las declaraciones y respuestas
             precedentes, una vez debidamente comprobadas, son completas, auténticas, correctamente transcritas y forman
             parte de la Solicitud de Seguro sobre mi vida hecha a Pacífico Seguros. Por la presente autorizo a todo
-            médico, hospital, compañía de seguros u otra institución o persona cualquiera, a que faciliten a Pacífico
+            médico, hospital, compañía de seguros u otra institución o persona cualesquiera, a que faciliten a Pacífico
             Seguros, o su representante, información sobre mi estado de salud, historial médico y cualquier
             hospitalización, recomendación, diagnóstico, tratamiento, enfermedad o dolencia. Una fotocopia de esta
             autorización será, asimismo, válida.
     </div>
 
     <div class="date" style="text-align: end;">
-          <span>Firmado en el 10 de Marzo de 2025</span>
+          <span>{{dateCuestionarioString}}</span>
     </div>
 
     <section>
@@ -520,6 +521,7 @@
                               {{/if}}
                             </div>
                             <div style="margin-top: 4px; text-align: center;">Firma del Propuesto Asegurado</div>
+                            <div style="margin-top: 4px; text-align: center;">Favor de consignar la firma de su D.N.I.</div>
                         </div>
           </div>
 
@@ -691,7 +693,7 @@
   </div>
 
 <div class="question-section" style="margin-top: 2px;">
-  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 50%;" >
+  <div style="display: flex; justify-content:space-between; margin: 0px; padding: 0px;width: 55%;" >
     <div style="width: 25%;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <div style="margin-right: 0;padding-right: 0;">
@@ -741,7 +743,7 @@
       </div>
     </div>
   </div>
-  <div style="width: 48%;">
+  <div style="width: 43%;">
      {{#if entenderEnfermedades.[56].sustento}}
             <div>{{entenderEnfermedades.[56].sustento}}</div>
           {{/if}}
@@ -795,13 +797,14 @@
         </div>
       </div>
     </div>
-    <div style="width: 30%;">
+    <div style="width: 25%;">
       <div style="display: flex; justify-content: end; align-items: center;">
         <div style="margin-left: 2px;padding-right: 0;">
            Indique en el diagrama
         </div>
       </div>
     </div>
+      <div style="width: 5%;"></div>
   </div>
   <div style="width: 43%;">
       
@@ -942,7 +945,7 @@
       </div>
     </div>
     <div style="width: 63%;">
-       <img src="{{imageSoplo}}" style="height:100%; width: 100%;" />
+       <img src="{{imageSoplo}}"    height="180" width="150" />
     </div>
   </div>
   <div style="width: 43%;">
