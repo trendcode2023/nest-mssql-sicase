@@ -47,6 +47,7 @@ export class CreateUserDto {
    * @example '123456'
    */
   @IsString()
+  @IsOptional()
   @Length(5, 6, {
     message: 'CMP debe tener entre 5 y 6 caracteres.',
   })

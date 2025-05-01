@@ -17,6 +17,7 @@ import * as path from 'path';
 import { UpdateStatus } from './dtos/UpdateStatus.dto';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dtos/UserResponseDto';
+import { log } from 'console';
 @Injectable()
 export class UsersService {
   constructor(
@@ -48,7 +49,9 @@ export class UsersService {
         passwordExpirationDate,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
-      await this.updateStamp(user.stampBase64, response);
+      if(profile.name==="doc") {
+        await this.updateStamp(user.stampBase64, response);
+      }
       return response;
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
@@ -160,6 +163,7 @@ export class UsersService {
     const user = await this.usersRepository.findOne({
       where: { id },
     });
+    console.log("user",user)
     if (!user) throw new BadRequestException('El Usuario no existe');
     const hashedPassword = await bcrypt.hash(updateData.password, 10);
     Object.assign(user, updateData);
