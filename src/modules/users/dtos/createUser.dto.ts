@@ -47,6 +47,7 @@ export class CreateUserDto {
    * @example '123456'
    */
   @IsString()
+  @IsOptional()
   @Length(5, 6, {
     message: 'CMP debe tener entre 5 y 6 caracteres.',
   })
@@ -106,7 +107,7 @@ export class CreateUserDto {
    * Debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*), y debe tener entre 8 y 15 caracteres
    * @example 'Qwerty*2025'
    */
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/, {
     message:

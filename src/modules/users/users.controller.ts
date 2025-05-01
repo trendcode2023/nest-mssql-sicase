@@ -4,7 +4,6 @@ import {
   Get,
   Param,
   ParseUUIDPipe,
-  //Param,
   Post,
   Query,
   Req,
@@ -17,7 +16,6 @@ import { DateAdderInterceptor } from 'src/interceptors/date.adder.interceptors';
 import { CreateUserDto } from './dtos/createUser.dto';
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiResponse } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
-//import { Role } from 'src/utils/roles.enum';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
 import { User } from 'src/decorators/user.decorator';
@@ -25,18 +23,13 @@ import { UpdateUserDto } from './dtos/updateUser.dto';
 import { UpdateUserByDoctorDto } from './dtos/updateUserDoctor.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateStatus } from './dtos/UpdateStatus.dto';
-//import { Roles } from 'src/decorators/roles.decorator';
-//import { Role } from 'src/utils/roles.enum';
-//import { ApiBearerAuth } from '@nestjs/swagger';
-
-//import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  @ApiBearerAuth()
+  //@ApiBearerAuth()
   // @Roles('ADMIN')
-  @UseGuards(AuthGuard)
+  //@UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
   //@UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @Post('create')
