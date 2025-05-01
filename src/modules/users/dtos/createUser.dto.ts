@@ -107,7 +107,7 @@ export class CreateUserDto {
    * Debe contener al menos una letra minúscula, una letra mayúscula, un número y un carácter especial (!@#$%^&*), y debe tener entre 8 y 15 caracteres
    * @example 'Qwerty*2025'
    */
-  @IsNotEmpty()
+  @IsOptional()
   @IsString()
   @Matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,15}$/, {
     message:
