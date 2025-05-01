@@ -116,19 +116,19 @@
         <div><span>Parte II</span></div>
         <span><strong>Declaraciones hechas al médico</strong></span>
         <div><span class="label">Propuesto Asegurado:</span> {{declaracion.names}}</div>
-          <div style="display: flex;  flex-direction: row; margin: 0;padding: 0;">
-        <div style="display: flex;margin: 0;padding: 0; "> Soltero<div class="checkbox"> X </div>
+        <div style="display: flex;  flex-direction: row; margin: 0;padding: 0;">
+          
+        <div style="display: flex;margin: 0;padding: 0; "> Soltero <div class="checkbox" style="margin-left: 2px;">{{#if (eq declaracion.estadocivil "Soltero")}}X{{/if}}</div>
         </div>
-        <div style="display: flex;margin: 0;padding: 0; "> Casado<div class="checkbox">  </div>
+        <div style="display: flex;margin: 0;padding: 0; "> Casado <div class="checkbox" style="margin-left: 2px;">{{#if (eq declaracion.estadocivil "Casado")}}X{{/if}}</div>
         </div>
-        <div style="display: flex;margin: 0;padding: 0; "> Viudo<div class="checkbox">  </div>
+        <div style="display: flex;margin: 0;padding: 0; "> Viudo <div class="checkbox" style="margin-left: 2px;">{{#if (eq declaracion.estadocivil "Divorciado")}}X{{/if}}</div>
         </div>
-        <div style="display: flex;margin: 0;padding: 0; "> Divorciado<div class="checkbox">  </div>
+        <div style="display: flex;margin: 0;padding: 0; "> Divorciado <div class="checkbox" style="margin-left: 2px;">{{#if (eq declaracion.estadocivil "Separado")}}X{{/if}}</div>
         </div>
-        <div style="display: flex ;margin: 0;padding: 0;"> Separado<div class="checkbox">  </div>
+        <div style="display: flex ;margin: 0;padding: 0;"> Separado <div class="checkbox" style="margin-left: 2px;">{{#if (eq declaracion.estadocivil "Viudo")}}X{{/if}}</div>
         </div>
-
-    </div>
+        </div>
       </div>
       <div>
         <div><span class="label">N° Solicitud:</span> {{declaracion.nrosolicitud}}</div>
