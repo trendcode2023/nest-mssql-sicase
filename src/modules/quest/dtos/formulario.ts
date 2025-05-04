@@ -30,7 +30,10 @@ export interface Declaracion {
     medico: string;
     propuestoAsegurado:string
   }
-  
+  export interface DateAndHour {
+   hora: string;
+   fecha:string
+  }
   export interface Formulario {
     logo: string;
     imageSoplo:string;
@@ -39,5 +42,7 @@ export interface Declaracion {
     entenderEnfermedades: Enfermedad[];
     familiares: Familiar[];
     firma: Firma;
-    dateCuestionarioString:string
+    dateCuestionarioString:string;
+    dateAndHourCuestionarioString:DateAndHour
+
   }

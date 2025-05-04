@@ -144,13 +144,13 @@
     <div style="font-size: 11px; margin-left: 10px;margin-right: 10px;">
       <div class="label" style="text-align: center; margin-bottom: 5px;font-size: 8.5px;">INSTRUCCIONES PARA EL MÉDICO EXAMINADOR</div>
       <ol>
-        <li style="font-size: 7px;">Una vez comenzado el examen, el informe correspondiente pasa a ser propiedad de la Compañía y no debe ser
+        <li style="font-size: 8px;">Una vez comenzado el examen, el informe correspondiente pasa a ser propiedad de la Compañía y no debe ser
           alterado o destruido cualquiera sea el dictamen, incluso si el Propuesto Asegurado u otra persona se ofrecen a
           pagar sus honorarios.</li>
-        <li style="font-size: 7px;">No se permite al M.E. examinar a sus pacientes o familiares, o a los clientes de un familiar suyo.</li>
-        <li style="font-size: 7px;">El Propuesto Asegurado debe poner su firma en cualquier alteración en las declaraciones hechas por él.</li>
-        <li style="font-size: 7px;">Tanto las declaraciones del Propuesto Asegurado como su informe deben ser registradas a mano por usted.</li>
-        <li style="font-size: 7px;">Si está usando sistema métrico para la medida, indicarlo.</li>
+        <li style="font-size: 8px;">No se permite al M.E. examinar a sus pacientes o familiares, o a los clientes de un familiar suyo.</li>
+        <li style="font-size: 8px;">El Propuesto Asegurado debe poner su firma en cualquier alteración en las declaraciones hechas por él.</li>
+        <li style="font-size: 8px;">Tanto las declaraciones del Propuesto Asegurado como su informe deben ser registradas por usted.</li>
+        <li style="font-size: 8px;">Si está usando sistema métrico para la medida, indicarlo.</li>
       </ol>
     </div>
   </div>
@@ -229,7 +229,7 @@
                 <span >3.</span>
                 ¿En la actualidad fuma usted o durante los últimos 12 meses ha fumado cigarrillos, cigarros, pipa o ha usado tabaco en cualquier forma?
                 <br />
-                (En caso afirmativo, detalle cuántos al día) ___{{this.sustento}}__
+                (En caso afirmativo, detalle cuántos al día) 
               </div>
               <div style="display: flex; gap: 1px;">
                 <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
@@ -238,6 +238,7 @@
             </div>
         </div>
         <div style="width: 48%;">
+{{this.sustento}}
         </div>
       </div>
 
@@ -302,6 +303,8 @@
         </div>
  
     </section>
+    <div style=" page-break-before: always;
+  break-before: page;"></div>
      <section style="margin-top: 5px;">
           <div>
             7. En los últimos 5 años:
@@ -394,19 +397,19 @@
             <table>
               <thead>
                 <tr>
-                  <th>Pariente</th>
-                  <th>Edad si viven</th>
-                  <th>Estado de salud / Causa de muerte</th>
-                  <th>Edad al morir</th>
+                  <th></th>
+                  <th style="margin:2px;padding: 2px;width:12px">Edad si viven</th>
+                  <th >Estado de salud / Causa de muerte</th>
+                  <th style="margin:2px;padding: 2px;width:12px">Edad al morir</th>
                 </tr>
               </thead>
               <tbody>
                 {{#each familiares}}
                 <tr>
                   <td>{{this.tipo}}</td>
-                  <td>{{this.edadSiVive}}</td>
-                  <td>{{this.estadoSalud}}</td>
-                  <td>{{this.edadAlMorir}}</td>
+                  <td style="margin:2px;padding: 2px;width:12px">{{this.edadSiVive}}</td>
+                  <td >{{this.estadoSalud}}</td>
+                  <td style="margin:2px;padding: 2px;width:12px">{{this.edadAlMorir}}</td>
                 </tr>
                 {{/each}}
               </tbody>
@@ -477,8 +480,8 @@
           {{/each}}
      </section>
      <div style="width: 50%;">
-      <h4>SIDA(Síndrome de Inmunodeficiencia Adquirida)
-            En caso afirmativo, dé detalles completos.</h4>
+      SIDA(Síndrome de Inmunodeficiencia Adquirida)
+            En caso afirmativo, dé detalles completos.
      </div>
        <div style="width: 48%;">
       </div>
@@ -638,11 +641,11 @@
           <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
-      <div style="display: flex; justify-content: center; align-items: center; center; margin-top: 4px;">
-        <div style="margin-right: 0">
+      <div style="display: flex; justify-content: space-between; align-items: center; center; margin-top: 4px;">
+        <div style="margin-right: 0;padding-right: 0;">
            ¿Midió usted?
         </div>
-        <div style="display: flex; gap: 1px;margin-left: 20px;">
+        <div style="display: flex; gap: 1px;">
           <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
           <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
         </div>
@@ -651,7 +654,7 @@
     <div style="width: 52%;">
        <div style="display: flex; justify-content: center; align-items: center; center;width:100%;">
         <div style="margin-right: 0; width: 60%;padding-bottom: 10px">
-           c. ¿Es el Propuesto Asegurado de aspecto enfermo o aparenta más edad de la declarada?
+           c. ¿Es el Propuesto Asegurado de aspecto enfermizo o aparenta más edad de la declarada?
         </div>
         <div style="display: flex; gap: 1px; padding-bottom: 37px;width: 40%;">
           <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
@@ -670,7 +673,7 @@
 
 
   <div style="margin-bottom: 1px; width: 55%;">
-    19. Presión arterial(si es superior a 138 sistólica o 87 diastólica,tómele 2 veces más)
+    19. Presión arterial(si es superior a 138 sistólica o 87 diastólica,tómela 2 veces más)
   </div>
   <div style="width: 50%;">
   </div>
@@ -679,13 +682,13 @@
           <div style="display: flex; justify-content: space-between; align-items: center;">
                 <table style="margin: 1px; font-size: 9px">
                   <tr>
-                    <td style="width: 40%;">Sistólica</td>
+                    <td style="width: 30%;border: 0;">Sistólica</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[0].sistolica}}</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[1].sistolica}}</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[2].sistolica}}</td>
                   </tr>
                   <tr>
-                    <td style="width: 40%;">Diastólica (5a. fase)</td>
+                    <td style="width: 30%;border: 0;">Diastólica (5a. fase)<br>(Desaparación del sonido)</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[0].diastolica}}</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[1].diastolica}}</td>
                     <td style="width: 20%; text-align: center;">{{presionArterial.[2].diastolica}}</td>
@@ -707,19 +710,19 @@
           <div style="display: flex; justify-content: space-between; align-items: center;">
                 <table style="margin: 1px; font-size: 9px">
                    <tr>
-                    <td style="width: 40%; height: 40%;">    20. Pulso</td>
+                    <td style="width: 30%; height: 40%;border: 0;">    20. Pulso</td>
                     <td style="width: 20%; text-align: center;height: 40%;">EN DESCANSO</td>
                     <td style="width: 20%; text-align: center;height: 40%;">DESPUES DE ESFUERZO</td>
                     <td style="width: 20%; text-align: center;height: 40%;">PASADO 5 MINUTOS</td>
                   </tr>
                   <tr>
-                    <td style="width: 40%;">Frecuencia p.m.</td>
+                    <td style="width: 30%;border: 0;">Frecuencia p.m.</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[0].frecuencia}}</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[1].frecuencia}}</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[2].frecuencia}}</td>
                   </tr>
                   <tr>
-                    <td style="width: 40%;">Irregularidades p.m.</td>
+                    <td style="width: 30%;border: 0;">Irregularidades p.m.</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[0].irregularidad}}</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[1].irregularidad}}</td>
                     <td style="width: 20%; text-align: center;">{{pulso.[2].irregularidad}}</td>
@@ -756,11 +759,11 @@
           <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
-      <div style="display: flex; justify-content: center; al  |ign-items: center; center; margin-top: 4px;">
-        <div style="margin-right: 0">
+      <div style="display: flex; justify-content: space-center; align-items: center; margin-top: 4px;">
+        <div style="margin-right: 0;padding-right: 0;">
            Soplo(s)
         </div>
-        <div style="display: flex; gap: 1px;">
+        <div style="display: flex; gap: 1px;margin-left:8px">
           <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
           <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
         </div>
@@ -1011,7 +1014,7 @@
 <section style="margin-top: 0.5px;">
    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1px;">
   <div style="margin-bottom: 1px; width: 55%;">
-   2. ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
+   22. ¿Hay en el examen físico alguna observación de: (SUBRAYE LOS DATOS PERTINENTES)
   </div>
   <div style="margin-bottom: 1px;width: 43%;">
   
@@ -1035,7 +1038,8 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              a) Ojos, oídos, boca, nariz, faringe?
+              a) Ojos, oídos, boca, nariz, faringe?( Si la vista o el oído están afectados en grado considerable, indique el grado y la corrección)
+
             </div>
             <div style="display: flex; gap: 1px;">
               <div class="checkbox">{{#if (eq entenderEnfermedades.[52].answer "S")}}X{{/if}}</div>
@@ -1205,7 +1209,7 @@
         <div style="width: 55%;">
           <div style="display: flex; justify-content: space-between; align-items: center;">
             <div style="flex: 1; margin-right: 0;" >
-              24. ¿Tiene usted conocimiento de historial médico adicional?
+              24. ¿Tiene usted conocimiento de historial médico adicional?(Puede remitir informe confidencial al Director Médico de la Compañía) 
             </div>
             <div style="display: flex; gap: 1px;">
               <div class="checkbox">{{#if (eq entenderEnfermedades.[61].answer "S")}}X{{/if}}</div>
@@ -1227,51 +1231,57 @@
           <td style="width: 12%; text-align: center;">Densidad <br> Ver Resultados </td>
           <td style="width: 12%; text-align: center;">Albumina <br> Ver Resultados</td>
           <td style="width: 12%; text-align: center;">Glucosa <br> Ver Resultados</td>
-          <td style="width: 48%; text-align: center;">26. ¿Conoce usted o sospecha algo inusual respecto a la salud, carácter, mentalidad o costumbre del
-                      candidato, que no se haya indicado?
-              {{#if (eq entenderEnfermedades.[65].answer "S")}}
-                    <span style="font-weight: bold;">SI</span>
-                {{/if}}
-              {{#if (eq entenderEnfermedades.[65].answer "N")}}
-                    <span style="font-weight: bold;">NO</span>
-              {{/if}}
+          <td style="width: 48%; text-align: center;">
+            
+          26. ¿Conoce usted o sospecha algo inusual respecto a la salud, carácter, mentalidad o costumbre del
+                      candidato, que no se haya indicado?<br>
+    
+              <div style="display: flex; gap: 1px;margin-left:155px">
+          <div class="checkbox" style="text-align: center;">{{#if (eq entenderEnfermedades.[65].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox" style="text-align: center;">{{#if (eq entenderEnfermedades.[65].answer "N")}}X{{/if}}</div>NO
+        </div>
+             
+             
+              
+              
+             
           </td>
         </tr>
         <tr >
            <td colspan="4" style="width: 100%;">
             <div style="display: flex;flex-direction: column; justify-content:flex-start;">
              <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                    Envíe la muestra a un laboratorio para su examen microscópico, en los casos siguientes:
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                    A. A instancias de la Compañía.
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                   B. El candidato tiene más de 60 años.
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                   C. La P.A. es superior a 140 sistólica o 90 diastólica.
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                   D. Si sospecha alguna anormalidad en la muestra.
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
-                  D. Si sospecha alguna anormalidad en la muestra.
+                <div style="margin: 0;padding: 0;font-size:7px">
+                  E. Hay antecedente de albúmina o glucosa en la orina, o de diabetes en la familias.
                 </div>
               </div>
               <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
-                <div style="margin-right: 0;padding-right: 0;">
+                <div style="margin: 0;padding: 0;font-size:7px">
                   F. Hay antecedentes de enfermedad de riñón, próstata, vejiga o aparato genitourinario.
                 </div>
               </div>
@@ -1283,9 +1293,9 @@
               </div>
               <div style="margin-top: 10px; display: flex; justify-content: center;">
                  <div style="text-align: center;">
-                    <div style="width: 220px; height: 60px; display: flex; justify-content: center; align-items: center;">
+                    <div style="width: 220px; height: 40px; display: flex; justify-content: center; align-items: center;">
                       {{#if firma.medico}}
-                        <img src="{{firma.medico}}" style="max-height: 60px; max-width: 100%;" />
+                        <img src="{{firma.medico}}" style="max-height: 40px; max-width: 100%;" />
                       {{/if}}
                     </div>
                   </div>
@@ -1295,7 +1305,7 @@
              </td>
         </tr>
         <tr>
-           <td colspan="4" style="width: 100%;">
+           <td colspan="4" style="width: 100%; margin: 0px; padding: 0px;">
             <div style="display: flex;justify-content:space-between; margin: 0px; padding: 0px;width: 100%; align-items: center;" >
               <div style="display: flex;flex-direction: column; justify-content:flex-start;width: 45%;">
               <div style="display: flex; justify-content: space-between; align-items: center;padding-bottom: 1px;">
@@ -1332,12 +1342,12 @@
                   <div style="display: flex;flex-direction: column; justify-content:flex-start;width: 100%;padding-left: 10px;">
                         <div style="display: flex; justify-content: end; align-items: center;margin-bottom: 1px;">
                           <div style="margin-right: 0;padding-right: 0;">
-                           Alas 6:30 am
+                          {{this.dateAndHourCuestionarioString.hora}}
                           </div>
                         </div>
                                         <div style="display: flex; justify-content: end; align-items: center;margin-bottom: 1px;">
                           <div style="margin-right: 0;padding-right: 0;">
-                             del 10 de Marzo del 2018
+                              {{this.dateAndHourCuestionarioString.fecha}}
                           </div>
                         </div>
                   </div>
@@ -1346,20 +1356,20 @@
 
            </td>
            <td style="padding: 0;margin: 0;">
-              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid;">
+              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid; margin: 0px; padding: 0px;">
                 <div style="padding: 10px;">Nombre del M.E {{this.doctorInf.nombre }}</div>
               </div>
-              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid;">
+              <div style="display: flex;align-items: center;justify-content: start;width: 100%; border-bottom: 1px #000 solid; margin: 0px; padding: 0px;">
                 <div  style="padding: 10px;">Dirección del M.E {{this.doctorInf.direccion }}</div>  
               </div>
-             <div style="display: flex;align-items: center;justify-content: start;width: 100%;">
+             <div style="display: flex;align-items: center;justify-content: start;width: 100%; margin: 0px; padding: 0px;">
                 <div style="padding: 10px;">Ciudad {{this.doctorInf.ciudad }}</div>  
               </div>
            </td>
         </tr>
     </table>
   
- <section  style="margin-top: 10px">
+ <section  >
    
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
           <div style="width: 70%;">
