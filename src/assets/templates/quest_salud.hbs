@@ -637,8 +637,8 @@
           b. ¿Pesó usted?
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[44].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[44].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; center; margin-top: 4px;">
@@ -646,8 +646,8 @@
            ¿Midió usted?
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[45].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[45].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
     </div>
@@ -657,8 +657,8 @@
            c. ¿Es el Propuesto Asegurado de aspecto enfermizo o aparenta más edad de la declarada?
         </div>
         <div style="display: flex; gap: 1px; padding-bottom: 37px;width: 40%;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[46].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[46].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
     </div>
@@ -755,8 +755,8 @@
           Hipertrofia
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[47].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[47].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
       <div style="display: flex; justify-content: space-center; align-items: center; margin-top: 4px;">
@@ -764,8 +764,8 @@
            Soplo(s)
         </div>
         <div style="display: flex; gap: 1px;margin-left:8px">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[48].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[48].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
     </div>
@@ -775,8 +775,8 @@
           Disnea
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[49].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[49].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
       <div style="display: flex; justify-content: center; align-items: center; center; margin-top: 4px;">
@@ -784,8 +784,8 @@
            Edema
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>SI
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>NO
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[50].answer "S")}}X{{/if}}</div>SI
+          <div class="checkbox">{{#if (eq entenderEnfermedades.[50].answer "N")}}X{{/if}}</div>NO
         </div>
       </div>
     </div>
@@ -837,8 +837,8 @@
         <div style="margin-right: 0;padding-right: 0; width: 100%;">
             <table style="margin: 0px; font-size: 9px; ">
                    <tr style="margin: 0; padding: 0;">
-                    <td style="width: 50%;">Grave</td>
-                    <td style="width: 50%; text-align: center;">Leve</td>
+                    <td style="width: 50%;"> {{entenderEnfermedades.[51].answer}}</td>
+                    <td style="width: 50%; text-align: center;">{{entenderEnfermedades.[52].answer}}</td>
                   </tr>
               </table>
         </div>
@@ -869,8 +869,8 @@
            Constante
         </div>
          <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Constante true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Constante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.constante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.constante true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -878,8 +878,8 @@
             Inconstante
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Inconstante true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Inconstante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.inconstante true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.inconstante true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -887,8 +887,8 @@
             Irradiado
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Irradiado true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Irradiado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.irradiado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.irradiado true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -896,8 +896,8 @@
            Localizado
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Localizado true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Localizado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.localizado true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.localizado true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -905,8 +905,8 @@
            Sistólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Sistólico true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Sistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.sistolico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.sistolico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -914,8 +914,8 @@
            Presistólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Presistólico true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Presistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.presistolico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.presistolico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -923,8 +923,8 @@
            Diastólico
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Diastólico true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Diastólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.diastolico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.diastolico true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -932,8 +932,8 @@
            Suave (Gr 1-2)
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Presistólico true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Presistólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.suave_gr1_2 true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.suave_gr1_2 true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -941,8 +941,8 @@
            Mod. (Gr. 5-6)
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq soplos.columna1.Diastólico true)}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq soplos.columna2.Diastólico true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.mod_gr5_6 true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.mod_gr5_6 true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -950,8 +950,8 @@
            Al esfuerzo:
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.esfuerzo: true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.esfuerzo: true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -959,8 +959,8 @@
            Se acentúa
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.acentua: true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.acentua: true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -968,8 +968,8 @@
            Desaparece
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.desaparece: true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.desaparece: true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -977,8 +977,8 @@
            Sin cambio
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.sin_cambio: true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.sin_cambio: true)}}X{{/if}}</div>
         </div>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center;margin-bottom: 1px;">
@@ -986,8 +986,8 @@
            Se atenúa
         </div>
         <div style="display: flex; gap: 1px;">
-          <div class="checkbox">{{#if (eq this.answer "S")}}X{{/if}}</div>
-          <div class="checkbox">{{#if (eq this.answer "N")}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna1.se_atenua: true)}}X{{/if}}</div>
+          <div class="checkbox">{{#if (eq soplos.columna2.se_atenua: true)}}X{{/if}}</div>
         </div>
       </div>
     </div>
