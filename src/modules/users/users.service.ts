@@ -131,7 +131,9 @@ export class UsersService {
       response.routeStamp = await this.getStampByUser(response.id);
       return response;
       // 1. consulta el tipo de documento por id
-    } catch (error) {}
+    } catch (error) {
+      throw new BadRequestException(error.message);
+    }
   }
 
   async getStampByUser(id: string) {
@@ -255,25 +257,29 @@ export class UsersService {
   }
 
   async updateUserStatus(id: string, status: UpdateStatus, now: Date) {
-    const user = await this.usersRepository.findOne({
-      where: { id },
-    });
-    if (!user) {
-      throw new BadRequestException('Usuario no encontrado');
+    try {
+      const user = await this.usersRepository.findOne({
+        where: { id },
+      });
+      if (!user) {
+        throw new BadRequestException('Usuario no encontrado');
+      }
+      if (user.status === status.status) {
+        throw new BadRequestException(`El usuario ya está en estado "${status}"`);
+      }
+      user.status = status.status;
+      user.updateAt = now;
+      user.updatedBy = user.username;
+      await this.usersRepository.save(user);
+      return {
+        message: `Usuario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,
+        userId: user.id,
+        status: user.status,
+        updatedAt: user.updateAt,
+        updatedBy: user.updatedBy,
+      };
+    } catch (error) {
+      throw new BadRequestException(error.message);
     }
-    if (user.status === status.status) {
-      throw new BadRequestException(`El usuario ya está en estado "${status}"`);
-    }
-    user.status = status.status;
-    user.updateAt = now;
-    user.updatedBy = user.username;
-    await this.usersRepository.save(user);
-    return {
-      message: `Usuario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,
-      userId: user.id,
-      status: user.status,
-      updatedAt: user.updateAt,
-      updatedBy: user.updatedBy,
-    };
   }
 }
