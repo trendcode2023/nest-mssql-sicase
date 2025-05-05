@@ -25,7 +25,7 @@ export class User {
   /**
    * debe ser unico
    */
-  @Column({ type: 'varchar', length: 10, unique: true, nullable: true }) // nullable true: porque el usuario puede que no sea medico
+  @Column({ type: 'varchar', length: 10, nullable: true }) // nullable true: porque el usuario puede que no sea medico
   cmp: string;
   @Column({ type: 'varchar', length: 100, nullable: false })
   names: string;
