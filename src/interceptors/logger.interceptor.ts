@@ -14,7 +14,7 @@ export class LoggerInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
     const user = req.user || {};
-    const username = user.name || user.email || user.id || 'Desconocido';
+    const username = user.username || 'Desconocido';
 
     const now = new Date();
     const formattedDate = now.toLocaleDateString('es-AR', {
