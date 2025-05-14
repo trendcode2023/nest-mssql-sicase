@@ -7,15 +7,20 @@ import { SeederService } from './modules/seeder/seeder.service';
 import { ExceptionsFilter } from './config/ExceptionsFilter';
 import { ResponseApi } from './config/ResponseApi';
 import { log } from 'console';
-import * as express from 'express'
+import * as express from 'express';
 import { join } from 'path';
+import { WinstonLoggerService } from './modules/logger/winston-logger.service';
+import { LoggerInterceptor } from './interceptors/logger.interceptor';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const seeder = app.get(SeederService);
+  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+
+  const logger = new WinstonLoggerService();
+  app.useLogger(logger);
+  app.useGlobalInterceptors(new LoggerInterceptor(new WinstonLoggerService()));
   app.use(express.json({ limit: '10mb' }));
   app.use(express.urlencoded({ limit: '10mb', extended: true }));
-  app.use(LoggerGlobal);
+  // app.use(LoggerGlobal);
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true, // para que no tome ninguna prodiedad adicional seteda en el dto
@@ -52,12 +57,10 @@ async function bootstrap() {
 
   //await seeder.seed();
 
-  console.log('Los catalogos fueron registrados correctamente');
-
   //const port = process.env.PORT || 8300;
   const port = process.env.PORT;
 
   await app.listen(port);
-  console.log(`Server running on port ${port}`);
+  logger.log(`Server running on port ${port}`);
 }
 bootstrap();
