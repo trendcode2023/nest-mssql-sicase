@@ -17,6 +17,7 @@ import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 import { MfaUser } from '../users/dtos/mfaUser.dto';
 import { MfaAuthenticationService } from './mfa-authentication.service';
 import { LoguinResponse } from '../users/dtos/loguinResponse.dto';
+import { UpdatePassword } from '../users/dtos/updatePassword.dto';
 
 @Injectable()
 export class AuthService {
@@ -40,6 +41,9 @@ export class AuthService {
       //relations: ['profile'],
     });
 
+    // 4. valida si user es vacio
+    if (!user) throw new BadRequestException('Credencial invalida!!');
+
     if (user.isMfaEnabled) {
       if (mfaCode) {
         const isValid = await this.mfaAuthenticationService.verifyCode(
@@ -51,8 +55,6 @@ export class AuthService {
         }
       }
     }
-    // 4. valida si user es vacio
-    if (!user) throw new BadRequestException('Credencial invalida!!');
     // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
     // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
@@ -83,7 +85,7 @@ export class AuthService {
     user.lastFailedLogin = null;
     user.lastLogin = new Date();
     await this.usersRepository.save(user);
-    if (user.isMfaEnabled) {
+    if (user.isMfaEnabled && !user.isNewUser) {
       if (mfaCode) {
         // 8. crea el payload
         const payload = {
@@ -96,10 +98,14 @@ export class AuthService {
         response.token = this.jwtService.sign(payload);
         response.profileId = user.codProfile;
         response.userId = user.id;
+        response.isMfaEnabled = user.isMfaEnabled;
       }
     }
+
     response.userId = user.id;
-    response.isMfaEnabled = user.isMfaEnabled;
+    response.isNewUser = user.isNewUser
+    response.isMfaEnabled = user.isMfaEnabled
+
     return response;
   }
   // 🔹 Función para validar la expiración de la contraseña
@@ -148,6 +154,35 @@ export class AuthService {
   isTokenBlacklisted(token: string): boolean {
     return this.blacklist.has(token);
   }
+
+ async updatePassword(request : UpdatePassword) {
+  const email = request.user
+  console.log(request)
+   const user = await this.usersRepository.findOne({
+    where: { email },
+  });
+ 
+  if (!user) {
+    throw new BadRequestException('Credencial invalida!!');
+  }
+  const isMatch = await bcrypt.compare(request.password, user.password);
+  if (!isMatch) {
+    user.failedLoginAttempts = this.isSameDay(user.lastFailedLogin, new Date())
+      ? user.failedLoginAttempts + 1
+      : 1;
+    user.lastFailedLogin = new Date();
+    await this.usersRepository.save(user);
+    throw new BadRequestException('Credencial inválida');
+  }
+  const passwordExpirationDate = new Date();
+  passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
+  user.password = await bcrypt.hash(request.newPassword, 10);
+  user.isNewUser = false
+  user.passwordExpirationDate = passwordExpirationDate
+  await this.usersRepository.save(user);
+  return { message: 'Contraseña actualizada correctamente' }
+  }
+
 
   // registro del usuario
 }

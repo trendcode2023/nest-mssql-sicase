@@ -14,6 +14,7 @@ import {
   Res,
   UseInterceptors,
 } from '@nestjs/common';
+import { UpdatePassword } from '../users/dtos/updatePassword.dto';
 //import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
 //import { AuthService } from './auth.service';
 
@@ -45,6 +46,12 @@ export class AuthController {
     response.type('png');
     return toFileStream(response, uri);
   }
+
+  @Post('update/password')
+  async updatePassword(@Body() request: UpdatePassword){
+    return this.authService.updatePassword(request);
+  }
+
 
   @ApiBearerAuth()
   @Post('logout')
