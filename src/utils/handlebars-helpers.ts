@@ -80,7 +80,7 @@ export function registerCustomHandlebarsHelpers() {
       5: "Azúcar, albúmina, sangre o pus en la orina, enfermedad venérea, piedra u otras enfermedades de los "
            + "riñones, vejiga, próstata o aparato reproductor?",
       6: "Diabetes, enfermedad de la tiroides u otras glándulas endocrinas?",
-      7: "Neuritis, ciática, reumatismo, artritis, gota o cualquier otra enfermedad de los músculos o huesos,"
+      7: "Neuritis, ciática, reumatismo, artritis, gota o cualquier otra enfermedad  o defecto muscular u óseo, "
             + " incluyendo la columna, espalda y articulaciones?",
       8: "Alguna deformidad, cojera o amputación?",
       9: "Enfermedad de la piel, ganglios linfáticos, quistes, tumores, cáncer?",
@@ -100,7 +100,8 @@ export function registerCustomHandlebarsHelpers() {
       23: "10. ¿Hay en su familia antecedentes de tuberculosis, diabetes, cáncer, hipertensión, enfermedad sanguínea o "
             + "renal, enfermedad mental o suicidio?",
       28: "a. ¿Ha tenido alguna vez trastornos de la menstruación, pechos, aparato genital o alteraciones en el embarazo?",
-      29: "b. ¿Está embarazada en la actualidad?",
+      29: "b. ¿Está embarazada en la actualidad?" 
+      + "En caso afirmativo, ¿de cuántos meses?",
       30: "14.¿Ha recibido usted tratamiento o consejo médico en relación al SIDA o condiciones relacionadas con él, o"
             +" en relación con enfermedades de transmisión sexual?",
       31: "15.¿Le han dicho que ha tenido SIDA o el Complejo Relacionado al SIDA?",
