@@ -168,6 +168,20 @@ export class UsersService {
     });
     if (!user) throw new BadRequestException('El Usuario no existe');
     Object.assign(user, updateData);
+    if(updateData.resetMfa == true) {
+      user.isMfaEnabled = false;
+      user.mfaSecrect = null;
+    }
+    if(updateData.unlock == true) {
+      if (updateData.password) {
+        throw new BadRequestException('Contraseña es requerido');
+      }
+      const passwordExpirationDate = new Date();
+      passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
+      user.password = await bcrypt.hash(updateData.password, 10);
+      user.passwordExpirationDate = passwordExpirationDate 
+      user.status =  "ac"    
+    }
     user.updateAt = now;
     user.updatedBy = username;
     const response = await this.usersRepository.save(user);

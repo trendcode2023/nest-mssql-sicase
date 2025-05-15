@@ -165,6 +165,9 @@ export class AuthService {
   if (!user) {
     throw new BadRequestException('Credencial invalida!!');
   }
+  if (user.status!='ac') {
+    return { message: 'No se puede cambiar la contraseña en este momento' }
+  }
   const isMatch = await bcrypt.compare(request.password, user.password);
   if (!isMatch) {
     user.failedLoginAttempts = this.isSameDay(user.lastFailedLogin, new Date())
