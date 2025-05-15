@@ -54,6 +54,30 @@ export class QuestService {
   }
 
   // ok
+  // async updateQuest(
+  //   questId: string,
+  //   updateData: UpdateQuestDto,
+  //   userId: string,
+  //   now: Date,
+  // ) {
+  //   const quest = await this.questsRepository.findOne({
+  //     where: { id: questId },
+  //   });
+  //   if (!quest) {
+  //     throw new NotFoundException('Cuestionario no encontrado');
+  //   }
+
+  //   const user = await this.usersRepository.findOne({ where: { id: userId } });
+  //   if (!user) {
+  //     throw new UnauthorizedException('Usuario no encontrado');
+  //   }
+
+  //   Object.assign(quest, updateData);
+  //   quest.updateAt = now;
+  //   quest.updatedBy = user.username;
+
+  //   return await this.questsRepository.save(quest);
+  // }
   async updateQuest(
     questId: string,
     updateData: UpdateQuestDto,
@@ -66,19 +90,37 @@ export class QuestService {
     if (!quest) {
       throw new NotFoundException('Cuestionario no encontrado');
     }
-
+  
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
-
-    Object.assign(quest, updateData);
-    quest.updateAt = now;
-    quest.updatedBy = user.username;
-
+  
+    // Validar questType si viene en el update
+    if (updateData.questType) {
+      const questType = await this.catalogsRepository.findOne({
+        where: { id: updateData.questType },
+      });
+      if (!questType) {
+        throw new BadRequestException(
+          `Tipo de cuestionario ${updateData.questType} no existe!!`,
+        );
+      }
+    }
+  
+    // Excluir campos que no se deben sobrescribir
+    const { createAt, createdBy, ...safeData } = updateData as any;
+  
+    this.questsRepository.merge(quest, {
+      ...safeData,
+      updatedBy: user.username,
+      updateAt: now,
+    });
+  
     return await this.questsRepository.save(quest);
   }
-
+  
+  
   async getQuestsPaginated(
     page: number = 1, // Página por defecto 1
     limit: number = 10, // 10 registros por defecto
@@ -102,6 +144,7 @@ export class QuestService {
         'quest.jsonQuest',
         'quest.createAt',
         'quest.updateAt',
+        'quest.status',
         'user.id',
         'user.names',
         'user.patSurname',
