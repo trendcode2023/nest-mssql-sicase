@@ -144,6 +144,7 @@ export class QuestService {
         'quest.jsonQuest',
         'quest.createAt',
         'quest.updateAt',
+        'quest.status',
         'user.id',
         'user.names',
         'user.patSurname',
