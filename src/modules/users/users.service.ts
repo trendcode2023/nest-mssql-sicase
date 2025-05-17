@@ -183,6 +183,7 @@ export class UsersService {
       user.failedLoginAttempts = 0;
       user.lastFailedLogin = null;
       user.status =  "ac"    
+      user.isNewUser = true
     }
     user.updateAt = now;
     user.updatedBy = username;
