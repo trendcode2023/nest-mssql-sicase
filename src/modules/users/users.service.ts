@@ -180,6 +180,8 @@ export class UsersService {
       passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
       user.password = await bcrypt.hash(updateData.password, 10);
       user.passwordExpirationDate = passwordExpirationDate 
+      user.failedLoginAttempts = 0;
+      user.lastFailedLogin = null;
       user.status =  "ac"    
     }
     user.updateAt = now;
