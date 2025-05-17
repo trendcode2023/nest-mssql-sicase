@@ -14,6 +14,9 @@ import { UpdateQuestDto } from './dtos/updateQuest.dto';
 import { UpdateStatus } from '../users/dtos/UpdateStatus.dto';
 import { plainToInstance } from 'class-transformer';
 import { QuestResponseDto } from './dtos/QuestResponse.dto';
+import { PdfService } from './pdf.service';
+import * as fs from 'fs';
+import * as path from 'path';
 
 @Injectable()
 export class QuestService {
@@ -23,33 +26,49 @@ export class QuestService {
     @InjectRepository(Catalog) private catalogsRepository: Repository<Catalog>,
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly pdfService: PdfService,
   ) {}
 
   async createQuest(questData: CreateQuestDto, userId: string, now: Date) {
-    const user = await this.usersRepository.findOne({
-      where: { id: userId },
-    });
-    if (!user)
-      throw new BadRequestException(`Usuario con ID ${userId} no existe!!`);
 
-    const questType = await this.catalogsRepository.findOne({
-      where: { id: questData.questType },
-    });
-    if (!questType)
-      throw new BadRequestException(
-        `Tipo de cuestionario ${questData.questType} no existe!!`,
-      );
+    try {
+      const user = await this.usersRepository.findOne({
+        where: { id: userId },
+      });
+      if (!user)
+        throw new BadRequestException(`Usuario con ID ${userId} no existe!!`);
 
-    const newQuest = this.questsRepository.create({
-      ...questData,
-      createAt: now,
-      createdBy: user.username,
-      updateAt: now,
-      updatedBy: user.username,
-      user: user,
-    });
+      const questType = await this.catalogsRepository.findOne({
+        where: { id: questData.questType },
+      });
+      if (!questType)
+        throw new BadRequestException(
+          `Tipo de cuestionario ${questData.questType} no existe!!`,
+        );
 
-    return await this.questsRepository.save(newQuest);
+      const newQuest = this.questsRepository.create({
+        ...questData,
+        createAt: now,
+        createdBy: user.username,
+        updateAt: now,
+        updatedBy: user.username,
+        user: user,
+      });
+      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
+      const uploadDir = path.dirname( `D:/quest/${questData.questType}/${newQuest.id}/`);
+      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}pdf`);
+      if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+      }
+      fs.writeFileSync(filePath, pdfBuffer);
+      return await this.questsRepository.save(newQuest);
+    } catch (error) {
+      console.error('❌ Error al guardar el PDF:', error);
+      throw error;
+    }
   }
 
   async updateQuest(

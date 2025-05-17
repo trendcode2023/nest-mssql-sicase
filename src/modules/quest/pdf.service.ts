@@ -23,15 +23,10 @@ export class PdfService {
   }
 
   /** ✅ Obtiene el formulario y genera el PDF */
-  async generatePdf(questId: string): Promise<Buffer> {
+  async generatePdf(jsonQuest: string): Promise<Buffer> {
 
     try {
-    const quest = await this.questsRepository.findOneBy({ id: questId });
-
-    if (!quest) {
-      throw new NotFoundException(`Formulario con id ${questId} no encontrado`);
-    }
-    const data = JSON.parse(quest.jsonQuest) as Formulario;
+    const data = JSON.parse(jsonQuest) as Formulario;
     const imagePath = path.join(process.cwd(), 'dist', 'assets', 'images', 'logo_pacifico.png');
     const imageBuffer = fs.readFileSync(imagePath);
     const imageBase64 = imageBuffer.toString('base64');
