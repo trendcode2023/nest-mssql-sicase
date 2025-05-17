@@ -25,7 +25,6 @@ export class QuestService {
     private usersRepository: Repository<User>,
   ) {}
 
-  // ok
   async createQuest(questData: CreateQuestDto, userId: string, now: Date) {
     const user = await this.usersRepository.findOne({
       where: { id: userId },
@@ -53,31 +52,6 @@ export class QuestService {
     return await this.questsRepository.save(newQuest);
   }
 
-  // ok
-  // async updateQuest(
-  //   questId: string,
-  //   updateData: UpdateQuestDto,
-  //   userId: string,
-  //   now: Date,
-  // ) {
-  //   const quest = await this.questsRepository.findOne({
-  //     where: { id: questId },
-  //   });
-  //   if (!quest) {
-  //     throw new NotFoundException('Cuestionario no encontrado');
-  //   }
-
-  //   const user = await this.usersRepository.findOne({ where: { id: userId } });
-  //   if (!user) {
-  //     throw new UnauthorizedException('Usuario no encontrado');
-  //   }
-
-  //   Object.assign(quest, updateData);
-  //   quest.updateAt = now;
-  //   quest.updatedBy = user.username;
-
-  //   return await this.questsRepository.save(quest);
-  // }
   async updateQuest(
     questId: string,
     updateData: UpdateQuestDto,

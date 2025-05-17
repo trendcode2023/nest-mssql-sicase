@@ -173,7 +173,7 @@ export class UsersService {
       user.mfaSecrect = null;
     }
     if(updateData.unlock == true) {
-      if (updateData.password) {
+      if (!updateData.password) {
         throw new BadRequestException('Contraseña es requerido');
       }
       const passwordExpirationDate = new Date();
