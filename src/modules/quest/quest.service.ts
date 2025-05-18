@@ -17,6 +17,7 @@ import { QuestResponseDto } from './dtos/QuestResponse.dto';
 import { PdfService } from './pdf.service';
 import * as fs from 'fs';
 import * as path from 'path';
+import { log } from 'console';
 
 @Injectable()
 export class QuestService {
@@ -55,7 +56,7 @@ export class QuestService {
         user: user,
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = path.dirname( `D:/quest/${questType.detail}/${newQuest.id}/`);
+      const uploadDir = path.dirname( `D:/quest-salud/${newQuest.id}/`);
       const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}pdf`);
       if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
@@ -101,17 +102,6 @@ export class QuestService {
       }
     }
 
-    const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
-    const uploadDir = path.dirname( `D:/quest/${questType.detail}/${quest.id}/`);
-    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}pdf`);
-    if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-    }
-    if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-    }
-    fs.writeFileSync(filePath, pdfBuffer);
-  
     // Excluir campos que no se deben sobrescribir
     const { createAt, createdBy, ...safeData } = updateData as any;
   
@@ -121,7 +111,19 @@ export class QuestService {
       updateAt: now,
     });
   
-    return await this.questsRepository.save(quest);
+    const response =  await this.questsRepository.save(quest);
+    const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
+    const uploadDir = path.dirname(`D:/quest-salud/${response.id}/`);
+    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}.pdf`);
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+    }
+    fs.writeFileSync(filePath, pdfBuffer);
+
+    return response
   }
   
   
@@ -193,15 +195,11 @@ export class QuestService {
   }
 
   async getQuestById(id: string) {
-    // const quest = await this.questsRepository.findOne({
-    //   where: { id },
-    //  });
-    //if (!quest) throw new BadRequestException('Cuestionario no encontrado');
 
     const quest = await this.questsRepository
       .createQueryBuilder('quest')
-      .leftJoin('quest.user', 'user') // Hacer el JOIN sin seleccionar todos los campos
-      .addSelect('user.id') // Seleccionar solo user.id
+      .leftJoin('quest.user', 'user')
+      .addSelect('user.id') 
       .where('quest.id = :id', { id })
       .getOne();
 
@@ -257,8 +255,9 @@ export class QuestService {
         throw new BadRequestException(
           `Tipo de cuestionario ${quest.questType} no existe!!`,
       );
-      const filePath = `D:/quest/${questType.detail}/${quest.id}/`;
+      const filePath = path.join('D:', 'quest-salud', quest.id.toString(), `FORMULARIO-${quest.patientDni}.pdf`);
       if (!fs.existsSync(filePath)) {
+        console.log("filePath",filePath)
         throw new BadRequestException('No se puede obtener el formulario');
       }
       return fs.readFileSync(filePath);
