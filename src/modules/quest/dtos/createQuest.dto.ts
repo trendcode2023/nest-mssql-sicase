@@ -39,8 +39,8 @@ export class CreateQuestDto {
 
   @IsNotEmpty()
   @IsString()
-  @Length(20, 50, {
-    message: 'nombre del pdf debe tener entre 30 y 50 caracteres',
+  @Length(5, 100, {
+    message: 'nombre del pdf debe tener entre 5 y 100 caracteres',
   })
   pdfName: string;
 
