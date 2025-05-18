@@ -55,7 +55,7 @@ export class QuestService {
         user: user,
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = path.dirname( `D:/quest/${questType.name}/${newQuest.id}/`);
+      const uploadDir = path.dirname( `D:/quest/${questType.detail}/${newQuest.id}/`);
       const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}pdf`);
       if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
@@ -102,7 +102,7 @@ export class QuestService {
     }
 
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
-    const uploadDir = path.dirname( `D:/quest/${questType.name}/${quest.id}/`);
+    const uploadDir = path.dirname( `D:/quest/${questType.detail}/${quest.id}/`);
     const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}pdf`);
     if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
@@ -257,7 +257,7 @@ export class QuestService {
         throw new BadRequestException(
           `Tipo de cuestionario ${quest.questType} no existe!!`,
       );
-      const filePath = `D:/quest/${questType.name}/${quest.id}/`;
+      const filePath = `D:/quest/${questType.detail}/${quest.id}/`;
       if (!fs.existsSync(filePath)) {
         throw new BadRequestException('No se puede obtener el formulario');
       }
