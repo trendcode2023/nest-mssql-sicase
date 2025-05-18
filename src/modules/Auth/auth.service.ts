@@ -42,6 +42,9 @@ export class AuthService {
       //relations: ['profile'],
     });
 
+    if(user.status="in") {
+      throw new BadRequestException('El usuario se encuntra inactivo');
+    }
     // 4. valida si user es vacio
     if (!user) throw new BadRequestException('Credencial invalida!!');
 
