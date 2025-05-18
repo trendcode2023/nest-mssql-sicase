@@ -57,7 +57,7 @@ export class QuestService {
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
       const uploadDir = path.dirname( `D:/quest-salud/${newQuest.id}/`);
-      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}pdf`);
+      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}.pdf`);
       if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
       }
