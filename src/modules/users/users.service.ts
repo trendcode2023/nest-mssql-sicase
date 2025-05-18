@@ -28,6 +28,13 @@ export class UsersService {
 
   async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
+
+      const userValidation = await this.usersRepository.findOne({
+        where: { username: user.username },
+      });
+      if (userValidation){
+        throw new BadRequestException('El nombre de usuario ya existe');
+      }
       const profile = await this.profilesRepository.findOne({
         where: { id: user.codProfile },
       });

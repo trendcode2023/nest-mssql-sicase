@@ -29,6 +29,10 @@ export class Quest {
   // atributo de estado
   @Column({ type: 'varchar', length: 2, default: 'ac', nullable: false }) // por defecto
   status: string;
+
+  @Column({ type: 'int', nullable: true }) 
+  version: number;
+
   @ManyToOne(() => User, (user) => user.quests) //
   user: User;
 }

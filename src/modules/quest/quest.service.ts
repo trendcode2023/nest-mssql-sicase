@@ -46,7 +46,7 @@ export class QuestService {
         throw new BadRequestException(
           `Tipo de cuestionario ${questData.questType} no existe!!`,
         );
-
+      questData.pdfName = `FORMULARIO-${questData.patientDni}-V1.pdf`
       const newQuest = this.questsRepository.create({
         ...questData,
         createAt: now,
@@ -54,10 +54,11 @@ export class QuestService {
         updateAt: now,
         updatedBy: user.username,
         user: user,
+        version:1
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
       const uploadDir = path.dirname( `D:/quest-salud/${newQuest.id}/`);
-      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}.pdf`);
+      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}-V1.pdf`);
       if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -110,11 +111,11 @@ export class QuestService {
       updatedBy: user.username,
       updateAt: now,
     });
-  
+    quest.version = quest.version + 1
     const response =  await this.questsRepository.save(quest);
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
     const uploadDir = path.dirname(`D:/quest-salud/${response.id}/`);
-    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}.pdf`);
+    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}-${response.version}.pdf`);
     if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -255,7 +256,10 @@ export class QuestService {
         throw new BadRequestException(
           `Tipo de cuestionario ${quest.questType} no existe!!`,
       );
-      const filePath = path.join('D:', 'quest-salud', quest.id.toString(), `FORMULARIO-${quest.patientDni}.pdf`);
+      const filePath = path.join('D:', 'quest-salud', 
+        quest.id.toString(),
+         `FORMULARIO-${quest.patientDni}-${quest.version}.pdf`);
+
       if (!fs.existsSync(filePath)) {
         console.log("filePath",filePath)
         throw new BadRequestException('No se puede obtener el formulario');

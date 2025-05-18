@@ -32,12 +32,13 @@ export class AuthService {
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     const response = new LoguinResponse();
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
-    const { email, password, mfaCode } = credentialsData || {};
+    const { username, password, mfaCode } = credentialsData || {};
+    
     // 2. valida si existe email y password no son vacios
-    if (!email || !password) return 'Email y password es requerido!!';
+    if (!username || !password) return 'Usuario y contraseña es requerido';
     // 3. busca usuario por email y lo asigna a user
     const user = await this.usersRepository.findOne({
-      where: { email },
+      where: { username },
       //relations: ['profile'],
     });
 
@@ -140,7 +141,7 @@ export class AuthService {
     }
     const { secret, uri } =
       await this.mfaAuthenticationService.generateSecretAuthenticator(
-        user.email,
+        user.username,
       );
     await this.mfaAuthenticationService.enableStatusMfa(dto.idUser, secret);
     return uri;
@@ -156,12 +157,11 @@ export class AuthService {
   }
 
  async updatePassword(request : UpdatePassword) {
-  const email = request.user
+  const username = request.user
   console.log(request)
    const user = await this.usersRepository.findOne({
-    where: { email },
+    where: { username },
   });
- 
   if (!user) {
     throw new BadRequestException('Credencial invalida!!');
   }
