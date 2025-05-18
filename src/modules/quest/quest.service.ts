@@ -55,7 +55,7 @@ export class QuestService {
         user: user,
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = path.dirname( `D:/quest/${questData.questType}/${newQuest.id}/`);
+      const uploadDir = path.dirname( `D:/quest/${questType.name}/${newQuest.id}/`);
       const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}pdf`);
       if (!fs.existsSync(uploadDir)) {
           fs.mkdirSync(uploadDir, { recursive: true });
@@ -88,10 +88,10 @@ export class QuestService {
     if (!user) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
-  
+    let questType =null
     // Validar questType si viene en el update
     if (updateData.questType) {
-      const questType = await this.catalogsRepository.findOne({
+       questType = await this.catalogsRepository.findOne({
         where: { id: updateData.questType },
       });
       if (!questType) {
@@ -100,6 +100,17 @@ export class QuestService {
         );
       }
     }
+
+    const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
+    const uploadDir = path.dirname( `D:/quest/${questType.name}/${quest.id}/`);
+    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}pdf`);
+    if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+    }
+    if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+    }
+    fs.writeFileSync(filePath, pdfBuffer);
   
     // Excluir campos que no se deben sobrescribir
     const { createAt, createdBy, ...safeData } = updateData as any;
@@ -232,6 +243,30 @@ export class QuestService {
       updatedBy: quest.updatedBy,
     };
   }
+
+  async getQuestPdf(id:string ) {
+    try {
+      const quest = await this.questsRepository.findOne({ where: { id } });
+      if (!quest) {
+        throw new BadRequestException('El formulario no existe');
+      }
+      const questType = await this.catalogsRepository.findOne({
+        where: { id: quest.questType },
+      });
+      if (!questType)
+        throw new BadRequestException(
+          `Tipo de cuestionario ${quest.questType} no existe!!`,
+      );
+      const filePath = `D:/quest/${questType.name}/${quest.id}/`;
+      if (!fs.existsSync(filePath)) {
+        throw new BadRequestException('No se puede obtener el formulario');
+      }
+      return fs.readFileSync(filePath);
+    } catch (error) {
+      throw new BadRequestException('No se puede obtener el formulario');
+    }
+  }
+
 }
 
 /*
