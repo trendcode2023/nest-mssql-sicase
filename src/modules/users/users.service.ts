@@ -30,10 +30,15 @@ export class UsersService {
     try {
 
       const userValidation = await this.usersRepository.findOne({
-        where: { username: user.username },
+        where: [
+          { username: user.username },
+          { email: user.email },
+          { documentNum: user.documentNum },
+          { cmp: user.cmp }
+        ]
       });
       if (userValidation){
-        throw new BadRequestException('El nombre de usuario ya existe');
+        throw new BadRequestException('El usuario ya existe');
       }
       const profile = await this.profilesRepository.findOne({
         where: { id: user.codProfile },
