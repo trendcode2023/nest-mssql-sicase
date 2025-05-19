@@ -41,13 +41,11 @@ export class AuthService {
       where: { username },
       //relations: ['profile'],
     });
-
+    // 4. valida si user es vacio
+    if (!user) throw new BadRequestException('Credencial invalida!!');
     if(user.status=="in") {
       throw new BadRequestException('El usuario esta inactivo');
     }
-    // 4. valida si user es vacio
-    if (!user) throw new BadRequestException('Credencial invalida!!');
-
     if (user.isMfaEnabled) {
       if (mfaCode) {
         const isValid = await this.mfaAuthenticationService.verifyCode(
