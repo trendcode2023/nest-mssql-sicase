@@ -106,9 +106,9 @@ export class UsersController {
   }
 
   // --------------------------
-  @ApiBearerAuth()
+/*   @ApiBearerAuth()
   @Roles('ADMIN')
-  @UseGuards(AuthGuard, RolesGuard)
+  @UseGuards(AuthGuard, RolesGuard) */
   @Get('paginated')
   @ApiQuery({
     name: 'page',

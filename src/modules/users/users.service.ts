@@ -243,9 +243,11 @@ export class UsersService {
     const query = this.usersRepository.createQueryBuilder('user');
     if (filters) {
       if (filters.name) {
-        query.andWhere('LOWER(user.names) LIKE :name', {
-          name: `%${filters.name.toLowerCase()}%`,
-        });
+        const nameFilter = `%${filters.name.toLowerCase()}%`;
+        query.andWhere(
+          `(LOWER(user.names) LIKE :name OR LOWER(user.patSurname) LIKE :name OR LOWER(user.matSurname) LIKE :name)`,
+          { name: nameFilter },
+        );
       }
       if (filters.email) {
         query.andWhere('LOWER(user.email) LIKE :email', {
