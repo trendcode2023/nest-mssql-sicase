@@ -29,17 +29,42 @@ export class UsersService {
   async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
 
-      const userValidation = await this.usersRepository.findOne({
+      const userNameValidation = await this.usersRepository.findOne({
         where: [
-          { username: user.username },
-          { email: user.email },
-          { documentNum: user.documentNum },
+          { username: user.username }
+        ]
+      });
+      if (userNameValidation){
+        throw new BadRequestException('El nombre de usuario ya existe');
+      }
+
+      const emailValidation = await this.usersRepository.findOne({
+        where: [
+          { email: user.email }
+        ]
+      });
+      if (emailValidation){
+        throw new BadRequestException('El correo ya existe');
+      }
+
+      const documentoValidation = await this.usersRepository.findOne({
+        where: [
+          { documentNum: user.documentNum }
+        ]
+      });
+      if (documentoValidation){
+        throw new BadRequestException('El documento ya existe');
+      }
+
+      const cmpValidation = await this.usersRepository.findOne({
+        where: [
           { cmp: user.cmp }
         ]
       });
-      if (userValidation){
-        throw new BadRequestException('El usuario ya existe');
+      if (cmpValidation){
+        throw new BadRequestException('El CMP ya existe');
       }
+
       const profile = await this.profilesRepository.findOne({
         where: { id: user.codProfile },
       });
@@ -179,6 +204,43 @@ export class UsersService {
       where: { id },
     });
     if (!user) throw new BadRequestException('El Usuario no existe');
+
+    const userNameValidation = await this.usersRepository.findOne({
+      where: [
+        { username: updateData.username }
+      ]
+    });
+    if (userNameValidation){
+      throw new BadRequestException('El nombre de usuario ya existe');
+    }
+
+    const emailValidation = await this.usersRepository.findOne({
+      where: [
+        { email: updateData.email }
+      ]
+    });
+    if (emailValidation){
+      throw new BadRequestException('El correo ya existe');
+    }
+    
+    const documentoValidation = await this.usersRepository.findOne({
+      where: [
+        { documentNum: updateData.documentNum }
+      ]
+    });
+    if (documentoValidation){
+      throw new BadRequestException('El documento ya existe');
+    }
+
+    const cmpValidation = await this.usersRepository.findOne({
+      where: [
+        { cmp: updateData.cmp }
+      ]
+    });
+    if (cmpValidation){
+      throw new BadRequestException('El CMP ya existe');
+    }
+
     Object.assign(user, updateData);
     if(updateData.resetMfa == true) {
       user.isMfaEnabled = false;
