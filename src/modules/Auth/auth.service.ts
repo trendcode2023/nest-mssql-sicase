@@ -42,7 +42,7 @@ export class AuthService {
       //relations: ['profile'],
     });
 
-    if(user.status=  "in") {
+    if(user.status=="in") {
       throw new BadRequestException('El usuario esta inactivo');
     }
     // 4. valida si user es vacio
