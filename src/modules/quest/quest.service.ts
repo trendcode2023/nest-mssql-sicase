@@ -31,7 +31,6 @@ export class QuestService {
   ) {}
 
   async createQuest(questData: CreateQuestDto, userId: string, now: Date) {
-
     try {
       const user = await this.usersRepository.findOne({
         where: { id: userId },
@@ -46,7 +45,7 @@ export class QuestService {
         throw new BadRequestException(
           `Tipo de cuestionario ${questData.questType} no existe!!`,
         );
-      questData.pdfName = `FORMULARIO-${questData.patientDni}-V1.pdf`
+      questData.pdfName = `FORMULARIO-${questData.patientDni}-V1.pdf`;
       const newQuest = this.questsRepository.create({
         ...questData,
         createAt: now,
@@ -54,16 +53,19 @@ export class QuestService {
         updateAt: now,
         updatedBy: user.username,
         user: user,
-        version:1
+        version: 1,
       });
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = path.dirname( `D:/quest-salud/${newQuest.id}/`);
-      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}-V1.pdf`);
+      const uploadDir = path.dirname(`D:/quest-salud/${newQuest.id}/`);
+      const filePath = path.join(
+        uploadDir,
+        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+      );
       if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
+        fs.mkdirSync(uploadDir, { recursive: true });
       }
       if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
+        fs.unlinkSync(filePath);
       }
       fs.writeFileSync(filePath, pdfBuffer);
       return await this.questsRepository.save(newQuest);
@@ -85,15 +87,15 @@ export class QuestService {
     if (!quest) {
       throw new NotFoundException('Cuestionario no encontrado');
     }
-  
+
     const user = await this.usersRepository.findOne({ where: { id: userId } });
     if (!user) {
       throw new UnauthorizedException('Usuario no encontrado');
     }
-    let questType =null
+    let questType = null;
     // Validar questType si viene en el update
     if (updateData.questType) {
-       questType = await this.catalogsRepository.findOne({
+      questType = await this.catalogsRepository.findOne({
         where: { id: updateData.questType },
       });
       if (!questType) {
@@ -105,29 +107,31 @@ export class QuestService {
 
     // Excluir campos que no se deben sobrescribir
     const { createAt, createdBy, ...safeData } = updateData as any;
-  
+
     this.questsRepository.merge(quest, {
       ...safeData,
       updatedBy: user.username,
       updateAt: now,
     });
-    quest.version = quest.version + 1
-    const response =  await this.questsRepository.save(quest);
+    quest.version = quest.version + 1;
+    const response = await this.questsRepository.save(quest);
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
     const uploadDir = path.dirname(`D:/quest-salud/${response.id}/`);
-    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}-${response.version}.pdf`);
+    const filePath = path.join(
+      uploadDir,
+      `FORMULARIO-${quest.patientDni}-${response.version}.pdf`,
+    );
     if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
+      fs.mkdirSync(uploadDir, { recursive: true });
     }
     if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
+      fs.unlinkSync(filePath);
     }
     fs.writeFileSync(filePath, pdfBuffer);
 
-    return response
+    return response;
   }
-  
-  
+
   async getQuestsPaginated(
     page: number = 1, // Página por defecto 1
     limit: number = 10, // 10 registros por defecto
@@ -148,7 +152,7 @@ export class QuestService {
         'quest.patientName',
         'quest.patientDni',
         'quest.pdfName',
-        'quest.jsonQuest',
+        // 'quest.jsonQuest',
         'quest.createAt',
         'quest.updateAt',
         'quest.status',
@@ -196,11 +200,10 @@ export class QuestService {
   }
 
   async getQuestById(id: string) {
-
     const quest = await this.questsRepository
       .createQueryBuilder('quest')
       .leftJoin('quest.user', 'user')
-      .addSelect('user.id') 
+      .addSelect('user.id')
       .where('quest.id = :id', { id })
       .getOne();
 
@@ -243,7 +246,7 @@ export class QuestService {
     };
   }
 
-  async getQuestPdf(id:string ) {
+  async getQuestPdf(id: string) {
     try {
       const quest = await this.questsRepository.findOne({ where: { id } });
       if (!quest) {
@@ -255,13 +258,16 @@ export class QuestService {
       if (!questType)
         throw new BadRequestException(
           `Tipo de cuestionario ${quest.questType} no existe!!`,
-      );
-      const filePath = path.join('D:', 'quest-salud', 
+        );
+      const filePath = path.join(
+        'D:',
+        'quest-salud',
         quest.id.toString(),
-         `FORMULARIO-${quest.patientDni}-${quest.version}.pdf`);
+        `FORMULARIO-${quest.patientDni}-${quest.version}.pdf`,
+      );
 
       if (!fs.existsSync(filePath)) {
-        console.log("filePath",filePath)
+        console.log('filePath', filePath);
         throw new BadRequestException('No se puede obtener el formulario');
       }
       return fs.readFileSync(filePath);
@@ -269,7 +275,6 @@ export class QuestService {
       throw new BadRequestException('No se puede obtener el formulario');
     }
   }
-
 }
 
 /*
