@@ -28,8 +28,8 @@ export class CreateQuestDto {
    */
   @IsNotEmpty()
   @IsString()
-  @Length(8, 8, {
-    message: 'dni del paciente debe 8 caracteres',
+  @Length(8, 20, {
+    message: 'Documento del paciente debe tener entre 8 y 20 caracteres',
   })
   patientDni: string;
   /**
