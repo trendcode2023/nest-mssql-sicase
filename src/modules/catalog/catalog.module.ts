@@ -7,9 +7,9 @@ import { AuthModule } from '../auth/auth.module';
 import { ProfilesModule } from '../profile/profile.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Catalog]),AuthModule,ProfilesModule],
+  imports: [TypeOrmModule.forFeature([Catalog]), AuthModule, ProfilesModule],
   controllers: [CatalogController],
   providers: [CatalogService],
-  exports: [CatalogService], 
+  exports: [CatalogService],
 })
 export class CatalogModule {}

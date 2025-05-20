@@ -33,10 +33,10 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    console.log('user');
-    console.log(user);
-    console.log('user.roles');
-    console.log(user.roles);
+    // console.log('user');
+    // console.log(user);
+    // console.log('user.roles');
+    // console.log(user.roles);
 
     if (!user || !user.roles) {
       throw new ForbiddenException('No profile associated with this user');
@@ -47,8 +47,8 @@ export class RolesGuard implements CanActivate {
 
     const userProfile = await this.profileService.getProfileById(user.roles);
 
-    console.log('userprofile:');
-    console.log(userProfile);
+    // console.log('userprofile:');
+    // console.log(userProfile);
     if (!userProfile) {
       throw new ForbiddenException('User profile not found');
     }
@@ -56,8 +56,8 @@ export class RolesGuard implements CanActivate {
     // const hasRole = () => requiredRoles.some((role) => user?.roles?.includes(role));
 
     const hasRole = requiredRoles.includes(userProfile.name);
-    console.log('hasRole:');
-    console.log(hasRole);
+    // console.log('hasRole:');
+    //  console.log(hasRole);
 
     if (!hasRole) {
       throw new ForbiddenException(

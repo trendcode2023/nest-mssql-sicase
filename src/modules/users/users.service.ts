@@ -28,40 +28,31 @@ export class UsersService {
 
   async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
-
       const userNameValidation = await this.usersRepository.findOne({
-        where: [
-          { username: user.username }
-        ]
+        where: [{ username: user.username }],
       });
-      if (userNameValidation){
+      if (userNameValidation) {
         throw new BadRequestException('El nombre de usuario ya existe');
       }
 
       const emailValidation = await this.usersRepository.findOne({
-        where: [
-          { email: user.email }
-        ]
+        where: [{ email: user.email }],
       });
-      if (emailValidation){
+      if (emailValidation) {
         throw new BadRequestException('El correo ya existe');
       }
 
       const documentoValidation = await this.usersRepository.findOne({
-        where: [
-          { documentNum: user.documentNum }
-        ]
+        where: [{ documentNum: user.documentNum }],
       });
-      if (documentoValidation){
+      if (documentoValidation) {
         throw new BadRequestException('El documento ya existe');
       }
 
       const cmpValidation = await this.usersRepository.findOne({
-        where: [
-          { cmp: user.cmp }
-        ]
+        where: [{ cmp: user.cmp }],
       });
-      if (cmpValidation){
+      if (cmpValidation) {
         throw new BadRequestException('El CMP ya existe');
       }
 
@@ -69,7 +60,8 @@ export class UsersService {
         where: { id: user.codProfile },
       });
       if (!profile) throw new BadRequestException('perfil no existe!!');
-      if (!user.password) throw new BadRequestException('Contraseña es requerido');
+      if (!user.password)
+        throw new BadRequestException('Contraseña es requerido');
       const hashedPassword = await bcrypt.hash(user.password, 10);
 
       //PasswordExpirationDate expirara en 90 dias
@@ -87,7 +79,7 @@ export class UsersService {
         passwordExpirationDate,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
-      if(profile.name==="doc") {
+      if (profile.name === 'doc') {
         await this.updateStamp(user.stampBase64, response);
       }
       return response;
@@ -204,7 +196,7 @@ export class UsersService {
       where: { id },
     });
     if (!user) throw new BadRequestException('El Usuario no existe');
-
+    /*
     const userNameValidation = await this.usersRepository.findOne({
       where: [
         { username: updateData.username }
@@ -239,25 +231,25 @@ export class UsersService {
     });
     if (cmpValidation){
       throw new BadRequestException('El CMP ya existe');
-    }
+    }  */
 
     Object.assign(user, updateData);
-    if(updateData.resetMfa == true) {
+    if (updateData.resetMfa == true) {
       user.isMfaEnabled = false;
       user.mfaSecrect = null;
     }
-    if(updateData.unlock == true) {
+    if (updateData.unlock == true) {
       if (!updateData.password) {
         throw new BadRequestException('Contraseña es requerido');
       }
       const passwordExpirationDate = new Date();
       passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
       user.password = await bcrypt.hash(updateData.password, 10);
-      user.passwordExpirationDate = passwordExpirationDate 
+      user.passwordExpirationDate = passwordExpirationDate;
       user.failedLoginAttempts = 0;
       user.lastFailedLogin = null;
-      user.status =  "ac"    
-      user.isNewUser = true
+      user.status = 'ac';
+      user.isNewUser = true;
     }
     user.updateAt = now;
     user.updatedBy = username;
@@ -358,7 +350,9 @@ export class UsersService {
         throw new BadRequestException('Usuario no encontrado');
       }
       if (user.status === status.status) {
-        throw new BadRequestException(`El usuario ya está en estado "${status}"`);
+        throw new BadRequestException(
+          `El usuario ya está en estado "${status}"`,
+        );
       }
       user.status = status.status;
       user.updateAt = now;

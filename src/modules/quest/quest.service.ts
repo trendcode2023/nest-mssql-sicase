@@ -55,10 +55,13 @@ export class QuestService {
         user: user,
         version: 1,
       });
-      const response =  await this.questsRepository.save(newQuest);
+      const response = await this.questsRepository.save(newQuest);
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
       const uploadDir = `D:/quest-salud/${response.id}/`;
-      const filePath = path.join(uploadDir,`FORMULARIO-${newQuest.patientDni}-V1.pdf`);
+      const filePath = path.join(
+        uploadDir,
+        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+      );
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
       }
@@ -111,12 +114,15 @@ export class QuestService {
       updatedBy: user.username,
       updateAt: now,
     });
-    quest.version = quest.version + 1
-    quest.pdfName = `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`
-    const response =  await this.questsRepository.save(quest);
+    quest.version = quest.version + 1;
+    quest.pdfName = `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`;
+    const response = await this.questsRepository.save(quest);
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
     const uploadDir = `D:/quest-salud/${response.id}/`;
-    const filePath = path.join(uploadDir,`FORMULARIO-${quest.patientDni}-V${response.version}.pdf`);
+    const filePath = path.join(
+      uploadDir,
+      `FORMULARIO-${quest.patientDni}-V${response.version}.pdf`,
+    );
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -124,7 +130,6 @@ export class QuestService {
       fs.unlinkSync(filePath);
     }
     fs.writeFileSync(filePath, pdfBuffer);
-
     return response;
   }
 
@@ -259,7 +264,8 @@ export class QuestService {
         'D:',
         'quest-salud',
         quest.id.toString(),
-         `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`);
+        `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`,
+      );
       if (!fs.existsSync(filePath)) {
         console.log('filePath', filePath);
         throw new BadRequestException('No se puede obtener el formulario');
