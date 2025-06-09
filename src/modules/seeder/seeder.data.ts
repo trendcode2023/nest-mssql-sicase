@@ -14,24 +14,7 @@ export const profilesData = [
   { codeName: 'doc', name: 'medico' },
 ];
 
-export const usersData = [
-  {
-    documentType: '1',
-    documentNum: '12345678',
-    cmp: '12345',
-    names: 'sicase',
-    patSurname: 'super',
-    matSurname: 'admin',
-    username: 'SADMINS',
-    email: 'admin@gmail.com',
-    password: 'Qwerty*2025',
-    cellphone: '123456789',
-    RouteStamp: 'https://images.com',
-    createdBy: '12345678',
-    updatedBy: '12345678',
-    codProfile: '1',
-  },
-];
+export const usersData = [];
 export const modulosData = [
   {
     code: 'mod-adm',
