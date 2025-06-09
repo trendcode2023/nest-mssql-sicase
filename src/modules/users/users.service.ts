@@ -18,6 +18,8 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 import { plainToInstance } from 'class-transformer';
 import { UserResponseDto } from './dtos/UserResponseDto';
 import { log } from 'console';
+import { fileTypeFromBuffer } from 'file-type';
+import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class UsersService {
   constructor(
@@ -25,6 +27,9 @@ export class UsersService {
     @InjectRepository(Catalog) private catalogsRepository: Repository<Catalog>,
     @InjectRepository(Profile) private profilesRepository: Repository<Profile>,
   ) {}
+
+  private readonly ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg'];
+  private readonly ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
 
   async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
@@ -125,6 +130,14 @@ export class UsersService {
     }
   }
 
+   getFileExtension(filename: string): string {
+    return path.extname(filename).toLowerCase();
+  }
+  
+   isAllowedFileType(mimeType: string, extension: string): boolean {
+    return this.ALLOWED_MIME_TYPES.includes(mimeType) && this.ALLOWED_EXTENSIONS.includes(extension);
+  }
+
   async uploadStamp(
     idUser: string,
     now: Date,
@@ -132,34 +145,44 @@ export class UsersService {
     username: string,
   ) {
     try {
-      const user = await this.usersRepository.findOne({
-        where: { id: idUser },
-      });
-      // 2. si no existe manda excepcion
+      const user = await this.usersRepository.findOne({ where: { id: idUser } });
       if (!user) throw new BadRequestException('Usuario no existe!!');
-      // 3. Guardar imagen en una carpeta
-      const uploadDir = `D:/doctor/firmas/${idUser}/`;
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
+
+      if (!file?.buffer || file.buffer.length === 0) {
+        throw new BadRequestException('Archivo vacío o no válido');
       }
-      const filePath = path.join(uploadDir, file.originalname);
-      fs.writeFileSync(filePath, file.buffer);
-      console.log(filePath);
-      console.log(now);
-      console.log(username);
-      //user.routeStamp = filePath;
-      //user.updateAt = now;
-      //user.updatedBy = username;
+
+      const detected = await fileTypeFromBuffer(file.buffer);
+      const detectedExt = detected?.ext ? `.${detected.ext}` : this.getFileExtension(file.originalname);
+      const detectedMime = detected?.mime || file.mimetype;
+
+      if (!this.isAllowedFileType(detectedMime, detectedExt)) {
+        throw new BadRequestException('Tipo de imagen no permitido. Solo se aceptan .png, .jpg, .jpeg');
+      }
+
+      const basePath = path.resolve('D:/doctor/firmas');
+      const uploadDir = path.resolve(basePath, idUser);
+      if (!uploadDir.startsWith(basePath)) {
+        throw new BadRequestException('Ruta de carga inválida');
+      }
+
+     fs.mkdirSync(uploadDir, { recursive: true });
+
+      const sanitizedName = `${uuidv4()}${detectedExt}`;
+      const filePath = path.join(uploadDir, sanitizedName);
+
+     fs.writeFileSync(filePath, file.buffer, { flag: 'w' });
+
       Object.assign(user, {
-        // ...questData,
         routeStamp: filePath,
         updateAt: now,
         updatedBy: username,
       });
+
       const response = await this.usersRepository.save(user);
       response.routeStamp = await this.getStampByUser(response.id);
       return response;
-      // 1. consulta el tipo de documento por id
+
     } catch (error) {
       throw new BadRequestException(error.message);
     }

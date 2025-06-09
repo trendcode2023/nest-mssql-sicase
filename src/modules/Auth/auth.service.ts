@@ -46,17 +46,7 @@ export class AuthService {
     if(user.status=="in") {
       throw new BadRequestException('El usuario esta inactivo');
     }
-    if (user.isMfaEnabled) {
-      if (mfaCode) {
-        const isValid = await this.mfaAuthenticationService.verifyCode(
-          mfaCode,
-          user.mfaSecrect,
-        );
-        if (!isValid) {
-          throw new BadRequestException('Código incorrecto o expirado');
-        }
-      }
-    }
+    await this.validateMFA(user, mfaCode);
     // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
     // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
@@ -110,6 +100,24 @@ export class AuthService {
 
     return response;
   }
+
+  async validateMFA(user: User, mfaCode?: string) {
+    if (!user.isMfaEnabled) return;
+  
+    if (!mfaCode) {
+      throw new BadRequestException('Código MFA requerido');
+    }
+  
+    const isValid = await this.mfaAuthenticationService.verifyCode(
+      mfaCode,
+      user.mfaSecrect,
+    );
+  
+    if (!isValid) {
+      throw new BadRequestException('Código MFA inválido');
+    }
+  }
+
   // 🔹 Función para validar la expiración de la contraseña
   private validatePasswordExpiration(user: any, now: Date) {
     if (!user.passwordExpirationDate) return;
@@ -149,7 +157,7 @@ export class AuthService {
   }
 
   async logout(token: string): Promise<string> {
-    this.blacklist.add(token); // Agregar el token a la lista negra
+    this.blacklist.add(token); 
     return 'Sesión cerrada exitosamente.';
   }
 
@@ -187,69 +195,4 @@ export class AuthService {
   return { message: 'Contraseña actualizada correctamente' }
   }
 
-
-  // registro del usuario
 }
-
-/*
-  if (!isMatch) {
-      if (!this.isSameDay) {
-        // Si el último intento fallido no es en el mismo día, reiniciar el contador
-        user.failedLoginAttempts = 1;
-        user.lastFailedLogin = now;
-        console.log(now);
-      } else {
-        user.failedLoginAttempts++;
-      }
-      const validar = await this.usersRepository.save(user);
-      console.log('guardamos en base de datos');
-      console.log('verificra si cambia lastFailedLogin');
-      console.log(validar.lastFailedLogin + '-' + validar.failedLoginAttempts);
-
-      throw new BadRequestException('Credencial inválida!!');
-    }
-*/
-
-/*
-    const lastFailedLogin = user.lastFailedLogin  ? new Date(user.lastFailedLogin)
-      : null; // si user.lastFailedLogin existe lo convertimos a una instancia de Date sino mantine nulo
-    console.log(
-      'verificamos si lastFailedLogin existe de lo contrario sera nulo',
-    );
-    console.log('lastFailedLogin: ' + lastFailedLogin);
-
-    const isSameDay =
-      lastFailedLogin && lastFailedLogin.toDateString() === now.toDateString();
-    console.log(
-      'verificamos si lastFailedLogin existe, entonces comparamos con la fecha actual, de lo contrario sera false',
-    );
-    console.log('isSameDay: ' + isSameDay);
-    // hasta ahora no guardamos nada en base de datos
-    if (user.failedLoginAttempts >= 3 && isSameDay) {
-      // Si el usuario tiene 3 intentos fallidos en el mismo día, bloquear la cuenta
-      user.status = 'bl';
-      await this.usersRepository.save(user);
-      throw new BadRequestException('Cuenta bloqueada');
-    }
-*/
-
-//    if (!user) return 'Invalid Credentials';
-//    if (user.password === password) return 'Logged In';
-//    return 'Invalid Credentials';
-
-/*  async signup(user: Partial<User>) {
-    const { email, password } = user;
-    if (!email || !password) throw new BadRequestException('Data is required');
-    const foundUser = await this.usersRepository.findOneBy({ email });
-    if (foundUser) throw new BadRequestException('email is registered');
-
-    // proceso de registro
-    // hashear la password
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    // guardar el usuario en la bd
-    return await this.usersRepository.create({
-      ...user,
-      password: hashedPassword,
-    });
-  }*/
