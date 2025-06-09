@@ -103,18 +103,14 @@ export class AuthService {
 
   async validateMFA(user: User, mfaCode?: string) {
     if (!user.isMfaEnabled) return;
-  
-    if (!mfaCode) {
-      throw new BadRequestException('Código MFA requerido');
-    }
-  
-    const isValid = await this.mfaAuthenticationService.verifyCode(
-      mfaCode,
-      user.mfaSecrect,
-    );
-  
-    if (!isValid) {
-      throw new BadRequestException('Código MFA inválido');
+    if (mfaCode) {
+      const isValid = await this.mfaAuthenticationService.verifyCode(
+        mfaCode,
+        user.mfaSecrect,
+      );
+      if (!isValid) {
+        throw new BadRequestException('Código MFA inválido');
+      }
     }
   }
 
