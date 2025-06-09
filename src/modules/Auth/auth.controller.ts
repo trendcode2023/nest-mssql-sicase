@@ -15,13 +15,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { UpdatePassword } from '../users/dtos/updatePassword.dto';
-//import { LoguinUserDto } from '../users/dtos/loguinUser.dto';
-//import { AuthService } from './auth.service';
 
-//import { AuthService } from 'src/Auth/auth.service';
-//import { LoginUserDto, UserDto } from 'src/Users/user.dto';
-//import { AuthService } from './auth.service';
-//import { Users } from 'src/Users/user.entity';
 @ApiTags('Auth')
 //@ApiBearerAuth()
 @Controller('auth')

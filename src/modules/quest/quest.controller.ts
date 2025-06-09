@@ -39,7 +39,6 @@ export class QuestController {
     @Body() quest: CreateQuestDto,
     @Req() request: Request & { now: Date },
     @User('id') userId: string,
-    // @User('username') loggedInUserDni: string,
   ) {
     return this.questsService.createQuest(quest, userId, request.now);
   }
@@ -128,7 +127,7 @@ export class QuestController {
     );
   }
 
-  // @ApiBearerAuth()
+  @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @Get('declaracion-salud/:id')
   async downloadPdf(@Res() res: Response, @Param('id') questId: string) {
@@ -171,27 +170,3 @@ export class QuestController {
     );
   }
 }
-
-/*
- @Get('getall')
-  @ApiQuery({ name: 'page', required: false })
-  @ApiQuery({ name: 'limit', required: false })
-  @ApiQuery({ name: 'doctorName', required: false })
-  @ApiQuery({ name: 'patientName', required: false })
-  @ApiQuery({ name: 'patientDni', required: false })
-  getAllQuest(
-    @Query('page') page: number = 1,
-    @Query('limit') limit: number = 5,
-    @Query('doctorName') doctorName?: string,
-    @Query('patientName') patientName?: string,
-    @Query('patientDni') patientDni?: string,
-  ) {
-    return this.questsService.getAllQuests(
-      page,
-      limit,
-      doctorName,
-      patientName,
-      patientDni,
-    );
-  }
-*/

@@ -27,23 +27,21 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
-  //@ApiBearerAuth()
-  // @Roles('ADMIN')
-  //@UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard)
   @UseInterceptors(DateAdderInterceptor)
-  //@UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
   @Post('create')
   createUser(
-    //@UploadedFile() file: Express.Multer.File,
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
-    @User('username') loggedInUserDni: string, // captura los datos del payload
+    @User('username') loggedInUserDni: string, 
   ) {
     console.log(loggedInUserDni);
     return this.usersService.createUser(user, request.now, loggedInUserDni);
   }
 
-  @ApiBearerAuth() //  solo para swagger: ruta requiere autenticación basada en Bearer tokens
+  @ApiBearerAuth()
   @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('getall')
@@ -69,8 +67,8 @@ export class UsersController {
     );
   }
 
-  //@UseGuards(AuthGuard)
-  //@UseInterceptors(DateAdderInterceptor)
+  @UseGuards(AuthGuard)
+  @UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
   @ApiBody({ type: UpdateUserDto })
   async updateUser(
@@ -86,29 +84,11 @@ export class UsersController {
       loggedInUserDni,
     );
   }
-  // @UseGuards(AuthGuard) // captura el token
-  @UseInterceptors(FileInterceptor('file')) // 👈 Captura la imagen
-  @UseInterceptors(DateAdderInterceptor)
-  @Post('stamp/:id')
-  async uploadStamp(
-    @Param('id') idUser: string, //id del usuario
-    @Req() request: Request & { now: Date }, // fecha del sistema
-    //@Body() stampData: CreateUserDto, //
-    @UploadedFile() file: Express.Multer.File, //archivo a cargar
-    @User('username') loggedInUsername: string, // captura los datos del payload del token
-  ) {
-    return this.usersService.uploadStamp(
-      idUser,
-      request.now,
-      file,
-      loggedInUsername,
-    );
-  }
 
-  // --------------------------
-/*   @ApiBearerAuth()
+
+  @ApiBearerAuth()
   @Roles('ADMIN')
-  @UseGuards(AuthGuard, RolesGuard) */
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('paginated')
   @ApiQuery({
     name: 'page',
@@ -169,9 +149,9 @@ export class UsersController {
     );
   }
 
-  // @UseGuards(AuthGuard)
-  // @ApiBearerAuth()
-  @Get('getUserById/:userId') // Ruta dinámica
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Get('getUserById/:userId') 
   async getUserById(
     @Param('userId', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
@@ -185,7 +165,7 @@ export class UsersController {
   @Post('update-status/:id')
   async updateUserStatus(
     @Param('id') id: string,
-    @Body() status: UpdateStatus, // El estado se pasa en el Body
+    @Body() status: UpdateStatus, 
     @Req() request: Request & { now: Date },
   ) {
     return this.usersService.updateUserStatus(id, status, request.now);
