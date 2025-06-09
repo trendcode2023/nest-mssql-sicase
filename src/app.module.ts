@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtModule } from '@nestjs/jwt';
-import { SeederModule } from './modules/seeder/seeder.module';
+
 import { ProfilesModule } from './modules/profile/profile.module';
 import { MenuModule } from './modules/menu/menu.module';
 import { QuestModule } from './modules/quest/quest.module';
@@ -19,7 +19,7 @@ import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
     QuestModule,
     MenuModule,
     ProfilesModule,
-    SeederModule,
+
     AuthModule,
     UsersModule,
     CatalogModule,

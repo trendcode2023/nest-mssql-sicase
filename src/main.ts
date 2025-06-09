@@ -3,7 +3,7 @@ import { AppModule } from './app.module';
 import { LoggerGlobal } from './middlewares/middleware.logger';
 import { ApiResponse, DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { BadRequestException, ValidationPipe } from '@nestjs/common';
-import { SeederService } from './modules/seeder/seeder.service';
+
 import { ExceptionsFilter } from './config/ExceptionsFilter';
 import { ResponseApi } from './config/ResponseApi';
 import { log } from 'console';
