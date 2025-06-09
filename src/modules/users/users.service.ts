@@ -28,9 +28,6 @@ export class UsersService {
     @InjectRepository(Profile) private profilesRepository: Repository<Profile>,
   ) {}
 
-  private readonly ALLOWED_MIME_TYPES = ['image/png', 'image/jpeg'];
-  private readonly ALLOWED_EXTENSIONS = ['.png', '.jpg', '.jpeg'];
-
   async createUser(user: CreateUserDto, now: Date, id: string) {
     try {
       const userNameValidation = await this.usersRepository.findOne({
@@ -84,29 +81,12 @@ export class UsersService {
         passwordExpirationDate,
       } as Partial<CreateUserDto>);
       const response = await this.usersRepository.save(newUser);
-      if (profile.name === 'doc') {
+      if (profile.codeName === 'doc') {
         await this.updateStamp(user.stampBase64, response);
       }
       return response;
     } catch (error) {
       throw new NotFoundException(`error: ${error.message}`);
-    }
-  }
-
-  async registerStamOld(stampBase64: string, entity: User) {
-    if (stampBase64) {
-      const base64Data = stampBase64.replace(/^data:image\/\w+;base64,/, '');
-      const buffer = Buffer.from(base64Data, 'base64');
-      const uploadDir = `D:/doctor/firmas/${entity.id}/`;
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      const filePath = path.join(uploadDir, 'firma.png');
-      fs.writeFileSync(filePath, buffer);
-      entity.routeStamp = uploadDir + 'firma.png';
-      await this.usersRepository.update(entity.id, {
-        routeStamp: entity.routeStamp,
-      });
     }
   }
 
@@ -130,67 +110,7 @@ export class UsersService {
     }
   }
 
-   getFileExtension(filename: string): string {
-    return path.extname(filename).toLowerCase();
-  }
-  
-   isAllowedFileType(mimeType: string, extension: string): boolean {
-    return this.ALLOWED_MIME_TYPES.includes(mimeType) && this.ALLOWED_EXTENSIONS.includes(extension);
-  }
-
-  async uploadStamp(
-    idUser: string,
-    now: Date,
-    file: Express.Multer.File,
-    username: string,
-  ) {
-    try {
-      const user = await this.usersRepository.findOne({ where: { id: idUser } });
-      if (!user) throw new BadRequestException('Usuario no existe!!');
-
-      if (!file?.buffer || file.buffer.length === 0) {
-        throw new BadRequestException('Archivo vacío o no válido');
-      }
-
-      const detected = await fileTypeFromBuffer(file.buffer);
-      const detectedExt = detected?.ext ? `.${detected.ext}` : this.getFileExtension(file.originalname);
-      const detectedMime = detected?.mime || file.mimetype;
-
-      if (!this.isAllowedFileType(detectedMime, detectedExt)) {
-        throw new BadRequestException('Tipo de imagen no permitido. Solo se aceptan .png, .jpg, .jpeg');
-      }
-
-      const basePath = path.resolve('D:/doctor/firmas');
-      const uploadDir = path.resolve(basePath, idUser);
-      if (!uploadDir.startsWith(basePath)) {
-        throw new BadRequestException('Ruta de carga inválida');
-      }
-
-     fs.mkdirSync(uploadDir, { recursive: true });
-
-      const sanitizedName = `${uuidv4()}${detectedExt}`;
-      const filePath = path.join(uploadDir, sanitizedName);
-
-     fs.writeFileSync(filePath, file.buffer, { flag: 'w' });
-
-      Object.assign(user, {
-        routeStamp: filePath,
-        updateAt: now,
-        updatedBy: username,
-      });
-
-      const response = await this.usersRepository.save(user);
-      response.routeStamp = await this.getStampByUser(response.id);
-      return response;
-
-    } catch (error) {
-      throw new BadRequestException(error.message);
-    }
-  }
-
   async getStampByUser(id: string) {
-    //  const filePath = path.join('D:/doctor/firmas', userId, 'nombre-del-archivo.png');
-    // 🔥 Cambia 'nombre-del-archivo.png' por el nombre real guardado en tu DB
     let base64Image = null;
     try {
       const user = await this.usersRepository.findOne({ where: { id } });
