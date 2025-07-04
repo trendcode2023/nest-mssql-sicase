@@ -57,7 +57,7 @@ export class QuestService {
       });
       const response = await this.questsRepository.save(newQuest);
       const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = `D:/quest-salud/${response.id}/`;
+      const uploadDir = `C:/quest-salud/${response.id}/`;
       const filePath = path.join(
         uploadDir,
         `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
@@ -118,7 +118,7 @@ export class QuestService {
     quest.pdfName = `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`;
     const response = await this.questsRepository.save(quest);
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
-    const uploadDir = `D:/quest-salud/${response.id}/`;
+    const uploadDir = `C:/quest-salud/${response.id}/`;
     const filePath = path.join(
       uploadDir,
       `FORMULARIO-${quest.patientDni}-V${response.version}.pdf`,

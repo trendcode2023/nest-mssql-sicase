@@ -94,7 +94,7 @@ export class UsersService {
     if (stampBase64) {
       const base64Data = stampBase64.replace(/^data:image\/\w+;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
-      const uploadDir = `D:/doctor/firmas/${entity.id}/`;
+      const uploadDir = `C:/doctor/firmas/${entity.id}/`;
       const filePath = path.join(uploadDir, 'firma.png');
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
