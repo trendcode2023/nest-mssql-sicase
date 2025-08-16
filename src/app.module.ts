@@ -12,6 +12,8 @@ import { QuestModule } from './modules/quest/quest.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
 
+import { v4 as uuidv4 } from 'uuid';
+
 //import { AuthModule } from './modules/auth/auth.module';
 //import { JwtModule } from '@nestjs/jwt';
 @Module({
@@ -40,7 +42,7 @@ import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
       // registra el jwt
       global: true,
       signOptions: { expiresIn: '1h' },
-      secret: process.env.JWT_SECRET,
+      secret: process.env.JWT_SECRET
     }),
   ],
   controllers: [],

@@ -18,6 +18,7 @@ import { MfaUser } from '../users/dtos/mfaUser.dto';
 import { MfaAuthenticationService } from './mfa-authentication.service';
 import { LoguinResponse } from '../users/dtos/loguinResponse.dto';
 import { UpdatePassword } from '../users/dtos/updatePassword.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class AuthService {
@@ -75,7 +76,7 @@ export class AuthService {
           email: user.email,
           roles: user.codProfile,
         };
-         response.token = this.jwtService.sign(payload);
+        response.token = this.jwtService.sign(payload,{jwtid: uuidv4()});
         response.profileId = user.codProfile;
         response.userId = user.id;
         response.isMfaEnabled = user.isMfaEnabled;

@@ -56,22 +56,28 @@ export class QuestService {
         version: 1,
       });
       const response = await this.questsRepository.save(newQuest);
-      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = `C:/quest-salud/${response.id}/`;
-      const filePath = path.join(
-        uploadDir,
-        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
-      );
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-      fs.writeFileSync(filePath, pdfBuffer);
+      setImmediate(async () => {
+        try {
+        const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
+        const uploadDir = `C:/quest-salud/${response.id}/`;
+        const filePath = path.join(
+          uploadDir,
+          `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+        );
+        if (!fs.existsSync(uploadDir)) {
+          fs.mkdirSync(uploadDir, { recursive: true });
+        }
+        if (fs.existsSync(filePath)) {
+          fs.unlinkSync(filePath);
+        }
+        fs.writeFileSync(filePath, pdfBuffer);
+        } catch (e) {
+          console.error('Error al guardar el PDF en segundo plano:', e);
+        }
+      });
       return response;
     } catch (error) {
-      console.error('❌ Error al guardar el PDF:', error);
+      console.error('Error al guardar el PDF:', error);
       throw error;
     }
   }
