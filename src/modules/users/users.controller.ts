@@ -167,7 +167,8 @@ export class UsersController {
     @Param('id') id: string,
     @Body() status: UpdateStatus, 
     @Req() request: Request & { now: Date },
+    @User('username') username: string, 
   ) {
-    return this.usersService.updateUserStatus(id, status, request.now);
+    return this.usersService.updateUserStatus(id, status, request.now, username);
   }
 }

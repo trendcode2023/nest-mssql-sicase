@@ -96,7 +96,7 @@ export class UsersService {
     if (stampBase64) {
       const base64Data = stampBase64.replace(/^data:image\/\w+;base64,/, '');
       const buffer = Buffer.from(base64Data, 'base64');
-      const uploadDir = `D:/doctor/firmas/${entity.id}/`;
+      const uploadDir = `C:/doctor/firmas/${entity.id}/`;
       const filePath = path.join(uploadDir, 'firma.png');
       if (!fs.existsSync(uploadDir)) {
         fs.mkdirSync(uploadDir, { recursive: true });
@@ -286,7 +286,7 @@ export class UsersService {
     });
   }
 
-  async updateUserStatus(id: string, status: UpdateStatus, now: Date) {
+  async updateUserStatus(id: string, status: UpdateStatus, now: Date, username: string) {
     try {
       const user = await this.usersRepository.findOne({
         where: { id },
@@ -301,7 +301,7 @@ export class UsersService {
       }
       user.status = status.status;
       user.updateAt = now;
-      user.updatedBy = user.username;
+      user.updatedBy = username;
       await this.usersRepository.save(user);
       return {
         message: `Usuario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,

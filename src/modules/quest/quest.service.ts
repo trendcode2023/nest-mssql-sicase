@@ -56,38 +56,19 @@ export class QuestService {
         version: 1,
       });
       const response = await this.questsRepository.save(newQuest);
-      // genrar pdf
-      setImmediate(async () => {
-        try {
-          const pdfBuffer = await this.pdfService.generatePdf(
-            newQuest.jsonQuest,
-          );
-          const uploadDir = `D:/quest-salud/${response.id}/`;
-          const filePath = path.join(
-            uploadDir,
-            `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
-          );
-          if (!fs.existsSync(uploadDir)) {
-            fs.mkdirSync(uploadDir, { recursive: true });
-          }
-          if (fs.existsSync(filePath)) {
-            fs.unlinkSync(filePath);
-          }
-          fs.writeFileSync(filePath, pdfBuffer);
-
-          console.log(
-            `✅ PDF generado en background para quest ${response.id}`,
-          );
-        } catch (err) {
-          console.error(
-            `❌ Error generando PDF en background para quest ${response.id}`,
-            err,
-          );
-        }
-      });
-
-      //-- fin geenerar pdf
-
+      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
+      const uploadDir = `C:/quest-salud/${response.id}/`;
+      const filePath = path.join(
+        uploadDir,
+        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+      );
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      fs.writeFileSync(filePath, pdfBuffer);
       return response;
     } catch (error) {
       console.error('❌ Error al guardar el PDF:', error);
@@ -137,7 +118,7 @@ export class QuestService {
     quest.pdfName = `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`;
     const response = await this.questsRepository.save(quest);
     const pdfBuffer = await this.pdfService.generatePdf(quest.jsonQuest);
-    const uploadDir = `D:/quest-salud/${response.id}/`;
+    const uploadDir = `C:/quest-salud/${response.id}/`;
     const filePath = path.join(
       uploadDir,
       `FORMULARIO-${quest.patientDni}-V${response.version}.pdf`,
