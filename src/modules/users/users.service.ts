@@ -284,7 +284,7 @@ export class UsersService {
     });
   }
 
-  async updateUserStatus(id: string, status: UpdateStatus, now: Date) {
+  async updateUserStatus(id: string, status: UpdateStatus, now: Date, username: string) {
     try {
       const user = await this.usersRepository.findOne({
         where: { id },
@@ -299,7 +299,7 @@ export class UsersService {
       }
       user.status = status.status;
       user.updateAt = now;
-      user.updatedBy = user.username;
+      user.updatedBy = username;
       await this.usersRepository.save(user);
       return {
         message: `Usuario ${status.status === 'ac' ? 'activado' : 'anulado'} correctamente`,

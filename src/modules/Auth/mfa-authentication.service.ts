@@ -23,8 +23,6 @@ export class MfaAuthenticationService {
   }
 
   async verifyCode(code: string, secret: string) {
-    Logger.debug(code, 'CODE');
-    Logger.debug(secret, 'secret');
     return authenticator.verify({ token: code, secret });
   }
 
