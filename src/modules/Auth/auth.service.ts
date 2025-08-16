@@ -32,7 +32,7 @@ export class AuthService {
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     const response = new LoguinResponse();
-<<<<<<< HEAD
+ 
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
     const { username, password, mfaCode } = credentialsData || {};
 
@@ -54,20 +54,7 @@ export class AuthService {
 
     // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
     if (
-=======
-     const { username, password, mfaCode } = credentialsData || {};
-     if (!username || !password) return 'Usuario y contraseña es requerido';
-     const user = await this.usersRepository.findOne({
-      where: { username },
-     });
-     if (!user) throw new BadRequestException('Credencial invalida!!');
-    if(user.status=="in") {
-      throw new BadRequestException('El usuario esta inactivo');
-    }
-    await this.validateMFA(user, mfaCode);
-     this.validatePasswordExpiration(user, now);
-     if (
->>>>>>> 2f499a719e0ae12631302e24406f43afa690b450
+ 
       user.failedLoginAttempts >= 3 &&
       this.isSameDay(user.lastFailedLogin, now)
     ) {
