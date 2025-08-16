@@ -56,19 +56,38 @@ export class QuestService {
         version: 1,
       });
       const response = await this.questsRepository.save(newQuest);
-      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-      const uploadDir = `D:/quest-salud/${response.id}/`;
-      const filePath = path.join(
-        uploadDir,
-        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
-      );
-      if (!fs.existsSync(uploadDir)) {
-        fs.mkdirSync(uploadDir, { recursive: true });
-      }
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-      fs.writeFileSync(filePath, pdfBuffer);
+      // genrar pdf
+      setImmediate(async () => {
+        try {
+          const pdfBuffer = await this.pdfService.generatePdf(
+            newQuest.jsonQuest,
+          );
+          const uploadDir = `D:/quest-salud/${response.id}/`;
+          const filePath = path.join(
+            uploadDir,
+            `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+          );
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+          fs.writeFileSync(filePath, pdfBuffer);
+
+          console.log(
+            `✅ PDF generado en background para quest ${response.id}`,
+          );
+        } catch (err) {
+          console.error(
+            `❌ Error generando PDF en background para quest ${response.id}`,
+            err,
+          );
+        }
+      });
+
+      //-- fin geenerar pdf
+
       return response;
     } catch (error) {
       console.error('❌ Error al guardar el PDF:', error);
@@ -292,3 +311,22 @@ filterConditions.forEach(condition => {
 });
 
     */
+
+/*
+      // genrar pdf
+      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
+      const uploadDir = `D:/quest-salud/${response.id}/`;
+      const filePath = path.join(
+        uploadDir,
+        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+      );
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      fs.writeFileSync(filePath, pdfBuffer);
+      //-- fin geenerar pdf
+
+*/

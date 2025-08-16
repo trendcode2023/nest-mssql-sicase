@@ -51,11 +51,13 @@ export class UsersService {
         throw new BadRequestException('El documento ya existe');
       }
 
-      const cmpValidation = await this.usersRepository.findOne({
-        where: [{ cmp: user.cmp }],
-      });
-      if (cmpValidation) {
-        throw new BadRequestException('El CMP ya existe');
+      if (user.cmp) {
+        const cmpValidation = await this.usersRepository.findOne({
+          where: [{ cmp: user.cmp }],
+        });
+        if (cmpValidation) {
+          throw new BadRequestException('El CMP ya existe');
+        }
       }
 
       const profile = await this.profilesRepository.findOne({

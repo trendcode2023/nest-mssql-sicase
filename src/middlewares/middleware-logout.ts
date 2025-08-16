@@ -1,4 +1,9 @@
-import { Injectable, Logger, NestMiddleware, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NestMiddleware,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from '../modules/Auth/auth.service';
 import { Request, Response, NextFunction } from 'express';
 import { JwtService } from '@nestjs/jwt';
@@ -11,8 +16,8 @@ export class JwtMiddleware implements NestMiddleware {
   ) {}
 
   use(req: Request, res: Response, next: NextFunction) {
-    console.log("ENTRO 2JwtMiddleware")
-    Logger.debug("ENTRO 2JwtMiddleware")
+    console.log('ENTRO 2JwtMiddleware');
+    Logger.debug('ENTRO 2JwtMiddleware');
     const authHeader = req.headers['authorization'];
     const token = authHeader?.split(' ')[1];
 

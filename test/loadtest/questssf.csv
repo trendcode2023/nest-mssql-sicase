@@ -1,0 +1,473 @@
+patientName,patientDni,jsonQuest,questType
+Decimo ejemplo,87654321,"{
+    ""declaracion"": {
+        ""nrosolicitud"": ""12345"",
+        ""asesor"": ""DR PRUEBA DE DESARROLLO"",
+        ""estadocivil"": ""Soltero"",
+        ""names"": ""PACIENTE PRUEBA DE DESARROLLO"",
+        ""fechanacimientoString"": ""12/08/2025"",
+        ""numerodocumento"": ""78541256"",
+        ""tipoDocumento"": ""1"",
+        ""fechanacimiento"": ""2025-08-13T03:08:02.911Z""
+    },
+    ""entender"": {
+        ""nameanddirection"": ""DATOS DE PRUEBA"",
+        ""fechaandmotivation"": ""DATOS DE PRUEBA"",
+        ""medication"": ""DATOS DE PRUEBA""
+    },
+    ""entenderEnfermedades"": [
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""1""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""2""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""3""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""4""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""5""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""6""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""7""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""8""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""9""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""10""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""11""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""12""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""13""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""14""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""15""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""16""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""17""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""18""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""19""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""20""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""21""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""22""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""23""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""24""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""25""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""26""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""27""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""28""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""29""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""30""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""31""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""32""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""33""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""34""
+        },
+        {
+            ""answer"": ""PACIENTE PRUEBA DE DESARROLLO"",
+            ""sustento"": """",
+            ""id"": ""35""
+        },
+        {
+            ""answer"": ""78541256"",
+            ""sustento"": """",
+            ""id"": ""36""
+        },
+        {
+            ""answer"": ""11"",
+            ""sustento"": """",
+            ""id"": ""37""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""38""
+        },
+        {
+            ""answer"": ""12.12"",
+            ""sustento"": """",
+            ""id"": ""39""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""40""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""41""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""42""
+        },
+        {
+            ""answer"": ""12"",
+            ""sustento"": """",
+            ""id"": ""43""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""44""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""45""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""46""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""47""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""48""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""49""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""50""
+        },
+        {
+            ""answer"": """",
+            ""sustento"": """",
+            ""id"": ""51""
+        },
+        {
+            ""answer"": """",
+            ""sustento"": """",
+            ""id"": ""52""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""53""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""54""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""55""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""56""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""57""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""58""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""59""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""60""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""61""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""62""
+        },
+        {
+            ""answer"": ""VER RESULTADOS"",
+            ""sustento"": """",
+            ""id"": ""63""
+        },
+        {
+            ""answer"": ""VER RESULTADOS"",
+            ""sustento"": """",
+            ""id"": ""64""
+        },
+        {
+            ""answer"": ""VER RESULTADOS"",
+            ""sustento"": """",
+            ""id"": ""65""
+        },
+        {
+            ""answer"": ""N"",
+            ""sustento"": """",
+            ""id"": ""66""
+        }
+    ],
+    ""familiares"": [
+        {
+            ""tipo"": ""Padre"",
+            ""edadSiVive"": 32,
+            ""estadoSalud"": ""DATOS DE PRUEBA"",
+            ""edadAlMorir"": null
+        },
+        {
+            ""tipo"": ""Madre"",
+            ""edadSiVive"": 34,
+            ""estadoSalud"": ""DATOS DE PRUEBA"",
+            ""edadAlMorir"": null
+        },
+        {
+            ""tipo"": ""Hermanos"",
+            ""edadSiVive"": null,
+            ""estadoSalud"": """",
+            ""edadAlMorir"": null
+        },
+        {
+            ""tipo"": ""N° vivo"",
+            ""edadSiVive"": null,
+            ""estadoSalud"": """",
+            ""edadAlMorir"": null
+        },
+        {
+            ""tipo"": ""N° muerto"",
+            ""edadSiVive"": null,
+            ""estadoSalud"": """",
+            ""edadAlMorir"": null
+        }
+    ],
+    ""firma"": {
+                    ""medico"": """",
+                    ""propuestoAsegurado"": """",
+                    ""lugar"": ""DATOS DE PRUEBA""
+    },    
+    ""presionArterial"": [
+        {
+            ""sistolica"": 54,
+            ""diastolica"": 200
+        },
+        {
+            ""sistolica"": 4,
+            ""diastolica"": 3
+        },
+        {
+            ""sistolica"": 2,
+            ""diastolica"": 3
+        }
+    ],
+    ""pulso"": [
+        {
+            ""tipo"": ""En Descanso"",
+            ""frecuencia"": 30,
+            ""irregularidad"": ""DATOS DE PRUEBA""
+        },
+        {
+            ""tipo"": ""Después de Esfuerzo"",
+            ""frecuencia"": 30,
+            ""irregularidad"": ""DATOS DE PRUEBA""
+        },
+        {
+            ""tipo"": ""Pasados 5 Minutos"",
+            ""frecuencia"": 30,
+            ""irregularidad"": ""DATOS DE PRUEBA""
+        }
+    ],
+    ""date"": ""2025-08-13T03:11:35.000Z"",
+    ""dateString"": ""2025-08-12 22:11"",
+    ""doctorInf"": {
+        ""nombre"": ""DATOS DE PRUEBA"",
+        ""direccion"": ""DATOS DE PRUEBA"",
+        ""ciudad"": ""DATOS DE PRUEBA"",
+        ""realizadoEn"": ""C""
+    },
+    ""dateCuestionarioString"": ""Firmado en DATOS DE PRUEBA el 12 de Agosto del 2025"",
+    ""dateAndHourCuestionarioString"": {
+        ""hora"": ""A las 10:11 pm"",
+        ""fecha"": ""del día 12 de agosto de 2025""
+    },
+    ""soplos"": {
+        ""descripcion1"": """",
+        ""descripcion2"": """",
+        ""columna1"": {
+            ""constante"": false,
+            ""inconstante"": false,
+            ""irradiado"": false,
+            ""localizado"": false,
+            ""sistolico"": false,
+            ""presistolico"": false,
+            ""diastolico"": false,
+            ""suave_gr1_2"": false,
+            ""mod_gr5_6"": false,
+            ""esfuerzo"": false,
+            ""acentua"": false,
+            ""desaparece"": false,
+            ""sin_cambio"": false,
+            ""se_atenua"": false
+        },
+        ""columna2"": {
+            ""constante"": false,
+            ""inconstante"": false,
+            ""irradiado"": false,
+            ""localizado"": false,
+            ""sistolico"": false,
+            ""presistolico"": false,
+            ""diastolico"": false,
+            ""suave_gr1_2"": false,
+            ""mod_gr5_6"": false,
+            ""esfuerzo"": false,
+            ""acentua"": false,
+            ""desaparece"": false,
+            ""sin_cambio"": false,
+            ""se_atenua"": false
+        }
+    },
+    ""extraInformation"": {
+        ""quest19"": ""19. DATOS DE PRUEBA"",
+        ""quest20"": ""20. DATOS DE PRUEBA"",
+        ""quest21"": ""21. DATOS DE PRUEBA""
+    }
+}",3
+
