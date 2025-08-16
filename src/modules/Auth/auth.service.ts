@@ -32,6 +32,29 @@ export class AuthService {
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     const response = new LoguinResponse();
+<<<<<<< HEAD
+    // 1. Destructuring del objeto y previene error si el objeto es null o undefined
+    const { username, password, mfaCode } = credentialsData || {};
+
+    // 2. valida si existe email y password no son vacios
+    if (!username || !password) return 'Usuario y contraseña es requerido';
+    // 3. busca usuario por email y lo asigna a user
+    const user = await this.usersRepository.findOne({
+      where: { username },
+      //relations: ['profile'],
+    });
+    // 4. valida si user es vacio
+    if (!user) throw new BadRequestException('Credencial invalida!!');
+    if (user.status == 'in') {
+      throw new BadRequestException('El usuario esta inactivo');
+    }
+    await this.validateMFA(user, mfaCode);
+    // 5. Verifica si la contraseña ha expirado
+    this.validatePasswordExpiration(user, now);
+
+    // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
+    if (
+=======
      const { username, password, mfaCode } = credentialsData || {};
      if (!username || !password) return 'Usuario y contraseña es requerido';
      const user = await this.usersRepository.findOne({
@@ -44,6 +67,7 @@ export class AuthService {
     await this.validateMFA(user, mfaCode);
      this.validatePasswordExpiration(user, now);
      if (
+>>>>>>> 2f499a719e0ae12631302e24406f43afa690b450
       user.failedLoginAttempts >= 3 &&
       this.isSameDay(user.lastFailedLogin, now)
     ) {
@@ -68,6 +92,7 @@ export class AuthService {
     user.lastLogin = new Date();
     user.updatedBy = user.username;
     await this.usersRepository.save(user);
+
     if (user.isMfaEnabled && !user.isNewUser) {
       if (mfaCode) {
          const payload = {
@@ -84,8 +109,8 @@ export class AuthService {
     }
 
     response.userId = user.id;
-    response.isNewUser = user.isNewUser
-    response.isMfaEnabled = user.isMfaEnabled
+    response.isNewUser = user.isNewUser;
+    response.isMfaEnabled = user.isMfaEnabled;
 
     return response;
   }
@@ -140,7 +165,7 @@ export class AuthService {
   }
 
   async logout(token: string): Promise<string> {
-    this.blacklist.add(token); 
+    this.blacklist.add(token);
     return 'Sesión cerrada exitosamente.';
   }
 
@@ -148,34 +173,36 @@ export class AuthService {
     return this.blacklist.has(token);
   }
 
- async updatePassword(request : UpdatePassword) {
-  const username = request.user
-  console.log(request)
-   const user = await this.usersRepository.findOne({
-    where: { username },
-  });
-  if (!user) {
-    throw new BadRequestException('Credencial invalida!!');
-  }
-  if (user.status!='ac') {
-    return { message: 'No se puede cambiar la contraseña en este momento' }
-  }
-  const isMatch = await bcrypt.compare(request.password, user.password);
-  if (!isMatch) {
-    user.failedLoginAttempts = this.isSameDay(user.lastFailedLogin, new Date())
-      ? user.failedLoginAttempts + 1
-      : 1;
-    user.lastFailedLogin = new Date();
+  async updatePassword(request: UpdatePassword) {
+    const username = request.user;
+    console.log(request);
+    const user = await this.usersRepository.findOne({
+      where: { username },
+    });
+    if (!user) {
+      throw new BadRequestException('Credencial invalida!!');
+    }
+    if (user.status != 'ac') {
+      return { message: 'No se puede cambiar la contraseña en este momento' };
+    }
+    const isMatch = await bcrypt.compare(request.password, user.password);
+    if (!isMatch) {
+      user.failedLoginAttempts = this.isSameDay(
+        user.lastFailedLogin,
+        new Date(),
+      )
+        ? user.failedLoginAttempts + 1
+        : 1;
+      user.lastFailedLogin = new Date();
+      await this.usersRepository.save(user);
+      throw new BadRequestException('Credencial inválida');
+    }
+    const passwordExpirationDate = new Date();
+    passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
+    user.password = await bcrypt.hash(request.newPassword, 10);
+    user.isNewUser = false;
+    user.passwordExpirationDate = passwordExpirationDate;
     await this.usersRepository.save(user);
-    throw new BadRequestException('Credencial inválida');
+    return { message: 'Contraseña actualizada correctamente' };
   }
-  const passwordExpirationDate = new Date();
-  passwordExpirationDate.setDate(passwordExpirationDate.getDate() + 90);
-  user.password = await bcrypt.hash(request.newPassword, 10);
-  user.isNewUser = false
-  user.passwordExpirationDate = passwordExpirationDate
-  await this.usersRepository.save(user);
-  return { message: 'Contraseña actualizada correctamente' }
-  }
-
 }

@@ -298,3 +298,22 @@ filterConditions.forEach(condition => {
 });
 
     */
+
+/*
+      // genrar pdf
+      const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
+      const uploadDir = `D:/quest-salud/${response.id}/`;
+      const filePath = path.join(
+        uploadDir,
+        `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+      );
+      if (!fs.existsSync(uploadDir)) {
+        fs.mkdirSync(uploadDir, { recursive: true });
+      }
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+      fs.writeFileSync(filePath, pdfBuffer);
+      //-- fin geenerar pdf
+
+*/

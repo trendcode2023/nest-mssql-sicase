@@ -18,10 +18,6 @@ export class RolesGuard implements CanActivate {
     private readonly profileService: ProfileService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
-    /*const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
-      context.getHandler(),
-      context.getClass(),
-    ]);*/
     const requiredRoles = this.reflector.get<string[]>(
       'roles',
       context.getHandler(),
@@ -33,31 +29,18 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-    // console.log('user');
-    // console.log(user);
-    // console.log('user.roles');
-    // console.log(user.roles);
 
     if (!user || !user.roles) {
       throw new ForbiddenException('No profile associated with this user');
     }
 
-    //console.log('user.profile.name');
-    //console.log(user.profile.name);
-
     const userProfile = await this.profileService.getProfileById(user.roles);
 
-    // console.log('userprofile:');
-    // console.log(userProfile);
     if (!userProfile) {
       throw new ForbiddenException('User profile not found');
     }
 
-    // const hasRole = () => requiredRoles.some((role) => user?.roles?.includes(role));
-
     const hasRole = requiredRoles.includes(userProfile.name);
-    // console.log('hasRole:');
-    //  console.log(hasRole);
 
     if (!hasRole) {
       throw new ForbiddenException(
@@ -69,6 +52,10 @@ export class RolesGuard implements CanActivate {
   }
 }
 
+/*const requiredRoles = this.reflector.getAllAndOverride<Role[]>('roles', [
+      context.getHandler(),
+      context.getClass(),
+    ]);*/
 /*
     const valid = user && user.roles && hasRole;
     if (!valid) {

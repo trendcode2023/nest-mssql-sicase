@@ -4,7 +4,6 @@ import { User } from '../users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { authenticator } from 'otplib';
-import { log } from 'util';
 
 @Injectable()
 export class MfaAuthenticationService {
