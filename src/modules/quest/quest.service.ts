@@ -58,19 +58,21 @@ export class QuestService {
       const response = await this.questsRepository.save(newQuest);
       setImmediate(async () => {
         try {
-        const pdfBuffer = await this.pdfService.generatePdf(newQuest.jsonQuest);
-        const uploadDir = `C:/quest-salud/${response.id}/`;
-        const filePath = path.join(
-          uploadDir,
-          `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
-        );
-        if (!fs.existsSync(uploadDir)) {
-          fs.mkdirSync(uploadDir, { recursive: true });
-        }
-        if (fs.existsSync(filePath)) {
-          fs.unlinkSync(filePath);
-        }
-        fs.writeFileSync(filePath, pdfBuffer);
+          const pdfBuffer = await this.pdfService.generatePdf(
+            newQuest.jsonQuest,
+          );
+          const uploadDir = `C:/quest-salud/${response.id}/`;
+          const filePath = path.join(
+            uploadDir,
+            `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
+          );
+          if (!fs.existsSync(uploadDir)) {
+            fs.mkdirSync(uploadDir, { recursive: true });
+          }
+          if (fs.existsSync(filePath)) {
+            fs.unlinkSync(filePath);
+          }
+          fs.writeFileSync(filePath, pdfBuffer);
         } catch (e) {
           console.error('Error al guardar el PDF en segundo plano:', e);
         }
