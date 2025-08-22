@@ -18,7 +18,12 @@ import { PdfService } from './pdf.service';
 import * as fs from 'fs';
 import * as path from 'path';
 import { log } from 'console';
+// configuracion de bull
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from 'bull';
 
+// mejor coidgo de setInmediate
+//import * as fs from 'fs/promises';
 @Injectable()
 export class QuestService {
   constructor(
@@ -28,6 +33,8 @@ export class QuestService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
     private readonly pdfService: PdfService,
+    // configuracion de bull
+    @InjectQueue('pdf-queue') private readonly pdfQueue: Queue,
   ) {}
 
   async createQuest(questData: CreateQuestDto, userId: string, now: Date) {
@@ -56,6 +63,15 @@ export class QuestService {
         version: 1,
       });
       const response = await this.questsRepository.save(newQuest);
+      /*
+      // 🚀 Enviar a la cola la generación de PDF
+      await this.pdfQueue.add('generatePdf', {
+        questId: response.id,
+        patientDni: questData.patientDni,
+        jsonQuest: questData.jsonQuest,
+        pdfName: questData.pdfName,
+      });*/
+
       setImmediate(async () => {
         try {
           const pdfBuffer = await this.pdfService.generatePdf(
@@ -66,6 +82,7 @@ export class QuestService {
             uploadDir,
             `FORMULARIO-${newQuest.patientDni}-V1.pdf`,
           );
+
           if (!fs.existsSync(uploadDir)) {
             fs.mkdirSync(uploadDir, { recursive: true });
           }
@@ -131,6 +148,7 @@ export class QuestService {
       uploadDir,
       `FORMULARIO-${quest.patientDni}-V${response.version}.pdf`,
     );
+
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -269,11 +287,12 @@ export class QuestService {
           `Tipo de cuestionario ${quest.questType} no existe!!`,
         );
       const filePath = path.join(
-        'D:',
+        'C:',
         'quest-salud',
         quest.id.toString(),
         `FORMULARIO-${quest.patientDni}-V${quest.version}.pdf`,
       );
+
       if (!fs.existsSync(filePath)) {
         console.log('filePath', filePath);
         throw new BadRequestException('No se puede obtener el formulario');

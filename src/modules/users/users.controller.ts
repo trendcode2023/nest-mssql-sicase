@@ -35,7 +35,7 @@ export class UsersController {
   createUser(
     @Body() user: CreateUserDto,
     @Req() request: Request & { now: Date },
-    @User('username') loggedInUserDni: string, 
+    @User('username') loggedInUserDni: string,
   ) {
     console.log(loggedInUserDni);
     return this.usersService.createUser(user, request.now, loggedInUserDni);
@@ -49,6 +49,7 @@ export class UsersController {
     return this.usersService.getAllUsers();
   }
 
+  /*
   @Roles('DOCTOR')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
@@ -65,9 +66,11 @@ export class UsersController {
       request.now,
       loggedInUserDni,
     );
-  }
+  }*/
 
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
   @ApiBody({ type: UpdateUserDto })
@@ -84,7 +87,6 @@ export class UsersController {
       loggedInUserDni,
     );
   }
-
 
   @ApiBearerAuth()
   @Roles('ADMIN')
@@ -148,10 +150,10 @@ export class UsersController {
       order,
     );
   }
-
-  @UseGuards(AuthGuard)
   @ApiBearerAuth()
-  @Get('getUserById/:userId') 
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('getUserById/:userId')
   async getUserById(
     @Param('userId', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
@@ -165,10 +167,15 @@ export class UsersController {
   @Post('update-status/:id')
   async updateUserStatus(
     @Param('id') id: string,
-    @Body() status: UpdateStatus, 
+    @Body() status: UpdateStatus,
     @Req() request: Request & { now: Date },
-    @User('username') username: string, 
+    @User('username') username: string,
   ) {
-    return this.usersService.updateUserStatus(id, status, request.now, username);
+    return this.usersService.updateUserStatus(
+      id,
+      status,
+      request.now,
+      username,
+    );
   }
 }

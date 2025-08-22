@@ -1,15 +1,15 @@
 config:
   target: 'http://localhost:8300'  # Cambia si tu API corre en otro puerto
   phases:
+    - duration: 65  #  duración de la prueba en segundos
+      arrivalRate: 1  # 2 usuarios virtuales por segundo
+      name: "Calentamiento - 1 quests por segundo"
     - duration: 10  # duración de la prueba en segundos
-      arrivalRate: 4  # usuarios virtuales por segundo
-      name: "Calentamiento - 4 quests por segundo"
-    - duration: 15  # duración de la prueba en segundos
-      arrivalRate: 6  # usuarios virtuales por segundo
-      name: "Carga media - 6 quests por segundo"
-    - duration: 20  # duración de la prueba en segundos
-      arrivalRate: 10  # usuarios virtuales por segundo
-      name: "Carga pico - 10 quests por segundo"
+      arrivalRate: 2 # 5 usuarios virtuales por segundo
+      name: "Carga media - 2 quests por segundo"
+    - duration: 5  # duración de la prueba en segundos
+      arrivalRate: 3  # 10 usuarios virtuales por segundo
+      name: "Carga pico - 3 quests por segundo"
   payload:
     path: './quests.csv'  # Datos de entrada para cada request
     fields:
@@ -23,17 +23,17 @@ config:
     skipHeader: true
   defaults:
     headers:
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkNDNzI2NUEwLURBQjAtNDI5Mi04QkE2LTBEMzBBRDQ5MTRDNCIsInVzZXJuYW1lIjoiZHBydWViYWQiLCJlbWFpbCI6ImRwcnVlYmFjQGdtYWlsLmNvbSIsInJvbGVzIjoiMiIsImlhdCI6MTc1NTM3ODMwOCwiZXhwIjoxNzU1MzgxOTA4fQ.VwJS3nYDnjvR5Qa0t8eXfvI8KIUbDt_d7ta5-CkiXSw'  # Sustituye por un token válido
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkNDNzI2NUEwLURBQjAtNDI5Mi04QkE2LTBEMzBBRDQ5MTRDNCIsInVzZXJuYW1lIjoiZHBydWViYWQiLCJlbWFpbCI6ImRwcnVlYmFjQGdtYWlsLmNvbSIsInJvbGVzIjoiMiIsImlhdCI6MTc1NTQ2NjAwNiwiZXhwIjoxNzU1NDY5NjA2LCJqdGkiOiI3NGZhZGUyMC00MWQ3LTQ5YzQtYTA3ZC04ODU1OTNhMDJlMWIifQ.YpPBKLJGRKvjh8HFD_0d4KHvpvVZBXnG-kQRf9HP2h8'  # Sustituye por un token válido
       Content-Type: 'application/json'
   http:
-    timeout: 10           # Tiempo máximo de espera (segundos)
+    timeout: 15           # Tiempo máximo de espera (segundos)
     maxSockets: 500       # Para evitar límite de conexiones
     pool: 200            # Mantener conexiones abiertas
     enableHttp2: false
   processor: './questprocessor.js'
   ensure:
     # Validaciones para saber si realmente llegaron todas las requests
-    http.requests: 30
+    http.requests: 60
     errors.rate: 0.1  
 scenarios:
   - name: Crear cuestionario

@@ -11,9 +11,19 @@ import * as express from 'express';
 import { join } from 'path';
 import { WinstonLoggerService } from './modules/logger/winston-logger.service';
 import { LoggerInterceptor } from './interceptors/logger.interceptor';
+import helmet from 'helmet'; // <--- 👈 IMPORTANTE
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+import { Request, Response } from 'express';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { bufferLogs: true });
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    bufferLogs: true,
+  });
+
+  // 🔐 Seguridad
+  app.disable('x-powered-by'); // Quita la cabecera X-Powered-By
+  app.use(helmet()); // Agrega cabeceras de seguridad recomendadas
 
   const logger = new WinstonLoggerService();
   app.useLogger(logger);
@@ -39,11 +49,26 @@ async function bootstrap() {
   app.useGlobalFilters(new ExceptionsFilter()); // <---- Filtro global registrado aquí
   app.enableCors({
     origin: ['http://localhost:4200'], // Lista de dominios permitidos
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
+    methods: 'GET,POST', // Métodos permitidos
+    //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Métodos permitidos
     allowedHeaders: 'Content-Type, Authorization', // Encabezados permitidos
     credentials: true, // Permitir cookies y credenciales
   });
   app.use('/assets', express.static(join(__dirname, '..', 'assets')));
+
+  // 🚨 Aquí insertamos el middleware para filtrar métodos HTTP
+  /*
+  const allowedMethods = ['GET', 'POST'];
+  app.use((req: Request, res: Response, next: express.NextFunction) => {
+    if (!allowedMethods.includes(req.method)) {
+      res.setHeader('Allow', allowedMethods.join(', '));
+      return res.status(405).json({
+        statusCode: 405,
+        message: 'Method Not Allowed',
+      });
+    }
+    next();
+  });*/
 
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')
