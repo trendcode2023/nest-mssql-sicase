@@ -29,7 +29,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
   @ApiBearerAuth()
   @Roles('ADMIN')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
   createUser(

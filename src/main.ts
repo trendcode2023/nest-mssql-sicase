@@ -69,7 +69,7 @@ async function bootstrap() {
     }
     next();
   });*/
-
+  /*
   const swaggerConfig = new DocumentBuilder()
     .setTitle('SICASE')
     .setDescription('BACKEND - SISTEMA DE CUESTIONARIOS DE ASEGURABILIDAD')
@@ -79,7 +79,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, swaggerConfig);
   SwaggerModule.setup('api', app, document);
-
+*/
   //await seeder.seed();
 
   //const port = process.env.PORT || 8300;
