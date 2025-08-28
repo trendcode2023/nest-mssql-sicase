@@ -4,6 +4,7 @@ import { Profile } from './profile.entity';
 import { ProfileService } from './profile.service';
 import { ProfileController } from './profile.controller';
 import { AuthModule } from '../auth/auth.module';
+import { User } from 'src/decorators/user.decorator';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Profile]), AuthModule], // Asegúrate de importar la entidad

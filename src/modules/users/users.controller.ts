@@ -27,9 +27,10 @@ import { UpdateStatus } from './dtos/UpdateStatus.dto';
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
+
   @ApiBearerAuth()
   @Roles('ADMIN')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
   createUser(
@@ -67,7 +68,9 @@ export class UsersController {
     );
   }
 
-  @UseGuards(AuthGuard)
+  @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
   @ApiBody({ type: UpdateUserDto })
@@ -149,8 +152,9 @@ export class UsersController {
     );
   }
 
-  @UseGuards(AuthGuard)
   @ApiBearerAuth()
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('getUserById/:userId') 
   async getUserById(
     @Param('userId', new ParseUUIDPipe({ version: '4' })) id: string,

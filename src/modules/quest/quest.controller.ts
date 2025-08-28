@@ -32,7 +32,8 @@ export class QuestController {
   ) {}
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @Roles('ADMIN','MEDICO')
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
   createQuest(
@@ -44,7 +45,8 @@ export class QuestController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('update/:id')
   async updateQuest(
@@ -60,8 +62,11 @@ export class QuestController {
       request.now,
     );
   }
+
+
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @Roles('ADMIN')
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('paginated')
   @ApiQuery({
     name: 'page',
@@ -128,7 +133,8 @@ export class QuestController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @Roles('ADMIN','MEDICO')
+  @UseGuards(AuthGuard, RolesGuard)
   @Get('declaracion-salud/:id')
   async downloadPdf(@Res() res: Response, @Param('id') questId: string) {
     const pdfBuffer = await this.questsService.getQuestPdf(questId);
@@ -143,8 +149,9 @@ export class QuestController {
   }
 
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
-  @Get('getQuestById/:id') // Ruta dinámica
+  @Roles('ADMIN','MEDICO')
+  @UseGuards(AuthGuard, RolesGuard)
+  @Get('getQuestById/:id') 
   async getUserById(
     @Param('id', new ParseUUIDPipe({ version: '4' })) id: string,
   ) {
@@ -159,7 +166,7 @@ export class QuestController {
   async updateUserStatus(
     @Param('id') questId: string,
     @User('username') username: string,
-    @Body() status: UpdateStatus, // El estado se pasa en el Body
+    @Body() status: UpdateStatus,
     @Req() request: Request & { now: Date },
   ) {
     return this.questsService.updateQuestStatus(

@@ -11,7 +11,7 @@ import { MenuModule } from './modules/menu/menu.module';
 import { QuestModule } from './modules/quest/quest.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
-
+import { ThrottlerModule } from '@nestjs/throttler';
 import { v4 as uuidv4 } from 'uuid';
 
 //import { AuthModule } from './modules/auth/auth.module';
@@ -43,6 +43,11 @@ import { v4 as uuidv4 } from 'uuid';
       global: true,
       signOptions: { expiresIn: '1h' },
       secret: process.env.JWT_SECRET
+    }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        { ttl: 60_000, limit: 50 }, // 60 req por minuto por IP (global)
+      ],
     }),
   ],
   controllers: [],

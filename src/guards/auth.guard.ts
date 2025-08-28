@@ -20,16 +20,12 @@ export class AuthGuard implements CanActivate {
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
     const token = request.headers['authorization']?.split(' ')[1] ?? '';
-    // console.log({ token });
-
     if (this.logoutService.isTokenBlacklisted(token)) {
       throw new UnauthorizedException('Token inválido');
     }
-
     if (!token) {
       throw new UnauthorizedException('Token is missing');
     }
-    // console.log('paso la validacion de token');
     try {
       const secret = process.env.JWT_SECRET;
       const payload = this.jwtService.verify(token, { secret });
@@ -38,7 +34,6 @@ export class AuthGuard implements CanActivate {
       request.user = payload;
       return true;
     } catch (e) {
-      //console.log('genero un error');
       throw new UnauthorizedException('Token invalido o expirado');
     }
   }

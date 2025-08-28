@@ -3,14 +3,15 @@ import { ProfileService } from './profile.service';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/decorators/roles.decorator';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
 
 @Controller('profile')
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) {}
   @ApiBearerAuth()
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard,RolesGuard)
+  @Roles('ADMIN')
   @Get('getall')
-  @Roles('admin')
   getAllQuest() {
     return this.profileService.getAllProfiles();
   }
