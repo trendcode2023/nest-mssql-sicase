@@ -7,6 +7,7 @@ import {
 import { Reflector } from '@nestjs/core';
 //import { Observable } from 'rxjs';
 import { ProfileService } from 'src/modules/profile/profile.service';
+import { UsersService } from 'src/modules/users/users.service';
 //import { Role } from 'src/utils/roles.enum';
 //import { Role } from 'src/utils/roles.enum';
 //import { Role } from 'src/emuns/roles.enum';
@@ -16,6 +17,8 @@ export class RolesGuard implements CanActivate {
   constructor(
     private readonly reflector: Reflector,
     private readonly profileService: ProfileService,
+    //nuevo
+    private readonly userService: UsersService,
   ) {}
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const requiredRoles = this.reflector.get<string[]>(
@@ -29,12 +32,27 @@ export class RolesGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
     const user = request.user;
-
+    /*
     if (!user || !user.roles) {
       throw new ForbiddenException('No profile associated with this user');
+    }*/
+    // nuevo
+    if (!user || !user.id) {
+      throw new ForbiddenException('No user found in request');
     }
 
-    const userProfile = await this.profileService.getProfileById(user.roles);
+    //const userProfile = await this.profileService.getProfileById(user.roles);
+
+    // 🔑 Ahora obtenemos el perfil usando el id del usuario
+    const idProfile = await this.userService.getUserById(user.id);
+
+    if (!idProfile) {
+      throw new ForbiddenException('No profile found in request');
+    }
+
+    const userProfile = await this.profileService.getProfileById(
+      idProfile.codProfile,
+    );
 
     if (!userProfile) {
       throw new ForbiddenException('User profile not found');

@@ -23,8 +23,8 @@ import { v4 as uuidv4 } from 'uuid';
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private usersRepository: Repository<User>,  
-    private readonly jwtService: JwtService,  
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
     private readonly mfaAuthenticationService: MfaAuthenticationService,
   ) {}
 
@@ -32,7 +32,7 @@ export class AuthService {
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     const response = new LoguinResponse();
- 
+
     // 1. Destructuring del objeto y previene error si el objeto es null o undefined
     const { username, password, mfaCode } = credentialsData || {};
 
@@ -54,7 +54,6 @@ export class AuthService {
 
     // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
     if (
- 
       user.failedLoginAttempts >= 3 &&
       this.isSameDay(user.lastFailedLogin, now)
     ) {
@@ -63,9 +62,9 @@ export class AuthService {
       throw new ForbiddenException('Cuenta bloqueada');
     }
 
-     const isMatch = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
 
-     if (!isMatch) {
+    if (!isMatch) {
       user.failedLoginAttempts = this.isSameDay(user.lastFailedLogin, now)
         ? user.failedLoginAttempts + 1
         : 1;
@@ -74,7 +73,7 @@ export class AuthService {
       throw new BadRequestException('Credencial inválida');
     }
 
-     user.failedLoginAttempts = 0;
+    user.failedLoginAttempts = 0;
     user.lastFailedLogin = null;
     user.lastLogin = new Date();
     user.updatedBy = user.username;
@@ -82,13 +81,13 @@ export class AuthService {
 
     if (user.isMfaEnabled && !user.isNewUser) {
       if (mfaCode) {
-         const payload = {
+        const payload = {
           id: user.id,
           username: user.username,
           email: user.email,
-          roles: user.codProfile,
+          //roles: user.codProfile,
         };
-        response.token = this.jwtService.sign(payload,{jwtid: uuidv4()});
+        response.token = this.jwtService.sign(payload, { jwtid: uuidv4() });
         response.profileId = user.codProfile;
         response.userId = user.id;
         response.isMfaEnabled = user.isMfaEnabled;
@@ -115,11 +114,11 @@ export class AuthService {
     }
   }
 
-   private validatePasswordExpiration(user: any, now: Date) {
+  private validatePasswordExpiration(user: any, now: Date) {
     if (!user.passwordExpirationDate) return;
 
     const expirationDate = new Date(user.passwordExpirationDate);
-    const daysBeforeExpiration = 7;  
+    const daysBeforeExpiration = 7;
     const warningDate = new Date(expirationDate);
     warningDate.setDate(expirationDate.getDate() - daysBeforeExpiration);
 
@@ -132,7 +131,7 @@ export class AuthService {
     }
   }
 
-   private isSameDay(date1: Date, date2: Date): boolean {
+  private isSameDay(date1: Date, date2: Date): boolean {
     return date1?.toDateString() === date2?.toDateString();
   }
 

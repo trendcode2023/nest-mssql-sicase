@@ -15,7 +15,7 @@ import { AuthModule } from '../auth/auth.module';
     ProfilesModule,
     AuthModule,
   ],
-  exports: [], // Exporting the UsersService to be used in other modules.
+  exports: [UsersService], // Exporting the UsersService to be used in other modules.
   controllers: [UsersController],
   providers: [UsersService],
 })

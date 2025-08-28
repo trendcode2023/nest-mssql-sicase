@@ -12,6 +12,8 @@ export class ProfileService {
   ) {}
 
   async getProfileById(id: string) {
+    // buscar el idprofile del usuario por el user.id
+
     return this.profileRepository.findOne({ where: { id } });
   }
 

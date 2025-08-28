@@ -1,0 +1,22 @@
+config:
+  target: "http://localhost:8300"   # cambia al puerto de tu app Nest
+  phases:
+    - duration: 50   # test durante 1 minuto
+      arrivalRate: 2 # 10 peticiones por segundo
+      name: "Calentamiento - 1 quests por segundo"
+    - duration: 30   # test durante 1 minuto
+      arrivalRate: 5 # 10 peticiones por segundo
+      name: "Calentamiento - 1 quests por segundo"
+  defaults:
+    headers:
+      Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IkNDNzI2NUEwLURBQjAtNDI5Mi04QkE2LTBEMzBBRDQ5MTRDNCIsInVzZXJuYW1lIjoiZHBydWViYWQiLCJlbWFpbCI6ImRwcnVlYmFjQGdtYWlsLmNvbSIsInJvbGVzIjoiMiIsImlhdCI6MTc1NTYzNDExNywiZXhwIjoxNzU1NjM3NzE3LCJqdGkiOiI0NDg4Mjg4Zi1hNmYwLTRkMzQtYWYxOC1jYWYzNmRiMDc0MTkifQ.rOavxXXCPp5gvSMlv78Z53TMmo0aiEf7jllvlLmu0y0'
+      Content-Type: application/json
+scenarios:
+  - name: Get paginated quests
+    flow:
+      - get:
+          url: "/quests/paginated?page=1&limit=10"
+  - name: Get paginated quests with filters
+    flow:
+      - get:
+          url: "/quests/paginated?page=1&limit=5&questType=3&patientName=juan"

@@ -32,7 +32,7 @@ export class QuestController {
   ) {}
 
   @ApiBearerAuth()
-  @Roles('ADMIN','MEDICO')
+  @Roles('MEDICO')
   @UseGuards(AuthGuard, RolesGuard)
   @UseInterceptors(DateAdderInterceptor)
   @Post('create')
@@ -133,7 +133,7 @@ export class QuestController {
   }
 
   @ApiBearerAuth()
-  @Roles('ADMIN','MEDICO')
+  @Roles('ADMIN')
   @UseGuards(AuthGuard, RolesGuard)
   @Get('declaracion-salud/:id')
   async downloadPdf(@Res() res: Response, @Param('id') questId: string) {

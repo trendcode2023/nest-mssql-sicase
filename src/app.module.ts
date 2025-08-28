@@ -12,6 +12,10 @@ import { QuestModule } from './modules/quest/quest.module';
 import { CatalogModule } from './modules/catalog/catalog.module';
 import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
 import { ThrottlerModule } from '@nestjs/throttler';
+// configuracion de bull
+import { BullModule } from '@nestjs/bull';
+// 👇 Importa el middleware que creamos
+import { MethodFilterMiddleware } from './middlewares/method-filter.middleware';
 import { v4 as uuidv4 } from 'uuid';
 
 //import { AuthModule } from './modules/auth/auth.module';
@@ -42,7 +46,17 @@ import { v4 as uuidv4 } from 'uuid';
       // registra el jwt
       global: true,
       signOptions: { expiresIn: '1h' },
-      secret: process.env.JWT_SECRET
+      secret: process.env.JWT_SECRET,
+    }),
+    // configuracion de bull
+    BullModule.forRoot({
+      redis: {
+        host: 'localhost', // o tu host en la nube
+        port: 6379,
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'pdf-queue',
     }),
     ThrottlerModule.forRoot({
       throttlers: [
@@ -53,4 +67,8 @@ import { v4 as uuidv4 } from 'uuid';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(MethodFilterMiddleware).forRoutes('*'); // 🚨 Aplica a todas las rutas
+  }
+}

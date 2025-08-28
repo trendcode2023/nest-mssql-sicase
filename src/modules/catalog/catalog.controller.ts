@@ -24,7 +24,6 @@ export class CatalogController {
     required: true,
     description: 'Código del catálogo (Ejemplos: td, tc)',
   })
-  //@Roles('admin')
   async getCatalogByCodeName(@Query('code') codeName: string) {
     return this.catalogService.getCatalogByCodeName(codeName);
   }

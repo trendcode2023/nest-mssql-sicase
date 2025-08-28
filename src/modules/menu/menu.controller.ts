@@ -3,14 +3,15 @@ import { ApiTags } from '@nestjs/swagger';
 
 import { MenuService } from './menu.service';
 import { Roles } from 'src/decorators/roles.decorator';
-import { AuthGuard } from 'src/guards/auth.guard';
 import { RolesGuard } from 'src/guards/roles.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
+
 @ApiTags('Menu')
 //@ApiBearerAuth()
 @Controller('menu')
 export class MenuController {
   constructor(private authService: MenuService) {}
-
+  @UseGuards(AuthGuard)
   @Get('menu/:id')
   @UseGuards(AuthGuard,RolesGuard)
   @Roles('MEDICO','ADMIN')
