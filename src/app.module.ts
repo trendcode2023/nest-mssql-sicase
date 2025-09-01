@@ -13,10 +13,11 @@ import { CatalogModule } from './modules/catalog/catalog.module';
 import { WinstonLoggerModule } from './modules/logger/winston-logger.module';
 // configuracion de bull
 import { BullModule } from '@nestjs/bull';
-
+import { ThrottlerGuard, ThrottlerModule} from '@nestjs/throttler';
 // 👇 Importa el middleware que creamos
 import { MethodFilterMiddleware } from './middlewares/method-filter.middleware';
 import { v4 as uuidv4 } from 'uuid';
+import { APP_GUARD } from '@nestjs/core';
 
 //import { AuthModule } from './modules/auth/auth.module';
 //import { JwtModule } from '@nestjs/jwt';
@@ -58,9 +59,14 @@ import { v4 as uuidv4 } from 'uuid';
     BullModule.registerQueue({
       name: 'pdf-queue',
     }),
+    ThrottlerModule.forRoot({
+      throttlers: [
+        { ttl: 60_000,  limit: 50 }
+      ]
+    })
   ],
   controllers: [],
-  providers: [],
+  providers: [ { provide: APP_GUARD, useClass: ThrottlerGuard }],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
