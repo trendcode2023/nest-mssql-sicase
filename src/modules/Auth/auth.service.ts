@@ -3,12 +3,9 @@ import {
   ForbiddenException,
   Injectable,
   Logger,
-  //NotFoundException,
 } from '@nestjs/common';
-//import { UsersRepository } from 'src/Users/users.repository';
 import * as bcrypt from 'bcrypt';
 
-//import { Users } from 'src/Users/user.entity';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/users.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,27 +29,18 @@ export class AuthService {
 
   async signIn(credentialsData: LoguinUserDto, now: Date) {
     const response = new LoguinResponse();
-
-    // 1. Destructuring del objeto y previene error si el objeto es null o undefined
     const { username, password, mfaCode } = credentialsData || {};
-
-    // 2. valida si existe email y password no son vacios
-    if (!username || !password) return 'Usuario y contraseña es requerido';
-    // 3. busca usuario por email y lo asigna a user
+    if (!username || !password) return 'Credenciales inválidas';
     const user = await this.usersRepository.findOne({
       where: { username },
-      //relations: ['profile'],
     });
-    // 4. valida si user es vacio
-    if (!user) throw new BadRequestException('Credencial invalida!!');
+    if (!user) throw new BadRequestException('Credenciales inválidas');
     if (user.status == 'in') {
-      throw new BadRequestException('El usuario esta inactivo');
+      throw new BadRequestException('Credenciales inválidas');
     }
     await this.validateMFA(user, mfaCode);
-    // 5. Verifica si la contraseña ha expirado
     this.validatePasswordExpiration(user, now);
-
-    // 6. verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
+    //verifica si el usuario tiene 3 intentos fallidos y lo bloqueamos
     if (
       user.failedLoginAttempts >= 3 &&
       this.isSameDay(user.lastFailedLogin, now)
@@ -84,8 +72,7 @@ export class AuthService {
         const payload = {
           id: user.id,
           username: user.username,
-          email: user.email,
-          //roles: user.codProfile,
+          email: user.email
         };
         response.token = this.jwtService.sign(payload, { jwtid: uuidv4() });
         response.profileId = user.codProfile;
@@ -109,7 +96,7 @@ export class AuthService {
         user.mfaSecrect,
       );
       if (!isValid) {
-        throw new BadRequestException('Código MFA inválido');
+        throw new BadRequestException('Credenciales inválidas');
       }
     }
   }
@@ -166,7 +153,7 @@ export class AuthService {
       where: { username },
     });
     if (!user) {
-      throw new BadRequestException('Credencial invalida!!');
+      throw new BadRequestException('Credenciales inválidas');
     }
     if (user.status != 'ac') {
       return { message: 'No se puede cambiar la contraseña en este momento' };
